@@ -154,3 +154,7 @@
     text-align: center; /* Centers the button horizontally */
 
   }
+/* Link Color */
+a {
+  color: #7D0E0E !important; 
+}
