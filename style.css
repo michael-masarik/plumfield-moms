@@ -20,11 +20,11 @@
   --notion-red-base: #7D0E0E !important;
   
 
-.notion-collection__header-wrapper .notion-dropdown__menu-header,
-.notion-dropdown__button svg:first-of-type,
-.notion-dropdown__option-icon {
+  .notion-collection__header-wrapper .notion-dropdown__menu-header,
+  .notion-dropdown__button svg:first-of-type,
+  .notion-dropdown__option-icon {
   display: none !important;
-}
+ }
 @media all and (min-width: 576px) {
   .notion-collection__header-wrapper .notion-dropdown {
     width: 100% !important;
@@ -127,8 +127,9 @@
     font-size: 1rem !important;
     color: var(--picker-text-color) !important;
   }
-/* End of Super.so DB picker code*/
 }
+ /* End of Super.so DB picker code*/
+
 
 /* Hide all content inside a brown toggle - Thanks to Super.so for this! */
 .notion-toggle.bg-brown { 
@@ -154,7 +155,7 @@
     text-align: center; /* Centers the button horizontally */
 
   }
-/* Link Color */
+}
 a {
   color: #7D0E0E !important; 
 }
