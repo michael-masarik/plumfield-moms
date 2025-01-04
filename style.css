@@ -212,7 +212,7 @@ text-align: center;
 }
 
 .notion-callout.bg-blue-light {
-    background: var(--yellow-text-color) !important; /* CHANGE THE BUTTON COLOR HERE */
+    background: var(--notion-red-base) !important; /* CHANGE THE BUTTON COLOR HERE */
     box-shadow: none !important;
     color: #fff !important;
 }
