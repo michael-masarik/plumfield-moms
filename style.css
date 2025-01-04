@@ -18,6 +18,7 @@
   --picker-hover-border-color: rgb(233, 233, 233)!important;
   /* Notion Red */
   --notion-red-base: #7D0E0E !important;
+  --yellow-text-color: #ffe3a3 !important;
   
 
   .notion-collection__header-wrapper .notion-dropdown__menu-header,
@@ -207,7 +208,7 @@ text-align: center;
 }
 
 .notion-callout.bg-blue-light {
-    background: var(--notion-red-base) !important; /* CHANGE THE BUTTON COLOR HERE */
+    background: var(--yellow-text-color) !important; /* CHANGE THE BUTTON COLOR HERE */
     box-shadow: none !important;
     color: #fff !important;
 }
@@ -241,7 +242,7 @@ text-align: center;
 }
 /* Link Color */
 a {
-  text-decoration: var(--notion-red-base) !important;
+  color: var(--notion-red-base) !important;
 }
 a:hover {
   text-decoration: none;
