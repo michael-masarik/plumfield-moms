@@ -241,7 +241,6 @@ text-align: center;
 }
 /* Link Color */
 a {
-  color: var(--notion-red-base) !important;
   text-decoration: var(--notion-red-base) !important;
 }
 a:hover {
