@@ -156,25 +156,7 @@
 
   }
 }
+/* Link Color */
 a {
   color: #7D0E0E !important; 
-}
-
-/* Turn a single line callout block into a button (Entire block is clickable) */
- .notion-callout { 
-  position: relative!important;
-}
-
-.notion-callout .notion-callout__content:first-of-type > .notion-semantic-string span:first-of-type .notion-link {
-  position: absolute!important;
-  height: 100%!important;
-  width: 100%!important;
-  top: 0!important;
-  left: 0!important;
-  right: 0!important;
-  bottom: 0!important;
-  padding: var(--callout-padding)!important;
-  padding-left: 50px!important;
-  border: none!important;
-  justify-content: center!important;
 }
