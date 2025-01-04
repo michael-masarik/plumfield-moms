@@ -167,7 +167,10 @@
   padding-right: 24px;
 
     & a {
-  color: var(--yellow-text-color)!important;
+      color: var(--yellow-text-color)!important;
+  }
+    & a:hover {
+      color: white !important;
   }
 }
 
