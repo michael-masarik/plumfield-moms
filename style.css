@@ -158,9 +158,92 @@
 }
 /* Link Color */
 a {
-  color: #7D0E0E !important; 
+  color: var(--notion-red-base) !important;
+  text-decoration: var(--notion-red-base) !important;
 }
 a:hover {
   text-decoration: none;
   color: #000000 !important;
+}
+/* Turn a single line callout block into a button (Entire block is clickable). NOTE: the block has to be blue for this to work. */
+/*This code is from Super.so. I have edited it somewhat to fit my needs. Here is the original: https://help.super.so/en/articles/6416536-how-to-turn-a-callout-into-a-cta-button */
+.notion-callout{
+  padding-top: 5px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 24px;
+}
+
+
+.notion-callout .notion-callout__content .notion-semantic-string span .notion-link {
+border-radius: 0px;!important;
+background-color: #DA0606;
+position: absolute!important;
+height: 100%!important;
+width: 100%!important;
+top: 0!important;
+left: 0!important;
+right: 0!important;
+bottom: 0!important;
+padding: 15px!important;
+padding-left: 50px!important;
+border: none!important;
+color:white;
+text-align: center;
+}
+
+.notion-callout.bg-blue-light {
+    box-shadow: 0 20px 30px -10px rgb(0,0,0,0.2) !important;
+    letter-spacing: -0.4px !important;
+    border-radius: 35px !important;
+    align-items: center !important;
+    width: fit-content !important;
+    position: relative !important;
+    font-weight: 20px !important;
+    border: none !important;
+    font-size: 20px !important;
+    
+}
+
+.notion-callout:hover {
+    box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3) !important;
+}
+
+.notion-callout:active {
+    box-shadow: 0 20px 30px -10px rgb(0,0,0,0.2) !important;
+    transform: scale(0.96) !important;
+}
+
+.notion-callout.bg-blue-light {
+    background: var(--notion-red-base) !important; /* CHANGE THE BUTTON COLOR HERE */
+    box-shadow: none !important;
+    color: #fff !important;
+}
+
+.notion-callout.bg-blue-light:hover {
+    box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1) !important;
+}
+
+.notion-callout__icon {
+    pointer-events: none !important;
+    display: none;
+}
+
+.notion-callout.bg-blue-light p { 
+  margin-left:12px !important;
+  font-size: 18px !important; 
+}
+
+.notion-callout.bg-blue-light .notion-semantic-string .link {
+    padding: 16px -20px 17px !important;
+    display: inline-block !important;
+    white-space: pre !important;
+    font-weight: 20px !important;
+    font-size:20px;
+    border: none !important;
+    opacity:1 !important;
+}
+
+.notion-callout.bg-blue-light .notion-semantic-string .link:hover {
+    border: none !important;
 }
