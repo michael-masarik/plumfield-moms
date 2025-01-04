@@ -242,7 +242,7 @@ text-align: center;
 }
 /* Link Color */
 a {
-  color: var(--notion-red-base) !important;
+  color: var(--notion-red-base);
 }
 a:hover {
   text-decoration: none;
