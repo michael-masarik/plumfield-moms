@@ -136,6 +136,26 @@
   display: none !important; 
 }
 
+/* Turn bold text link blocks into a button */
+ .notion-root .notion-text .notion-text__content .notion-semantic-string span strong .notion-link, .notion-text .notion-text__content .notion-semantic-string span .notion-link strong {
+  padding: var(--cta-padding)!important;
+  border: var(--cta-border)!important;
+  box-shadow: var(--cta-shadow)!important;
+  border-radius: var(--cta-border-radius)!important;
+  opacity: 1!important;
+  font-weight: 400!important;
+  display: inline-flex!important;
+  justify-content: center!important;
+  transition: all .2s ease!important;
+  /* You can change the button colors here */
+  background: #f0bd66!important;
+  color: #ffffff!important;
+ }
+  /*Button hover*/
+ .notion-root .notion-text p.notion-text__content span.notion-semantic-string span strong a.notion-link:hover, .notion-text p.notion-text__content span.notion-semantic-string span a.notion-link strong:hover{
+  opacity: .7!important;
+ }
+
 /* Link Buttons*/
 .button-link {
     display: inline-block;
