@@ -160,3 +160,7 @@
 a {
   color: #7D0E0E !important; 
 }
+a:hover {
+  text-decoration: none;
+  color: #000000 !important;
+}
