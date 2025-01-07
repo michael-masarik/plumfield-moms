@@ -255,3 +255,7 @@ a:hover {
   text-decoration: none;
   color: #000000 !important;
 }
+/* Center Column */
+.notion-column {
+  align-items: center;
+}
