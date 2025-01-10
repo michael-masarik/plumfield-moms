@@ -19,6 +19,8 @@
   /* Notion Red */
   --notion-red-base: #7D0E0E !important;
   --yellow-text-color: #ffe3a3 !important;
+  /*Button Text Size*/
+  --button-text-size: 20px !important;
   
 
   .notion-collection__header-wrapper .notion-dropdown__menu-header,
@@ -199,7 +201,7 @@
     align-items: center !important;
     width: fit-content !important;
     position: relative !important;
-    font-weight: 20px !important;
+    font-weight: var(--button-text-size);
     border: none !important;
     font-size: 20px !important;
     
@@ -273,7 +275,7 @@ a:hover {
   border-radius: 23px !important;
   
   /*Sizes*/
-  font-size: 20pt !important;
+  font-size: var(--button-text-size);
   padding: 5px 25px 6px 25px !important; /*Top-Left-Down-Right*/
   
   /*Others*/
