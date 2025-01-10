@@ -292,3 +292,20 @@ a:hover {
 .notion-link:hover {
   transform: translate(0,0px) scale(0.95) !important;
 }
+/*notion relation icon size*/
+.notion-page__icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem !important;
+  /* padding-bottom: 1.1px; */
+  height: 30px !important;
+  line-height: 1.6em;
+  -webkit-margin-end: .3em;
+  margin-inline-end: .3em;
+  }
+  notion-page__icon.small {
+      width: 20px !important;
+      /* height: auto; */
+  }
