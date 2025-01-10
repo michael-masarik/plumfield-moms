@@ -137,7 +137,7 @@
   display: none !important; 
 }
 
-/* Link Buttons*/
+/* Link Buttons* - remove when old links are fixed*/
 .button-link {
     display: inline-block;
     padding: 10px 20px;
@@ -157,7 +157,7 @@
 
   }
 }
-
+/*remove this later*/
 /* Turn a single line callout block into a button (Entire block is clickable). NOTE: the block has to be blue for this to work. */
 /*This code is from Super.so. I have edited it somewhat to fit my needs. Here is the original: https://help.super.so/en/articles/6416536-how-to-turn-a-callout-into-a-cta-button */
 .notion-callout{
@@ -258,4 +258,35 @@ a:hover {
 /* Center Column */
 .notion-column {
   align-items: center;
+}
+
+/*Red text->Buttons*/
+
+.notion-text__content
+.color-red
+.notion-link {
+  /*Colors*/
+  background: var(--notion-red-base)  !important;
+  color: var(--yellow-text-color) !important;
+  
+  /*Borders*/
+  border-radius: 23px !important;
+  
+  /*Sizes*/
+  font-size: 20pt !important;
+  padding: 5px 25px 6px 25px !important; /*Top-Left-Down-Right*/
+  
+  /*Others*/
+  display: block !important;
+  opacity: 100% !important;
+  transition: 0.2s ease-in-out !important;
+  text-decoration: none !important;
+  text-align: center;
+}
+
+/*Hover - Animation*/
+.notion-text__content
+.color-red
+.notion-link:hover {
+  transform: translate(0,0px) scale(0.95) !important;
 }
