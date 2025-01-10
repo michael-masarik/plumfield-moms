@@ -309,3 +309,7 @@ a:hover {
       width: 20px !important;
       /* height: auto; */
   }
+  /*Footer color*/
+  .super-footer__footnote{
+    color: rgb(155,154,151,1) !important;
+  }
