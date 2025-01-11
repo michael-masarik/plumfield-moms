@@ -178,8 +178,9 @@
 
 
 .notion-callout .notion-callout__content .notion-semantic-string span .notion-link {
-  border-radius: 0px!important;
-  background-color: #DA0606;
+  border-radius: 20px!important;
+  display: block!important;
+  background-color: var(--notion-red-bas);
   position: absolute!important;
   height: 100%!important;
   width: 100%!important;
