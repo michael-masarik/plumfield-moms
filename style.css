@@ -263,36 +263,7 @@ a:hover {
   align-items: center;
 }
 
-/*Red text->Buttons*/
 
-.notion-text__content
-.color-red
-.notion-link {
-  /*Colors*/
-  background: var(--notion-red-base)  !important;
-  color: var(--yellow-text-color) !important;
-  
-  /*Borders*/
-  border-radius: 23px !important;
-  
-  /*Sizes*/
-  font-size: var(--button-text-size);
-  padding: 5px 25px 6px 25px !important; /*Top-Left-Down-Right*/
-  
-  /*Others*/
-  display: block !important;
-  opacity: 100% !important;
-  transition: 0.2s ease-in-out !important;
-  text-decoration: none !important;
-  text-align: center;
-}
-
-/*Hover - Animation*/
-.notion-text__content
-.color-red
-.notion-link:hover {
-  transform: translate(0,0px) scale(0.95) !important;
-}
 /*notion relation icon size*/
 .notion-page__icon {
   position: relative;
