@@ -258,6 +258,11 @@ a:hover {
   text-decoration: none;
   color: #000000 !important;
 }
+/*if you use a "@" link, this fixes the bg color*/
+.notion-page:hover{
+  background: var(--notion-red-base);
+
+}
 /* Center Column */
 .notion-column {
   align-items: center;
