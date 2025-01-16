@@ -294,3 +294,26 @@ a:hover {
   p code{
     color:  red  !important;
   }
+  /*New Site Popover*/
+  button{
+    text-align: center!important;
+    border-radius: 75px !important;
+    border: 1px black !important;
+    background-color: var(--notion-red-base);
+    color: white!important;
+    font-size: 25pt !important;
+    padding: 10px 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  }
+  .redirect-popover{
+   text-align:center !important;
+   border: none !important;
+   
+  }
+  .redirect-popover{
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  }
+  .redirect-popover:hover{
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.44) !important;
+  }  
