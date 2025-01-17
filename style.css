@@ -313,6 +313,7 @@ a:hover {
    max-width: 500px;
    max-height: 300px;
    overflow-y: auto;
+   border-radius: 20px;
   }
   .redirect-popover:hover{
     transform: scale(1.05);
