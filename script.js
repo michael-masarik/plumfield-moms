@@ -88,3 +88,13 @@ if (checkURLForParam("source", "oldsite")) {
     console.error("Popover is not supported or element not found.");
   }
 }
+//Google Analytics//
+// Check for the 'source' parameter in the URL
+const urlParams = new URLSearchParams(window.location.search);
+const sourceParam = urlParams.get('source');
+
+if (sourceParam) {
+  gtag('event', 'source_param_detected', {
+    source: sourceParam // Send the source parameter as an event property
+  });
+}
