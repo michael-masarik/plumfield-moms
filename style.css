@@ -308,12 +308,16 @@ a:hover {
   .redirect-popover{
    text-align:center !important;
    border: none !important;
-   
-  }
-  .redirect-popover{
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+   width: 90%;
+   max-width: 500px;
+   max-height: 300px;
+   overflow-y: auto;
   }
   .redirect-popover:hover{
     transform: scale(1.05);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.44) !important;
-  }  
+  } 
+  .redirect-popover::backdrop {
+    background-color: rgba(0, 0, 0, 0.2);
+} 
