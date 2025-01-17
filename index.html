@@ -13,24 +13,9 @@
       <p style="color:rgb(43, 128, 0);">Copied!</p>
     </div>
     <ul>
-        <li><a href="https://michael-masarik.github.io/plumfield-moms/script.js" target="_blank" id="CopyCodeButton"></a></li>
+        <li><a href="https://michael-masarik.github.io/plumfield-moms/script.js" target="_blank" id="CopyCodeButton">script.js</a></li>
         <li><a href="https://michael-masarik.github.io/plumfield-moms/style.css" target="_blank" id="CopyCodeButton">style.css</a></li>
     </ul>
-    <script>
-      const linkToCopy = copyButton.dataset.link; // The link to copy
-      const copyButton = document.getElementById("CopyCodeButton");
-      const copied = document.getElementById("copynotification");
-
-  copyButton.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(linkToCopy);
-      copied.style.display = "block"; // Show feedback
-      setTimeout(() => (copied.style.display = "none"), 2000); // Hide feedback after 2 seconds
-    } catch (error) {
-      alert("Failed to copy the link. Please try again.");
-      console.error("Error copying text:", error);
-    }
-  });
-    </script>
+  
 </body>
 </html>
