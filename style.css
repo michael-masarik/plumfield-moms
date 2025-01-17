@@ -304,6 +304,7 @@ a:hover {
     font-size: 25pt !important;
     padding: 10px 20px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+    transform: scale(1.05);
   }
   .redirect-popover{
    text-align:center !important;
@@ -316,7 +317,6 @@ a:hover {
    border-radius: 20px;
   }
   .redirect-popover:hover{
-    transform: scale(1.05);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.44) !important;
   } 
   .redirect-popover::backdrop {
