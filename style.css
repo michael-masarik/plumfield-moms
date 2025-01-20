@@ -26,7 +26,7 @@
   .notion-collection__header-wrapper .notion-dropdown__menu-header,
   .notion-dropdown__button svg:first-of-type,
   .notion-dropdown__option-icon {
-  display: none !important;
+    display: none !important;
  }
 @media all and (min-width: 576px) {
   .notion-collection__header-wrapper .notion-dropdown {
@@ -132,123 +132,47 @@
   }
 }
  /* End of Super.so DB picker code*/
-
+}
 
 /* Hide all content inside a brown toggle - Thanks to Super.so for this! */
 .notion-toggle.bg-brown { 
   display: none !important; 
 }
 
-/* Link Buttons* - remove when old links are fixed*/
-.button-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--notion-red-base) !important;
-    color: var(--yellow-text-color) !important;
-    text-decoration: none;
-    border-radius: 20px;
-    text-align: center;
-  }
-
-  .button-link:hover {
-    background-color: #d44c47;
-  }
-
-  .button-container {
-    text-align: center; /* Centers the button horizontally */
-
-  }
-}
-/*remove this later*/
 /* Turn a single line callout block into a button (Entire block is clickable). NOTE: the block has to be blue for this to work. */
-/*This code is from Super.so. I have edited it somewhat to fit my needs. Here is the original: https://help.super.so/en/articles/6416536-how-to-turn-a-callout-into-a-cta-button */
-.notion-callout{
-  padding-top: 5px;
-  padding-bottom: 3px;
-  padding-left: 5px;
-  padding-right: 24px;
-
-    & a {
-      color: var(--yellow-text-color)!important;
-  }
-    & a:hover {
-      color: white !important;
-  }
+.notion-callout.bg-blue-light .notion-link{
+  color: var(--yellow-text-color) !important;
+  text-decoration: none;
+  font-weight: 1000 !important;
+  text-align: center !important;
+  display: block;
+  
 }
-
-
-.notion-callout .notion-callout__content .notion-semantic-string span .notion-link {
-  border-radius: 20px!important;
-  display: block!important;
-  background-color: var(--notion-red-bas);
-  position: absolute!important;
-  height: 100%!important;
-  width: 100%!important;
-  top: 0!important;
-  left: 0!important;
-  right: 0!important;
-  bottom: 0!important;
-  padding: 15px!important;
-  padding-left: 50px!important;
-  border: none!important;
+.notion-callout.bg-blue-light{
+  padding:0px 0px!important;
+  font-size: 150%;
+  border-radius: 50px;
+  background-color: var(--notion-red-base);
+  scale: 0.75;
+  
+}
+.notion-callout.bg-blue-light:hover{
+  scale:0.8;
+}
+.notion-callout.bg-blue-light .notion-link:hover{
   color: white !important;
-  text-align: center;
 }
-
-.notion-callout.bg-blue-light {
-    box-shadow: 0 20px 30px -10px rgb(0,0,0,0.2) !important;
-    letter-spacing: -0.4px !important;
-    border-radius: 35px !important;
-    align-items: center !important;
-    width: fit-content !important;
-    position: relative !important;
-    font-weight: var(--button-text-size);
-    border: none !important;
-    font-size: 20px !important;
-    
+/*Notion Forms*/
+.notion-form__wrapper .notion-header__content{
+  display: none;
 }
-
-.notion-callout:hover {
-    box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3) !important;
+.notion-form__wrapper{
+  padding-top:20px;
+  border: none;
 }
-
-.notion-callout:active {
-    box-shadow: 0 20px 30px -10px rgb(0,0,0,0.2) !important;
-    transform: scale(0.96) !important;
-}
-
-.notion-callout.bg-blue-light {
-    background: var(--notion-red-base) !important; /* CHANGE THE BUTTON COLOR HERE */
-    box-shadow: none !important;
-    color: #fff !important;
-}
-
-.notion-callout.bg-blue-light:hover {
-    box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1) !important;
-}
-
-.notion-callout__icon {
-    pointer-events: none !important;
-    display: none;
-}
-
-.notion-callout.bg-blue-light p { 
-  margin-left:12px !important;
-  font-size: 18px !important; 
-}
-
-.notion-callout.bg-blue-light .notion-semantic-string .link {
-    padding: 16px -20px 17px !important;
-    display: inline-block !important;
-    white-space: pre !important;
-    font-weight: 20px !important;
-    font-size:20px;
-    border: none !important;
-    opacity:1 !important;
-}
-
-.notion-callout.bg-blue-light .notion-semantic-string .link:hover {
-    border: none !important;
+.notion-button.notion-form__submit-button .notion-button__content{
+  background-color: var(--notion-red-base);
+  color: var(--yellow-text-color);
 }
 /* Link Color */
 a {
@@ -260,7 +184,7 @@ a:hover {
 }
 /*if you use a "@" link, this fixes the bg color*/
 .notion-page:hover{
-  background: var(--notion-red-base);
+  background-color: var(--notion-red-base);
 
 }
 /* Center Column */
