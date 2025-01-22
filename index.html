@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plumfield Moms Code</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+  li p:hover{
+    color: green;
+    font-style: bold;
+  }
+  </style>
 </head>
 <body>
     <h1>Plumfield Moms Code</h1>
@@ -13,14 +19,14 @@
       <p style="color:rgb(43, 128, 0);">Copied!</p>
     </div>
     <ul>
-        <li><a href="https://michael-masarik.github.io/plumfield-moms/script.js" target="_blank" id="script.js">script.js</a></li>
-        <li><a href="https://michael-masarik.github.io/plumfield-moms/style.css" target="_blank" id="style.js">style.css</a></li>
+        <li><p data-url="https://michael-masarik.github.io/plumfield-moms/script.js">script.js</p></li>
+        <li><p data-url="https://michael-masarik.github.io/plumfield-moms/style.css">style.css<p></li>
     </ul>
   <script>
     const Listitems = document.querySelectorAll('li');
     Listitems.forEach(item => {
       item.addEventListener('click', () => {
-        const copyText = item.querySelector('a').href;
+        const copyText = item.querySelector('p').dataset.url;
         navigator.clipboard.writeText(copyText);
         const notification = document.getElementById('copynotification');
         notification.style.display = 'block';
