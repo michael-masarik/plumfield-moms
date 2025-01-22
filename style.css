@@ -235,8 +235,8 @@
      text-align:center !important;
      border: none !important;
      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-     width: 90%;
-     max-width: 500px;
+     width: 80vw;
+     max-width: 90vw;
      max-height: 300px;
      overflow-y: auto;
      border-radius: 20px;
