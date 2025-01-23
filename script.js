@@ -70,9 +70,7 @@ window.addEventListener('load', () => {
         observeNewImages();
     }, 500);
 });
-//New Site Popover//
-// Get the popover element
-const popover = document.getElementById("mypopover");
+//New Site Alert//
 
 // Function to check if the URL has the 'source=oldsite' parameter
 function checkURLForParam(param, value) {
@@ -81,12 +79,8 @@ function checkURLForParam(param, value) {
 }
 
 // Trigger the popover if the 'source' parameter equals 'oldsite'
-if (checkURLForParam("source", "oldsite")) {
-  if (popover && typeof popover.showPopover === "function") {
-    popover.showPopover();
-  } else {
-    console.error("Popover is not supported or element not found.");
-  }
+if(checkURLForParam("source","test")){
+  alert("Plumfield and Paideia has now become Plumfield Moms. Welcome to our new site!")
 }
 //Google Analytics//
 // Check for the 'source' parameter in the URL
@@ -102,7 +96,7 @@ if (sourceParam) {
 
 if (!HTMLDivElement.prototype.showPopover) {
   console.log("Popover API not supported on this device/browser.");
-  document.getElementById('mypopover').style.display = 'none'; // Hides the popover
+  document.querySelectorAll('[popover]').style.display = 'none'; // Hides the popover
 } else {
   console.log("Popover API is supported!");
 }
