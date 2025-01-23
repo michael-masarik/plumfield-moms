@@ -98,5 +98,14 @@ if (sourceParam) {
     source: sourceParam // Send the source parameter as an event property
   });
 }
+//Popover fallback on old devices//
+
+if (!HTMLDivElement.prototype.showPopover) {
+  console.log("Popover API not supported on this device/browser.");
+  document.getElementById('contact_popover').style.display = 'none'; // Hides the popover
+  document.getElementById('contact').style.display = 'none'; // Hides the button
+} else {
+  console.log("Popover API is supported!");
+}
 
 
