@@ -102,8 +102,7 @@ if (sourceParam) {
 
 if (!HTMLDivElement.prototype.showPopover) {
   console.log("Popover API not supported on this device/browser.");
-  document.getElementById('contact_popover').style.display = 'none'; // Hides the popover
-  document.getElementById('contact').style.display = 'none'; // Hides the button
+  document.getElementById('mypopover').style.display = 'none'; // Hides the popover
 } else {
   console.log("Popover API is supported!");
 }
