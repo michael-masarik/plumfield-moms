@@ -79,7 +79,7 @@ function checkURLForParam(param, value) {
 }
 
 // Trigger the popover if the 'source' parameter equals 'oldsite'
-if(checkURLForParam("source","test")){
+if(checkURLForParam("source","oldsite")){
   alert("Plumfield and Paideia has now become Plumfield Moms. Welcome to our new site!")
 }
 //Google Analytics//
