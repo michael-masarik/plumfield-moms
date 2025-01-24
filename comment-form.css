@@ -1,0 +1,5 @@
+/*This takes a notio form where the first entry is a url field and hides it  so that it can be loaded with the correct url*/
+
+.notion-form__field:first-child{
+    display: none;
+  }
