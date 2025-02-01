@@ -247,3 +247,14 @@
     .redirect-popover::backdrop {
       background-color: rgba(0, 0, 0, 0.2);
   } 
+  /* Notices Banner Style*/
+  .notice-banner{
+    background-color: var(--notion-red-base);
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+.notice-banner a{
+    color: white !important;
+    text-decoration-color: white !important;
+}
