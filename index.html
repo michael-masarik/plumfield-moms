@@ -90,11 +90,7 @@
       item.addEventListener('click', () => {
         const copyText = item.querySelector('p').dataset.url;
         navigator.clipboard.writeText(copyText);
-        const notification = document.getElementById('copynotification');
-        notification.style.display = 'block';
-        setTimeout(() => {
-          notification.style.display = 'none';
-        }, 1000);
+        alert('Copied url to clipboard!');
       });
     });
   </script>
