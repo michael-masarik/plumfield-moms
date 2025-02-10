@@ -76,7 +76,7 @@
     <img src="/images/banner.jpg" alt="Banner" style="width: 100%; height: 50vh; object-fit: cover;">
     <div class="container">
     <h1 id="title">Plumfield Moms Code</h1>
-    <div popover id="copynotification">
+    <div id="copynotification" style="display: none;">
       <p style="color:rgb(43, 128, 0);">Copied!</p>
     </div>
     <ul>
@@ -90,7 +90,11 @@
       item.addEventListener('click', () => {
         const copyText = item.querySelector('p').dataset.url;
         navigator.clipboard.writeText(copyText);
-        alert('Copied url to clipboard!');
+        const notification = document.getElementById('copynotification');
+        notification.style.display = 'block';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 2000);
       });
     });
   </script>
