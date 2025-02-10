@@ -6,18 +6,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plumfield Moms Code</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   <style>
+    
+  .gentium-plus-regular {
+    font-family: "Gentium Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .gentium-plus-bold {
+    font-family: "Gentium Plus", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .gentium-plus-regular-italic {
+    font-family: "Gentium Plus", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .gentium-plus-bold-italic {
+    font-family: "Gentium Plus", serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+  body{
+    font-family: gentium-plus-regular;
+    padding: 0px;
+    margin: 0px;
+    font-size: 20px;
+  }
+
+
   li p:hover{
     color: green;
     font-style: bold;
-    text-decoration: underline;
-  a{
+    text-decoration: dotted underline green;
+    cursor:copy;
+    padding-right: 0px;
+  }
+  .container {
     max-width: 1100px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  #navbar{
+    text-decoration: none;
+    font-weight: bold;
+    font-family: gentium-plus-bold;
+  }
+  #title{
+    font-family: gentium-plus-bold;
+    font-size:2.5em;
   }
   </style>
 </head>
 <body>
-    <h1>Plumfield Moms Code</h1>
+  <header>
+    <nav>
+      <menu>
+        <h5 id="navbar"><a href="https://plumfieldmoms.com">Home</a>&nbsp;&nbsp;&nbsp;<a href="https://github.com/michael-masarik/plumfield-moms" target="_blank">GitHub Repository</a> </h5>
+        </menu>
+    </nav>
+  </header>
+    <img src="/images/banner.jpg" alt="Banner" style="width: 100%; height: 50vh; object-fit: cover;">
+    <div class="container">
+    <h1 id="title">Plumfield Moms Code</h1>
     <div popover id="copynotification">
       <p style="color:rgb(43, 128, 0);">Copied!</p>
     </div>
@@ -25,6 +83,7 @@
         <li><p class="copy-link" data-url="https://code.plumfieldmoms.com/script.js">Copy link for script.js </p><a href="/script.js" target="_blank">(view)</a></li>
         <li><p class="copy-link" data-url="https://code.plumfieldmoms.com/style.css">Copy Link for style.css <p><a href="/style.css" target="_blank">(view)</a></li>
     </ul>
+    </div>
   <script>
     const Listitems = document.querySelectorAll('.copy-link');
     Listitems.forEach(item => {
