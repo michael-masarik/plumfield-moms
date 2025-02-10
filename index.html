@@ -11,6 +11,8 @@
     color: green;
     font-style: bold;
     text-decoration: underline;
+  a{
+    max-width: 1100px;
   }
   </style>
 </head>
@@ -20,11 +22,11 @@
       <p style="color:rgb(43, 128, 0);">Copied!</p>
     </div>
     <ul>
-        <li><p data-url="https://code.plumfieldmoms.com/script.js">script.js </p><a href="/script.js">link</a></li>
-        <li><p data-url="https://code.plumfieldmoms.com/style.css">style.css <p><a href="/style.css">link</a></li>
+        <li><p class="copy-link" data-url="https://code.plumfieldmoms.com/script.js">Copy link for script.js </p><a href="/script.js" target="_blank">(view)</a></li>
+        <li><p class="copy-link" data-url="https://code.plumfieldmoms.com/style.css">Copy Link for style.css <p><a href="/style.css" target="_blank">(view)</a></li>
     </ul>
   <script>
-    const Listitems = document.querySelectorAll('li');
+    const Listitems = document.querySelectorAll('.copy-link');
     Listitems.forEach(item => {
       item.addEventListener('click', () => {
         const copyText = item.querySelector('p').dataset.url;
