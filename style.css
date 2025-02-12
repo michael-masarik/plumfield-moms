@@ -246,7 +246,7 @@
       background-color: rgba(0, 0, 0, 0.2);
   } 
   /* Notices Banner Style*/
-  .notice-banner{
+.notice-banner{
     background-color: var(--notion-red-base);
     color: white;
     text-align: center;
@@ -255,4 +255,14 @@
 .notice-banner a{
     color: white !important;
     text-decoration-color: white !important;
+}
+/* Button Style */
+.cta-button {
+    background-color: var(--notion-red-base);
+    color: var(--yellow-text-color);
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: var(--button-text-size);
 }
