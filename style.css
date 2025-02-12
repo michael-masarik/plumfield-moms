@@ -217,34 +217,6 @@
     p code{
       color:  red  !important;
     }
-    /*New Site Popover*/
-    button{
-      text-align: center!important;
-      border-radius: 75px !important;
-      border: 1px black !important;
-      background-color: var(--notion-red-base);
-      color: white!important;
-      font-size: 25pt !important;
-      padding: 10px 20px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-      transform: scale(1.05);
-    }
-    .redirect-popover{
-     text-align:center !important;
-     border: none !important;
-     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-     width: 80vw;
-     max-width: 90vw;
-     max-height: 300px;
-     overflow-y: auto;
-     border-radius: 20px;
-    }
-    .redirect-popover:hover{
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.44) !important;
-    } 
-    .redirect-popover::backdrop {
-      background-color: rgba(0, 0, 0, 0.2);
-  } 
   /* Notices Banner Style*/
 .notice-banner{
     background-color: var(--notion-red-base);
@@ -256,19 +228,18 @@
     color: white !important;
     text-decoration-color: white !important;
 }
-/* Button Style */
-.cta-button {
-    background-color: var(--notion-red-base);
-    color: var(--yellow-text-color) !important;
-    padding: 10px 20px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: var(--button-text-size);
-    display: block !important;
-    text-align: center;
-    
+/* Floating Buttons */
+
+.floating-button{
+  position: fixed;
+  border-radius:50px;
+  color: var(--yellow-text-color)!important;
+  background-color: var(--notion-red-base);
+  padding: 5px 10px;
+  text-decoration: none;
+  
 }
-.cta-button:hover{
-  scale: 1.05;
+.floating-button:hover{
+  scale: 1.05 !important;
+  
 }
