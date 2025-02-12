@@ -267,7 +267,8 @@
     font-size: var(--button-text-size);
     display: block !important;
     text-align: center;
-    & :hover{
-      scale: 1.05;
-    }
+    
+}
+.cta-button:hover{
+  scale: 1.05;
 }
