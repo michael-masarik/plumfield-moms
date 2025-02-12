@@ -259,7 +259,7 @@
 /* Button Style */
 .cta-button {
     background-color: var(--notion-red-base);
-    color: var(--yellow-text-color);
+    color: var(--yellow-text-color) !important;
     padding: 10px 20px;
     border-radius: 50px;
     text-decoration: none;
@@ -267,4 +267,7 @@
     font-size: var(--button-text-size);
     display: block !important;
     text-align: center;
+    & :hover{
+      scale: 1.05;
+    }
 }
