@@ -2,6 +2,7 @@ import "dotenv/config";
 import axios from "axios";
 import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
+import pgHelper from "pg-helper";
 
 // Notion setup
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -24,7 +25,7 @@ async function fetchPodcastEpisodes() {
 async function createNotionPage(episode) {
     const title = episode.title[0];
     const pubDate = new Date(episode.pubDate[0]).toISOString();
-
+    const link = episode.link[0];
     try {
         await notion.pages.create({
             parent: { database_id: databaseId },
@@ -34,6 +35,11 @@ async function createNotionPage(episode) {
             },
         });
         console.log(`✅ Added: ${title}`);
+        // Insert into PostgreSQL database
+        pgHelper.insertIntoTable("test_db", {
+            episode_url: link,
+            episode_name: title,
+        })
     } catch (error) {
         console.error(`❌ Error adding ${title}:`, error.message);
     }
