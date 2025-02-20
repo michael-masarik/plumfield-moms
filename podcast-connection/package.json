@@ -16,7 +16,8 @@
     "dotenv": "^16.4.7",
     "notion-helper": "^1.2.22",
     "xml2js": "^0.6.2",
-    "pg": "^8.11.0"
+    "pg": "^8.11.0",
+    "pg-helper": "https://github.com/michael-masarik/pg-helper.git"
   }
   
 }
