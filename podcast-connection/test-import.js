@@ -23,7 +23,12 @@ async function fetchPodcastEpisodes() {
 
 // Function to check if an episode already exists in the database
 async function isEpisodeInDatabase(url) {
-    const result = await pgHelper.selectFromTable("test_episode_table", { url: url });
+    const whereClause = { url: url };
+    console.log(`🔍 Checking database for existing episode:`, whereClause);
+
+    const result = await pgHelper.selectFromTable("test_episode_table", whereClause);
+
+    console.log(`📄 Query result:`, result);
     return result.rowCount > 0;  // Returns true if the episode exists, false otherwise
 }
 
