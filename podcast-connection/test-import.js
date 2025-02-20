@@ -36,7 +36,7 @@ async function createNotionPage(episode) {
         });
         console.log(`✅ Added: ${title}`);
         // Insert into PostgreSQL database
-        pgHelperBase.insert("podcasts", {
+        pgHelperBase("podcasts", {
             episode_url: link,
             episode_name: title,
         })
