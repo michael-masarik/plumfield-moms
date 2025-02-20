@@ -2,7 +2,7 @@ import "dotenv/config";
 import axios from "axios";
 import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
-import pgHelper from "pg-helper";
+import pgHelperBase from "pg-helper";
 
 // Notion setup
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
