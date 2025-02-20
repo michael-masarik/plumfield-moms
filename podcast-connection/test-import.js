@@ -38,14 +38,9 @@ async function createNotionPage(episode) {
         console.log(`✅ Added: ${title}`);
         // Insert into PostgreSQL database
        
-        pgHelper.createTable("test_episodes", {
-            id: "SERIAL PRIMARY KEY",
-            episode_url: "TEXT",
-            episode_name: "TEXT",
-        });
-        pgHelper.insertIntoTable("test_episodes", {
-            episode_url: link,
-            episode_name: title,
+        pgHelper.insertIntoTable("test_episode_table", {
+            url: link,
+            name: title,
         });
     
     } catch (error) {
