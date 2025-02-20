@@ -26,10 +26,10 @@ async function isEpisodeInDatabase(url) {
     const whereClause = { url: url };
     console.log(`🔍 Checking database for existing episode:`, whereClause);
 
-    const result = await pgHelper.selectFromTable("test_episode_table", whereClause);
+    const result = await pgHelper.selectFromTable("test_episode_table", whereClause); // ⬅️ Ensure we await this!
 
     console.log(`📄 Query result:`, result);
-    return result.rowCount > 0;  // Returns true if the episode exists, false otherwise
+    return result.length > 0;  // ⬅️ `rowCount` may not exist, so use result.length
 }
 
 // Function to create a Notion page for an episode
