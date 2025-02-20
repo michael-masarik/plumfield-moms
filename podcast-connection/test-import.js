@@ -2,7 +2,6 @@ import "dotenv/config";
 import axios from "axios";
 import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
-import insert from "pg-helper";
 import pgHelper from "pg-helper";
 
 // Notion setup
@@ -22,11 +21,24 @@ async function fetchPodcastEpisodes() {
     }
 }
 
+// Function to check if an episode already exists in the database
+async function isEpisodeInDatabase(url) {
+    const result = await pgHelper.query(`SELECT 1 FROM test_episode_table WHERE url = $1 LIMIT 1;`, [url]);
+    return result.rowCount > 0;  // Returns true if the episode exists, false otherwise
+}
+
 // Function to create a Notion page for an episode
 async function createNotionPage(episode) {
     const title = episode.title[0];
     const pubDate = new Date(episode.pubDate[0]).toISOString();
     const link = episode.link[0];
+
+    // Check if episode already exists in the database
+    if (await isEpisodeInDatabase(link)) {
+        console.log(`⚠️ Skipping: ${title} (already in database)`);
+        return;
+    }
+
     try {
         await notion.pages.create({
             parent: { database_id: databaseId },
@@ -35,14 +47,15 @@ async function createNotionPage(episode) {
                 Date: { date: { start: pubDate } },
             },
         });
+
         console.log(`✅ Added: ${title}`);
+
         // Insert into PostgreSQL database
-       
-        pgHelper.insertIntoTable("test_episode_table", {
+        await pgHelper.insertIntoTable("test_episode_table", {
             url: link,
             name: title,
         });
-    
+
     } catch (error) {
         console.error(`❌ Error adding ${title}:`, error.message);
     }
@@ -62,7 +75,28 @@ async function batchProcessEpisodes(episodes, batchSize = 3, delayMs = 1000) {
 (async () => {
     console.log("📡 Fetching podcast episodes...");
     const episodes = await fetchPodcastEpisodes();
-    console.log(`🎙 Found ${episodes.length} episodes. Importing the last 4 episodes to Notion...`);
-    await batchProcessEpisodes(episodes.slice(-4)); // Import last 4 episodes
-    console.log("✅ All episodes imported!");
+    console.log(`🎙 Found ${episodes.length} episodes. Checking for new ones...`);
+
+    // Count old and new episodes
+    let oldCount = 0;
+    const newEpisodes = [];
+    
+    for (const episode of episodes) {
+        const link = episode.link[0];
+        if (await isEpisodeInDatabase(link)) {
+            oldCount++;
+        } else {
+            newEpisodes.push(episode);
+        }
+    }
+
+    console.log(`📌 Found ${oldCount} old episodes and ${newEpisodes.length} new episodes.`);
+    
+    if (newEpisodes.length > 0) {
+        await batchProcessEpisodes(newEpisodes.slice(-4)); // Import only last 4 new episodes
+    } else {
+        console.log("✅ No new episodes to import.");
+    }
+
+    console.log("✅ Import process complete!");
 })();
