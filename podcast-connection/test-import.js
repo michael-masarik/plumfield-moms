@@ -2,7 +2,7 @@ import "dotenv/config";
 import axios from "axios";
 import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
-import pgHelperBase from "pg-helper";
+import insertFunction from "pg-helper";
 
 // Notion setup
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -36,7 +36,7 @@ async function createNotionPage(episode) {
         });
         console.log(`✅ Added: ${title}`);
         // Insert into PostgreSQL database
-        pgHelperBase("podcasts", {
+        insertFunction("podcasts", {
             episode_url: link,
             episode_name: title,
         })
