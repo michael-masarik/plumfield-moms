@@ -37,6 +37,9 @@ async function createNotionPage(episode) {
     const title = episode.title[0];
     const pubDate = new Date(episode.pubDate[0]).toISOString();
     const link = episode.link[0];
+    const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
+    const showNotes = episode.description ? episode.description[0] : "No show notes available.";
+    const pageContentCode = `super-embed: <iframe style="border: none" src="${audioUrl}" width="100%" height="150"></iframe> ${showNotes}`;
 
     // Check if episode already exists in the database
     if (await isEpisodeInDatabase(link)) {
@@ -51,6 +54,22 @@ async function createNotionPage(episode) {
                 Name: { title: [{ text: { content: title } }] },
                 Date: { date: { start: pubDate } },
             },
+            "children": [
+    {
+        object: "block",
+        type: "code",
+        code: {
+            caption: [],
+            rich_text: [{
+                type: "text",
+                text: {
+                    content: pageContentCode
+                }
+            }],
+            language: "html"
+        }
+    }
+]
         });
 
         console.log(`✅ Added: ${title}`);
