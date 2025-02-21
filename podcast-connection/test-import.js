@@ -41,7 +41,7 @@ async function createNotionPage(episode) {
     const showNotes = episode.description ? episode.description[0] : "No show notes available.";
     
     if(showNotes.length > 2000){
-        const shownotesFormatted = showNotes.slice(0, 1700) + `... <a href=${link}>Read more</a>`;
+        const shownotesFormatted = showNotes.slice(0, 1850) + `... <a href=${link}>Read more</a>`;
     }else{
         const shownotesFormatted = showNotes;
     }
