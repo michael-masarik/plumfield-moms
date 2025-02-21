@@ -34,91 +34,62 @@ function parseShowNotes(html, link) {
     const $ = cheerio.load(html);
     let notionBlocks = [];
 
-    // Parse paragraphs
-    $("p").each((_, elem) => {
-        const richTextArray = [];
-        
-        // Iterate through each node in the paragraph
-        $(elem).contents().each((_, node) => {
-            if (node.type === "text") {
-                // Regular text node
-                const textContent = $(node).text().trim();
-                if (textContent) {
-                    richTextArray.push({
-                        type: "text",
-                        text: { content: textContent }
-                    });
-                }
-            } else if (node.tagName === "A") {
-                // Anchor tag
-                const linkText = $(node).text();
-                const href = $(node).attr("href");
-                if (linkText && href) {
-                    richTextArray.push({
-                        type: "text",
-                        text: { content: linkText },
-                        link: { url: href }
-                    });
-                }
-            }
-        });
+    $("p, ul, ol, li").each((_, elem) => {
+        const tag = $(elem).prop("tagName").toLowerCase();
+        const text = $(elem).text().trim();
 
-        // Push the paragraph block to Notion
-        if (richTextArray.length > 0) {
+        if (tag === "p" && text) {
+            // Check for links in the paragraph
+            const links = $(elem).find("a");
+            if (links.length > 0) {
+                // Handle text with links
+                const richText = [];
+                $(elem).contents().each((_, contentElem) => {
+                    if (contentElem.nodeType === 3) { // Text node
+                        richText.push({ type: "text", text: { content: contentElem.nodeValue } });
+                    } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
+                        const href = $(contentElem).attr("href");
+                        const linkText = $(contentElem).text().trim();
+                        richText.push({
+                            type: "text",
+                            text: { content: linkText },
+                            annotations: {
+                                link: href // Add the link
+                            }
+                        });
+                    }
+                });
+                notionBlocks.push({
+                    object: "block",
+                    type: "paragraph",
+                    paragraph: {
+                        rich_text: richText
+                    }
+                });
+            } else {
+                // No links, add as a simple paragraph
+                notionBlocks.push({
+                    object: "block",
+                    type: "paragraph",
+                    paragraph: {
+                        rich_text: [{ type: "text", text: { content: text } }]
+                    }
+                });
+            }
+        } else if (tag === "li" && text) {
+            // Handle list items
             notionBlocks.push({
                 object: "block",
-                type: "paragraph",
-                paragraph: {
-                    rich_text: richTextArray
+                type: "bulleted_list_item",
+                bulleted_list_item: {
+                    rich_text: [{ type: "text", text: { content: text } }]
                 }
             });
         }
     });
 
-    // Handle lists
-    $("ul, ol").each((_, list) => {
-        $(list).find("li").each((_, li) => {
-            const richTextArray = [];
-            
-            // Iterate through each node in the list item
-            $(li).contents().each((_, node) => {
-                if (node.type === "text") {
-                    const textContent = $(node).text().trim();
-                    if (textContent) {
-                        richTextArray.push({
-                            type: "text",
-                            text: { content: textContent }
-                        });
-                    }
-                } else if (node.tagName === "A") {
-                    const linkText = $(node).text();
-                    const href = $(node).attr("href");
-                    if (linkText && href) {
-                        richTextArray.push({
-                            type: "text",
-                            text: { content: linkText },
-                            link: { url: href }
-                        });
-                    }
-                }
-            });
-
-            // Push the bulleted list item block to Notion
-            if (richTextArray.length > 0) {
-                notionBlocks.push({
-                    object: "block",
-                    type: "bulleted_list_item",
-                    bulleted_list_item: {
-                        rich_text: richTextArray
-                    }
-                });
-            }
-        });
-    });
-
     return notionBlocks;
 }
-
 // Function to create a Notion page for an episode
 async function createNotionPage(episode) {
     const title = episode.title[0];
