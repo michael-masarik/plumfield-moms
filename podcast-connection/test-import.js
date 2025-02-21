@@ -58,8 +58,6 @@ function parseShowNotes(html, link) {
         }
     });
 
-
-
     return notionBlocks;
 }
 
@@ -88,12 +86,21 @@ async function createNotionPage(episode) {
             children: [
                 {
                     object: "block",
+                    type: "paragraph",
+                    paragraph: {
+                        rich_text: [{ type: "text", text: { content: "" } }],
+                        alignment: "center" // Center alignment for the paragraph
+                    }
+                },
+                {
+                    object: "block",
                     type: "image",
                     image: {
                         type: "external",
                         external: {
                             url: imageUrl // The episode’s iTunes image link
-                        }
+                        },
+                        caption: [{ type: "text", text: { content: link } }] // Caption for the image
                     }
                 },
                 {
