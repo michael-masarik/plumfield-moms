@@ -64,7 +64,7 @@ function parseShowNotes(html, link) {
                 const url = $(node).attr("href");
                 const linkText = $(node).text().trim();
 
-                if (linkText) {
+                if (linkText && url) { // Check that both linkText and url are present
                     richText.push({
                         type: "text",
                         text: { content: linkText, link: { url } }, // Include the link URL
