@@ -57,6 +57,13 @@ async function createNotionPage(episode) {
             "children": [
     {
         object: "block",
+        type: "embed",
+        embed: {
+            url: audioUrl // The episode’s audio file link
+        }
+    },
+    {
+        object: "block",
         type: "code",
         code: {
             caption: [],
