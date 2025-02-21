@@ -39,7 +39,13 @@ async function createNotionPage(episode) {
     const link = episode.link[0];
     const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
     const showNotes = episode.description ? episode.description[0] : "No show notes available.";
-    const pageContentCode = `super-embed: <iframe style="border: none" src="${audioUrl}" width="100%" height="150"></iframe> ${showNotes}`;
+    
+    if(showNotes.length > 2000){
+        const shownotesFormatted = showNotes.slice(0, 1700) + `... <a href=${link}>Read more</a>`;
+    }else{
+        const shownotesFormatted = showNotes;
+    }
+    const pageContentCode = `super-embed: ${shownotesFormatted}`;
 
     // Check if episode already exists in the database
     if (await isEpisodeInDatabase(link)) {
