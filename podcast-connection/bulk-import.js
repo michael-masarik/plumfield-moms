@@ -4,6 +4,7 @@ import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
 import pgHelper from "pg-helper";
 import * as cheerio from "cheerio";
+import cron from 'node-cron'; // Import the node-cron package
 
 // Notion setup
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -101,6 +102,7 @@ function parseShowNotes(html, link) {
 
     return notionBlocks;
 }
+
 // Function to create a Notion page for an episode
 async function createNotionPage(episode) {
     const title = episode.title[0];
@@ -167,7 +169,37 @@ async function batchProcessEpisodes(episodes, batchSize = 3, delayMs = 1000) {
     }
 }
 
-// Main function
+// Schedule the task to run every 15 minutes
+cron.schedule('*/15 * * * *', async () => {
+    console.log("🕛 Running scheduled task to fetch podcast episodes...");
+    const episodes = await fetchPodcastEpisodes();
+    console.log(`🎙 Found ${episodes.length} episodes. Checking for new ones...`);
+
+    // Count old and new episodes
+    let oldCount = 0;
+    const newEpisodes = [];
+    
+    for (const episode of episodes) {
+        const link = episode.link[0];
+        if (await isEpisodeInDatabase(link)) {
+            oldCount++;
+        } else {
+            newEpisodes.push(episode);
+        }
+    }
+
+    console.log(`📌 Found ${oldCount} old episodes and ${newEpisodes.length} new episodes.`);
+    
+    if (newEpisodes.length > 0) {
+        await batchProcessEpisodes(newEpisodes); // Import all new episodes
+    } else {
+        console.log("✅ No new episodes to import.");
+    }
+
+    console.log("✅ Import process complete!");
+});
+
+// Main function to run immediately on start
 (async () => {
     console.log("📡 Fetching podcast episodes...");
     const episodes = await fetchPodcastEpisodes();
