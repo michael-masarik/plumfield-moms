@@ -26,7 +26,6 @@ async function fetchPodcastEpisodes() {
 // Function to check if an episode already exists in the database
 async function isEpisodeInDatabase(url) {
     const whereClause = { url: url };
-    console.log(`🔍 Checking database for existing episode:`, whereClause);
     const result = await pgHelper.selectFromTable("podcast_record", whereClause);
     return result.length > 0;  
 }
@@ -89,7 +88,6 @@ function parseShowNotes(html, link) {
 
         // Log the rich text being added
         if (richText.length > 0) {
-            console.log('Rich text being added:', richText);
             notionBlocks.push({
                 object: "block",
                 type: tag === "li" ? "bulleted_list_item" : "paragraph",

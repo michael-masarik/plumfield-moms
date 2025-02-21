@@ -13,12 +13,12 @@
   "dependencies": {
     "@notionhq/client": "^2.2.16",
     "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
     "dotenv": "^16.4.7",
+    "node-cron": "^3.0.3",
     "notion-helper": "^1.2.22",
-    "xml2js": "^0.6.2",
     "pg": "^8.11.0",
     "pg-helper": "https://github.com/michael-masarik/pg-helper.git",
-    "cheerio": "^1.0.0-rc.12"
+    "xml2js": "^0.6.2"
   }
-  
 }
