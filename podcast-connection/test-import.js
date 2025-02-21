@@ -46,8 +46,17 @@ function parseShowNotes(html, link) {
                 if (textContent) {
                     richText.push({
                         type: "text",
-                        text: { content: textContent },
-                        annotations: {} // Ensure annotations are defined
+                        text: { content: textContent, link: null }, // No link for plain text
+                        annotations: { 
+                            bold: false, 
+                            italic: false, 
+                            strikethrough: false, 
+                            underline: false, 
+                            code: false, 
+                            color: "default" 
+                        },
+                        plain_text: textContent,
+                        href: null // No hyperlink for plain text
                     });
                 }
             } else if (node.tagName === "A") {
@@ -58,9 +67,17 @@ function parseShowNotes(html, link) {
                 if (linkText) {
                     richText.push({
                         type: "text",
-                        text: { content: linkText },
-                        link: { url }, // Include the link URL
-                        annotations: {} // Ensure annotations are defined
+                        text: { content: linkText, link: { url } }, // Include the link URL
+                        annotations: { 
+                            bold: false, 
+                            italic: false, 
+                            strikethrough: false, 
+                            underline: false, 
+                            code: false, 
+                            color: "default" 
+                        },
+                        plain_text: linkText,
+                        href: url // Set hyperlink for the link text
                     });
                 }
             }
