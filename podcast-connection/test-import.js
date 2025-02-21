@@ -34,43 +34,50 @@ function parseShowNotes(html, link) {
     const $ = cheerio.load(html);
     let notionBlocks = [];
 
-    $("p, ul, ol, li").each((_, elem) => {
+    $("p, ul, ol").each((_, elem) => {
         const tag = $(elem).prop("tagName").toLowerCase();
         const richText = [];
 
-        // Process all child nodes within the paragraph
+        // Process each child node (text and links)
         $(elem).contents().each((_, node) => {
             if (node.type === 'text') {
-                // Add regular text node
-                richText.push({
-                    type: "text",
-                    text: { content: node.data },
-                    annotations: {} // Empty annotations
-                });
+                // Add text node
+                const textContent = node.data.trim();
+                if (textContent) {
+                    richText.push({
+                        type: "text",
+                        text: { content: textContent },
+                        annotations: {} // Ensure annotations are defined
+                    });
+                }
             } else if (node.tagName === "A") {
                 // Add link node
                 const url = $(node).attr("href");
                 const linkText = $(node).text().trim();
 
-                richText.push({
-                    type: "text",
-                    text: { content: linkText },
-                    link: { url }, // Add link property
-                    annotations: {} // Empty annotations
-                });
+                if (linkText) {
+                    richText.push({
+                        type: "text",
+                        text: { content: linkText },
+                        link: { url }, // Include the link URL
+                        annotations: {} // Ensure annotations are defined
+                    });
+                }
             }
         });
 
-        // Only add paragraph or list item if there's content
+        // Log the rich text being added
+        console.log('Rich text being added:', richText);
+
+        // Only add block if richText has content
         if (richText.length > 0) {
-            const block = {
+            notionBlocks.push({
                 object: "block",
                 type: tag === "li" ? "bulleted_list_item" : "paragraph",
                 [tag === "li" ? "bulleted_list_item" : "paragraph"]: {
                     rich_text: richText
                 }
-            };
-            notionBlocks.push(block);
+            });
         }
     });
 
