@@ -36,23 +36,25 @@ function parseShowNotes(html, link) {
 
     $("p, ul, ol, li").each((_, elem) => {
         const tag = $(elem).prop("tagName").toLowerCase();
+        const richText = [];
 
-        if (tag === "p") {
-            const richText = [];
-            // Loop through child nodes to capture text and links
-            $(elem).contents().each((_, contentElem) => {
-                if (contentElem.nodeType === 3) { // Text node
-                    richText.push({ type: "text", text: { content: contentElem.nodeValue } });
-                } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
-                    const href = $(contentElem).attr("href");
-                    const linkText = $(contentElem).text().trim();
-                    richText.push({
-                        type: "text",
-                        text: { content: linkText },
-                        link: { url: href } // Include link directly here
-                    });
-                }
-            });
+        $(elem).contents().each((_, contentElem) => {
+            if (contentElem.nodeType === 3) { // Text node
+                // Push non-link text
+                richText.push({ type: "text", text: { content: contentElem.nodeValue } });
+            } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
+                const href = $(contentElem).attr("href");
+                const linkText = $(contentElem).text().trim();
+                // Push link as a separate text object
+                richText.push({
+                    type: "text",
+                    text: { content: linkText },
+                    link: { url: href } // Add link here
+                });
+            }
+        });
+
+        if (tag === "p" && richText.length > 0) {
             notionBlocks.push({
                 object: "block",
                 type: "paragraph",
@@ -60,22 +62,7 @@ function parseShowNotes(html, link) {
                     rich_text: richText
                 }
             });
-        } else if (tag === "li") {
-            const richText = [];
-            // Handle list items the same way
-            $(elem).contents().each((_, contentElem) => {
-                if (contentElem.nodeType === 3) { // Text node
-                    richText.push({ type: "text", text: { content: contentElem.nodeValue } });
-                } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
-                    const href = $(contentElem).attr("href");
-                    const linkText = $(contentElem).text().trim();
-                    richText.push({
-                        type: "text",
-                        text: { content: linkText },
-                        link: { url: href } // Include link directly here
-                    });
-                }
-            });
+        } else if (tag === "li" && richText.length > 0) {
             notionBlocks.push({
                 object: "block",
                 type: "bulleted_list_item",
