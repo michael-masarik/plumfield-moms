@@ -36,25 +36,32 @@ function parseShowNotes(html, link) {
 
     $("p, ul, ol, li").each((_, elem) => {
         const tag = $(elem).prop("tagName").toLowerCase();
-        const richText = [];
+        const textNodes = $(elem).contents(); // Get all text and links within the element
 
-        $(elem).contents().each((_, contentElem) => {
-            if (contentElem.nodeType === 3) { // Text node
-                // Push non-link text
-                richText.push({ type: "text", text: { content: contentElem.nodeValue } });
-            } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
-                const href = $(contentElem).attr("href");
-                const linkText = $(contentElem).text().trim();
-                // Push link as a separate text object
-                richText.push({
-                    type: "text",
-                    text: { content: linkText },
-                    link: { url: href } // Add link here
-                });
-            }
-        });
+        if (tag === "p" && textNodes.length) {
+            const richText = [];
 
-        if (tag === "p" && richText.length > 0) {
+            textNodes.each((_, node) => {
+                if (node.type === 'text') {
+                    // Text node
+                    richText.push({
+                        type: "text",
+                        text: { content: node.data }
+                    });
+                } else if (node.tagName === "A") {
+                    // Link node
+                    const url = $(node).attr("href");
+                    const linkText = $(node).text().trim();
+
+                    richText.push({
+                        type: "text",
+                        text: { content: linkText },
+                        link: { url } // Only add link if it's a link node
+                    });
+                }
+            });
+
+            // Add paragraph block with rich text
             notionBlocks.push({
                 object: "block",
                 type: "paragraph",
@@ -62,7 +69,30 @@ function parseShowNotes(html, link) {
                     rich_text: richText
                 }
             });
-        } else if (tag === "li" && richText.length > 0) {
+        } else if (tag === "li" && textNodes.length) {
+            const richText = [];
+
+            textNodes.each((_, node) => {
+                if (node.type === 'text') {
+                    // Text node
+                    richText.push({
+                        type: "text",
+                        text: { content: node.data }
+                    });
+                } else if (node.tagName === "A") {
+                    // Link node
+                    const url = $(node).attr("href");
+                    const linkText = $(node).text().trim();
+
+                    richText.push({
+                        type: "text",
+                        text: { content: linkText },
+                        link: { url } // Only add link if it's a link node
+                    });
+                }
+            });
+
+            // Add bulleted list item block with rich text
             notionBlocks.push({
                 object: "block",
                 type: "bulleted_list_item",
