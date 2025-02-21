@@ -30,32 +30,90 @@ async function isEpisodeInDatabase(url) {
     return result.length > 0;  
 }
 
-// Function to parse HTML show notes into Notion blocks
 function parseShowNotes(html, link) {
     const $ = cheerio.load(html);
     let notionBlocks = [];
 
-    $("p, ul, ol, li").each((_, elem) => {
-        const tag = $(elem).prop("tagName").toLowerCase();
-        const text = $(elem).text().trim();
+    // Parse paragraphs
+    $("p").each((_, elem) => {
+        const richTextArray = [];
+        
+        // Iterate through each node in the paragraph
+        $(elem).contents().each((_, node) => {
+            if (node.type === "text") {
+                // Regular text node
+                const textContent = $(node).text().trim();
+                if (textContent) {
+                    richTextArray.push({
+                        type: "text",
+                        text: { content: textContent }
+                    });
+                }
+            } else if (node.tagName === "A") {
+                // Anchor tag
+                const linkText = $(node).text();
+                const href = $(node).attr("href");
+                if (linkText && href) {
+                    richTextArray.push({
+                        type: "text",
+                        text: { content: linkText },
+                        link: { url: href }
+                    });
+                }
+            }
+        });
 
-        if (tag === "p" && text) {
+        // Push the paragraph block to Notion
+        if (richTextArray.length > 0) {
             notionBlocks.push({
                 object: "block",
                 type: "paragraph",
                 paragraph: {
-                    rich_text: [{ type: "text", text: { content: text } }]
-                }
-            });
-        } else if (tag === "li" && text) {
-            notionBlocks.push({
-                object: "block",
-                type: "bulleted_list_item",
-                bulleted_list_item: {
-                    rich_text: [{ type: "text", text: { content: text } }]
+                    rich_text: richTextArray
                 }
             });
         }
+    });
+
+    // Handle lists
+    $("ul, ol").each((_, list) => {
+        $(list).find("li").each((_, li) => {
+            const richTextArray = [];
+            
+            // Iterate through each node in the list item
+            $(li).contents().each((_, node) => {
+                if (node.type === "text") {
+                    const textContent = $(node).text().trim();
+                    if (textContent) {
+                        richTextArray.push({
+                            type: "text",
+                            text: { content: textContent }
+                        });
+                    }
+                } else if (node.tagName === "A") {
+                    const linkText = $(node).text();
+                    const href = $(node).attr("href");
+                    if (linkText && href) {
+                        richTextArray.push({
+                            type: "text",
+                            text: { content: linkText },
+                            link: { url: href }
+                        });
+                    }
+                }
+            });
+
+            // Push the bulleted list item block to Notion
+            if (richTextArray.length > 0) {
+                notionBlocks.push({
+                    object: "block",
+                    type: "bulleted_list_item",
+                    bulleted_list_item: {
+                        rich_text: richTextArray
+                    }
+                });
+            }
+        });
     });
 
     return notionBlocks;
