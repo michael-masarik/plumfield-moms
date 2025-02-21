@@ -25,11 +25,9 @@ async function fetchPodcastEpisodes() {
 async function isEpisodeInDatabase(url) {
     const whereClause = { url: url };
     console.log(`🔍 Checking database for existing episode:`, whereClause);
-
     const result = await pgHelper.selectFromTable("test_episode_table", whereClause); // ⬅️ Ensure we await this!
-
-    console.log(`📄 Query result:`, result);
     return result.length > 0;  // ⬅️ `rowCount` may not exist, so use result.length
+    
 }
 
 // Function to create a Notion page for an episode
@@ -40,12 +38,14 @@ async function createNotionPage(episode) {
     const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
     const showNotes = episode.description ? episode.description[0] : "No show notes available.";
     
+    let showNotesFormatted;
     if(showNotes.length > 2000){
-        const shownotesFormatted = showNotes.slice(0, 1850) + `... <a href=${link}>Read more</a>`;
+        showNotesFormatted = showNotes.slice(0, 1850) + `... <a href=${link}>Read more</a>`;
     }else{
-        const shownotesFormatted = showNotes;
+        showNotesFormatted = showNotes;
     }
-    const pageContentCode = `super-embed: ${shownotesFormatted}`;
+    const pageContentCode = "super-embed: " + showNotesFormatted ;
+   
 
     // Check if episode already exists in the database
     if (await isEpisodeInDatabase(link)) {
