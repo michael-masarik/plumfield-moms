@@ -58,14 +58,7 @@ function parseShowNotes(html, link) {
         }
     });
 
-    // Add a "Read more" link if needed
-    notionBlocks.push({
-        object: "block",
-        type: "paragraph",
-        paragraph: {
-            rich_text: [{ type: "text", text: { content: `Read more: ${link}` } }]
-        }
-    });
+
 
     return notionBlocks;
 }
