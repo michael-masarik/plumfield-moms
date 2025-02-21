@@ -46,7 +46,7 @@ function parseShowNotes(html, link) {
                 if (textContent) {
                     richText.push({
                         type: "text",
-                        text: { content: textContent, link: null }, // No link for plain text
+                        text: { content: textContent, link: null },
                         annotations: { 
                             bold: false, 
                             italic: false, 
@@ -61,8 +61,11 @@ function parseShowNotes(html, link) {
                 }
             } else if (node.tagName === "A") {
                 // Add link node
-                const url = $(node).attr("href");
+                const url = $(node).attr("href"); // Extract the href attribute
                 const linkText = $(node).text().trim();
+
+                // Log the extracted link
+                console.log(`Extracted link: ${url} with text: ${linkText}`);
 
                 if (linkText && url) { // Check that both linkText and url are present
                     richText.push({
