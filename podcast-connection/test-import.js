@@ -44,40 +44,33 @@ function parseShowNotes(html, link) {
                 // Add regular text node
                 richText.push({
                     type: "text",
-                    text: { content: node.data }
+                    text: { content: node.data },
+                    annotations: {} // Empty annotations
                 });
             } else if (node.tagName === "A") {
                 // Add link node
                 const url = $(node).attr("href");
                 const linkText = $(node).text().trim();
-                
+
                 richText.push({
                     type: "text",
                     text: { content: linkText },
-                    link: { url } // Add link property
+                    link: { url }, // Add link property
+                    annotations: {} // Empty annotations
                 });
             }
         });
 
         // Only add paragraph or list item if there's content
         if (richText.length > 0) {
-            if (tag === "p") {
-                notionBlocks.push({
-                    object: "block",
-                    type: "paragraph",
-                    paragraph: {
-                        rich_text: richText
-                    }
-                });
-            } else if (tag === "li") {
-                notionBlocks.push({
-                    object: "block",
-                    type: "bulleted_list_item",
-                    bulleted_list_item: {
-                        rich_text: richText
-                    }
-                });
-            }
+            const block = {
+                object: "block",
+                type: tag === "li" ? "bulleted_list_item" : "paragraph",
+                [tag === "li" ? "bulleted_list_item" : "paragraph"]: {
+                    rich_text: richText
+                }
+            };
+            notionBlocks.push(block);
         }
     });
 
