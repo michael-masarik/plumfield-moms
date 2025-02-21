@@ -36,48 +36,32 @@ function parseShowNotes(html, link) {
 
     $("p, ul, ol, li").each((_, elem) => {
         const tag = $(elem).prop("tagName").toLowerCase();
-        const text = $(elem).text().trim();
 
-        if (tag === "p" && text) {
-            // Check for links in the paragraph
-            const links = $(elem).find("a");
-            if (links.length > 0) {
-                // Handle text with links
-                const richText = [];
-                $(elem).contents().each((_, contentElem) => {
-                    if (contentElem.nodeType === 3) { // Text node
-                        richText.push({ type: "text", text: { content: contentElem.nodeValue } });
-                    } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
-                        const href = $(contentElem).attr("href");
-                        const linkText = $(contentElem).text().trim();
-                        richText.push({
-                            type: "text",
-                            text: { content: linkText },
-                            annotations: {
-                                link: href // Add the link
-                            }
-                        });
-                    }
-                });
-                notionBlocks.push({
-                    object: "block",
-                    type: "paragraph",
-                    paragraph: {
-                        rich_text: richText
-                    }
-                });
-            } else {
-                // No links, add as a simple paragraph
-                notionBlocks.push({
-                    object: "block",
-                    type: "paragraph",
-                    paragraph: {
-                        rich_text: [{ type: "text", text: { content: text } }]
-                    }
-                });
-            }
-        } else if (tag === "li" && text) {
-            // Handle list items
+        if (tag === "p") {
+            const richText = [];
+            // Loop through child nodes to capture text and links
+            $(elem).contents().each((_, contentElem) => {
+                if (contentElem.nodeType === 3) { // Text node
+                    richText.push({ type: "text", text: { content: contentElem.nodeValue } });
+                } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
+                    const href = $(contentElem).attr("href");
+                    const linkText = $(contentElem).text().trim();
+                    richText.push({
+                        type: "text",
+                        text: { content: linkText },
+                        link: { url: href } // Include link directly here
+                    });
+                }
+            });
+            notionBlocks.push({
+                object: "block",
+                type: "paragraph",
+                paragraph: {
+                    rich_text: richText
+                }
+            });
+        } else if (tag === "li") {
+            const text = $(elem).text().trim();
             notionBlocks.push({
                 object: "block",
                 type: "bulleted_list_item",
