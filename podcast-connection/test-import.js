@@ -3,6 +3,7 @@ import axios from "axios";
 import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
 import pgHelper from "pg-helper";
+import cheerio from "cheerio"; // For parsing HTML
 
 // Notion setup
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -25,9 +26,48 @@ async function fetchPodcastEpisodes() {
 async function isEpisodeInDatabase(url) {
     const whereClause = { url: url };
     console.log(`🔍 Checking database for existing episode:`, whereClause);
-    const result = await pgHelper.selectFromTable("test_episode_table", whereClause); // ⬅️ Ensure we await this!
-    return result.length > 0;  // ⬅️ `rowCount` may not exist, so use result.length
-    
+    const result = await pgHelper.selectFromTable("test_episode_table", whereClause);
+    return result.length > 0;  
+}
+
+// Function to parse HTML show notes into Notion blocks
+function parseShowNotes(html, link) {
+    const $ = cheerio.load(html);
+    let notionBlocks = [];
+
+    $("p, ul, ol, li").each((_, elem) => {
+        const tag = $(elem).prop("tagName").toLowerCase();
+        const text = $(elem).text().trim();
+
+        if (tag === "p" && text) {
+            notionBlocks.push({
+                object: "block",
+                type: "paragraph",
+                paragraph: {
+                    rich_text: [{ type: "text", text: { content: text } }]
+                }
+            });
+        } else if (tag === "li" && text) {
+            notionBlocks.push({
+                object: "block",
+                type: "bulleted_list_item",
+                bulleted_list_item: {
+                    rich_text: [{ type: "text", text: { content: text } }]
+                }
+            });
+        }
+    });
+
+    // Add a "Read more" link if needed
+    notionBlocks.push({
+        object: "block",
+        type: "paragraph",
+        paragraph: {
+            rich_text: [{ type: "text", text: { content: `Read more: ${link}` } }]
+        }
+    });
+
+    return notionBlocks;
 }
 
 // Function to create a Notion page for an episode
@@ -37,15 +77,6 @@ async function createNotionPage(episode) {
     const link = episode.link[0];
     const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
     const showNotes = episode.description ? episode.description[0] : "No show notes available.";
-    
-    let showNotesFormatted;
-    if(showNotes.length > 2000){
-        showNotesFormatted = showNotes.slice(0, 1850) + `... <a href=${link}>Read more</a>`;
-    }else{
-        showNotesFormatted = showNotes;
-    }
-    const pageContentCode = "super-embed: " + showNotesFormatted ;
-   
 
     // Check if episode already exists in the database
     if (await isEpisodeInDatabase(link)) {
@@ -60,29 +91,14 @@ async function createNotionPage(episode) {
                 Name: { title: [{ text: { content: title } }] },
                 Date: { date: { start: pubDate } },
             },
-            "children": [
-    {
-        object: "block",
-        type: "embed",
-        embed: {
-            url: audioUrl // The episode’s audio file link
-        }
-    },
-    {
-        object: "block",
-        type: "code",
-        code: {
-            caption: [],
-            rich_text: [{
-                type: "text",
-                text: {
-                    content: pageContentCode
-                }
-            }],
-            language: "html"
-        }
-    }
-]
+            children: [
+                {
+                    object: "block",
+                    type: "embed",
+                    embed: { url: audioUrl }
+                },
+                ...parseShowNotes(showNotes, link) // Insert parsed show notes as Notion blocks
+            ]
         });
 
         console.log(`✅ Added: ${title}`);
