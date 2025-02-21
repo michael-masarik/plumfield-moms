@@ -86,14 +86,6 @@ async function createNotionPage(episode) {
             children: [
                 {
                     object: "block",
-                    type: "paragraph",
-                    paragraph: {
-                        rich_text: [{ type: "text", text: { content: "" } }],
-                        alignment: "center" // Center alignment for the paragraph
-                    }
-                },
-                {
-                    object: "block",
                     type: "image",
                     image: {
                         type: "external",
