@@ -61,12 +61,26 @@ function parseShowNotes(html, link) {
                 }
             });
         } else if (tag === "li") {
-            const text = $(elem).text().trim();
+            const richText = [];
+            // Handle list items the same way
+            $(elem).contents().each((_, contentElem) => {
+                if (contentElem.nodeType === 3) { // Text node
+                    richText.push({ type: "text", text: { content: contentElem.nodeValue } });
+                } else if (contentElem.nodeType === 1 && contentElem.tagName.toLowerCase() === "a") { // Anchor tag
+                    const href = $(contentElem).attr("href");
+                    const linkText = $(contentElem).text().trim();
+                    richText.push({
+                        type: "text",
+                        text: { content: linkText },
+                        link: { url: href } // Include link directly here
+                    });
+                }
+            });
             notionBlocks.push({
                 object: "block",
                 type: "bulleted_list_item",
                 bulleted_list_item: {
-                    rich_text: [{ type: "text", text: { content: text } }]
+                    rich_text: richText
                 }
             });
         }
