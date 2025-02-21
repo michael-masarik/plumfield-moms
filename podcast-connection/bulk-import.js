@@ -161,18 +161,7 @@ async function createNotionPage(episode) {
 async function batchProcessEpisodes(episodes, batchSize = 3, delayMs = 1000) {
     for (let i = 0; i < episodes.length; i += batchSize) {
         const batch = episodes.slice(i, i + batchSize);
-        
-        // Create an array to track errors
-        const promises = batch.map(createNotionPage);
-        
-        try {
-            await Promise.all(promises);
-            console.log(`✅ Successfully processed batch: ${batch.length} episodes.`);
-        } catch (error) {
-            console.error(`❌ Error processing batch: ${error.message}`);
-            // Optional: implement retry logic here if needed
-        }
-
+        await Promise.all(batch.map(createNotionPage));
         console.log(`⏳ Waiting ${delayMs}ms to avoid rate limits...`);
         await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
@@ -200,7 +189,7 @@ async function batchProcessEpisodes(episodes, batchSize = 3, delayMs = 1000) {
     console.log(`📌 Found ${oldCount} old episodes and ${newEpisodes.length} new episodes.`);
     
     if (newEpisodes.length > 0) {
-        await batchProcessEpisodes(newEpisodes.slice(-4)); // Import only last 4 new episodes
+        await batchProcessEpisodes(newEpisodes); // Import all new episodes
     } else {
         console.log("✅ No new episodes to import.");
     }
