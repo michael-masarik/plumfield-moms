@@ -59,7 +59,7 @@ function parseShowNotes(html, link) {
                         href: null // No hyperlink for plain text
                     });
                 }
-            } else if (node.tagName === "A") {
+            } else if (node.type === 'tag' && node.name === "a") {
                 // Add link node
                 const url = $(node).attr("href"); // Extract the href attribute
                 const linkText = $(node).text().trim();
@@ -67,7 +67,7 @@ function parseShowNotes(html, link) {
                 // Log the extracted link
                 console.log(`Extracted link: ${url} with text: ${linkText}`);
 
-                if (linkText && url) { // Check that both linkText and url are present
+                if (linkText && url) { // Ensure both linkText and url are present
                     richText.push({
                         type: "text",
                         text: { content: linkText, link: { url } }, // Include the link URL
@@ -87,10 +87,8 @@ function parseShowNotes(html, link) {
         });
 
         // Log the rich text being added
-        console.log('Rich text being added:', richText);
-
-        // Only add block if richText has content
         if (richText.length > 0) {
+            console.log('Rich text being added:', richText);
             notionBlocks.push({
                 object: "block",
                 type: tag === "li" ? "bulleted_list_item" : "paragraph",
