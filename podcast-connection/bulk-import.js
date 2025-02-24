@@ -1,5 +1,4 @@
 import "dotenv/config";
-import axios from "axios";
 import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
 import pgHelper from "pg-helper";
@@ -11,11 +10,12 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID;
 const rssFeedUrl = process.env.PODBEAN_FEED_URL;
 
-// Function to fetch RSS feed & parse XML
+// Function to fetch RSS feed & parse XML using Fetch API
 async function fetchPodcastEpisodes() {
     try {
-        const response = await axios.get(rssFeedUrl);
-        const parsedData = await xml2js.parseStringPromise(response.data);
+        const response = await fetch(rssFeedUrl);
+        const textData = await response.text();
+        const parsedData = await xml2js.parseStringPromise(textData);
         return parsedData.rss.channel[0].item; // Array of episodes
     } catch (error) {
         console.error("Error fetching RSS feed:", error);
@@ -30,6 +30,7 @@ async function isEpisodeInDatabase(url) {
     return result.length > 0;  
 }
 
+// Function to parse show notes and create Notion blocks
 function parseShowNotes(html, link) {
     const $ = cheerio.load(html);
     let notionBlocks = [];
@@ -108,6 +109,8 @@ async function createNotionPage(episode) {
     const link = episode.link[0];
     const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
     const showNotes = episode.description ? episode.description[0] : "No show notes available.";
+    const firstColonIndex = title.indexOf(":"); // Find the first ':'
+    const category = firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title;
     const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
 
     // Check if episode already exists in the database
@@ -122,6 +125,8 @@ async function createNotionPage(episode) {
             properties: {
                 Name: { title: [{ text: { content: title } }] },
                 Date: { date: { start: pubDate } },
+                Category:
+                    { select: { name: category } }, // Add category as a select property
             },
             children: [
                 {
