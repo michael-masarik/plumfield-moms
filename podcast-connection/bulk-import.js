@@ -30,6 +30,69 @@ async function isEpisodeInDatabase(url) {
     return result.length > 0;  
 }
 
+// Function to create a Notion page for an episode
+async function createNotionPage(episode) {
+    const title = episode.title[0];
+    const pubDate = new Date(episode.pubDate[0]).toISOString();
+    const link = episode.link[0];
+    const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
+    const showNotes = episode.description ? episode.description[0] : "No show notes available.";
+    const firstColonIndex = title.indexOf(":"); // Find the first ':'
+    const category = firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title;
+    const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
+
+    // Check if episode already exists in the database
+    if (await isEpisodeInDatabase(link)) {
+        console.log(`⚠️ Skipping: ${title} (already in database)`);
+        return;
+    }
+
+    try {
+        // Parse the show notes using the provided parser code
+        const notionBlocks = parseShowNotes(showNotes, link);
+
+        await notion.pages.create({
+            parent: { database_id: databaseId },
+            properties: {
+                Name: { title: [{ text: { content: title } }] },
+                Date: { date: { start: pubDate } },
+                Category:
+                    { select: { name: category } }, // Add category as a select property
+            },
+            children: [
+                {
+                    object: "block",
+                    type: "image",
+                    image: {
+                        type: "external",
+                        external: {
+                            url: imageUrl // The episode’s iTunes image link
+                        },
+                        caption: [{ type: "text", text: { content: link } }] // Caption for the image
+                    }
+                },
+                {
+                    object: "block",
+                    type: "embed",
+                    embed: { url: audioUrl }
+                },
+                ...notionBlocks // Insert parsed show notes as Notion blocks
+            ]
+        });
+
+        console.log(`✅ Added: ${title}`);
+
+        // Insert into PostgreSQL database
+        await pgHelper.insertIntoTable("podcast_record", {
+            url: link,
+            name: title,
+        });
+
+    } catch (error) {
+        console.error(`❌ Error adding ${title}:`, error.message);
+    }
+}
+
 // Function to parse show notes and create Notion blocks
 function parseShowNotes(html, link) {
     const $ = cheerio.load(html);
@@ -100,66 +163,6 @@ function parseShowNotes(html, link) {
     });
 
     return notionBlocks;
-}
-
-// Function to create a Notion page for an episode
-async function createNotionPage(episode) {
-    const title = episode.title[0];
-    const pubDate = new Date(episode.pubDate[0]).toISOString();
-    const link = episode.link[0];
-    const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
-    const showNotes = episode.description ? episode.description[0] : "No show notes available.";
-    const firstColonIndex = title.indexOf(":"); // Find the first ':'
-    const category = firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title;
-    const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
-
-    // Check if episode already exists in the database
-    if (await isEpisodeInDatabase(link)) {
-        console.log(`⚠️ Skipping: ${title} (already in database)`);
-        return;
-    }
-
-    try {
-        await notion.pages.create({
-            parent: { database_id: databaseId },
-            properties: {
-                Name: { title: [{ text: { content: title } }] },
-                Date: { date: { start: pubDate } },
-                Category:
-                    { select: { name: category } }, // Add category as a select property
-            },
-            children: [
-                {
-                    object: "block",
-                    type: "image",
-                    image: {
-                        type: "external",
-                        external: {
-                            url: imageUrl // The episode’s iTunes image link
-                        },
-                        caption: [{ type: "text", text: { content: link } }] // Caption for the image
-                    }
-                },
-                {
-                    object: "block",
-                    type: "embed",
-                    embed: { url: audioUrl }
-                },
-                ...parseShowNotes(showNotes, link) // Insert parsed show notes as Notion blocks
-            ]
-        });
-
-        console.log(`✅ Added: ${title}`);
-
-        // Insert into PostgreSQL database
-        await pgHelper.insertIntoTable("podcast_record", {
-            url: link,
-            name: title,
-        });
-
-    } catch (error) {
-        console.error(`❌ Error adding ${title}:`, error.message);
-    }
 }
 
 // Batch process episodes to respect Notion API limits
