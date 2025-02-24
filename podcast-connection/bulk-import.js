@@ -30,6 +30,7 @@ async function isEpisodeInDatabase(url) {
     return result.length > 0;  
 }
 
+// Function to parse show notes and create Notion blocks
 function parseShowNotes(html, link) {
     const $ = cheerio.load(html);
     let notionBlocks = [];
