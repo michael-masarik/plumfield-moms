@@ -1,5 +1,4 @@
 import "dotenv/config";
-import axios from "axios";
 import { Client } from "@notionhq/client";
 import xml2js from "xml2js";
 import pgHelper from "pg-helper";
@@ -11,11 +10,12 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID;
 const rssFeedUrl = process.env.PODBEAN_FEED_URL;
 
-// Function to fetch RSS feed & parse XML
+// Function to fetch RSS feed & parse XML using Fetch API
 async function fetchPodcastEpisodes() {
     try {
-        const response = await axios.get(rssFeedUrl);
-        const parsedData = await xml2js.parseStringPromise(response.data);
+        const response = await fetch(rssFeedUrl);
+        const textData = await response.text();
+        const parsedData = await xml2js.parseStringPromise(textData);
         return parsedData.rss.channel[0].item; // Array of episodes
     } catch (error) {
         console.error("Error fetching RSS feed:", error);
@@ -91,8 +91,8 @@ function parseShowNotes(html, link) {
         if (richText.length > 0) {
             notionBlocks.push({
                 object: "block",
-                type: "paragraph", // Treat all elements as paragraphs
-                paragraph: {
+                type: tag === "li" ? "bulleted_list_item" : "paragraph",
+                [tag === "li" ? "bulleted_list_item" : "paragraph"]: {
                     rich_text: richText
                 }
             });
