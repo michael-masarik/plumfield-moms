@@ -35,69 +35,55 @@ function parseShowNotes(html) {
     const $ = cheerio.load(html);
     let notionBlocks = [];
 
-    $("p, ul, ol").each((_, elem) => {
+    $("p, ul").each((_, elem) => {
         const tag = $(elem).prop("tagName").toLowerCase();
-        const richText = [];
 
-        // Process each child node (text and links)
-        $(elem).contents().each((_, node) => {
-            if (node.type === 'text') {
-                // Add text node
-                const textContent = node.data.trim();
-                if (textContent) {
-                    richText.push({
-                        type: "text",
-                        text: { content: textContent, link: null },
-                        annotations: { 
-                            bold: false, 
-                            italic: false, 
-                            strikethrough: false, 
-                            underline: false, 
-                            code: false, 
-                            color: "default" 
-                        },
-                        plain_text: textContent,
-                        href: null // No hyperlink for plain text
-                    });
-                }
-            } else if (node.type === 'tag' && node.name === "a") {
-                // Add link node
-                const url = $(node).attr("href"); // Extract the href attribute
-                const linkText = $(node).text().trim();
-
-                // Log the extracted link
-                console.log(`Extracted link: ${url} with text: ${linkText}`);
-
-                if (linkText && url) { // Ensure both linkText and url are present
-                    richText.push({
-                        type: "text",
-                        text: { content: linkText, link: { url } }, // Include the link URL
-                        annotations: { 
-                            bold: false, 
-                            italic: false, 
-                            strikethrough: false, 
-                            underline: false, 
-                            code: false, 
-                            color: "default" 
-                        },
-                        plain_text: linkText,
-                        href: url // Set hyperlink for the link text
-                    });
-                }
-            }
-        });
-
-        // Create Notion block for paragraph or list item
-        if (richText.length > 0) {
-            if (tag === "li") {
-                notionBlocks.push({
-                    object: "block",
-                    type: "bulleted_list_item",
-                    bulleted_list_item: {
-                        rich_text: richText
+        // Handle paragraphs
+        if (tag === "p") {
+            const richText = [];
+            $(elem).contents().each((_, node) => {
+                if (node.type === 'text') {
+                    const textContent = node.data.trim();
+                    if (textContent) {
+                        richText.push({
+                            type: "text",
+                            text: { content: textContent, link: null },
+                            annotations: { 
+                                bold: false, 
+                                italic: false, 
+                                strikethrough: false, 
+                                underline: false, 
+                                code: false, 
+                                color: "default" 
+                            },
+                            plain_text: textContent,
+                            href: null
+                        });
                     }
-                });
-            } else {
+                } else if (node.type === 'tag' && node.name === "a") {
+                    const url = $(node).attr("href");
+                    const linkText = $(node).text().trim();
+                    if (linkText && url) {
+                        richText.push({
+                            type: "text",
+                            text: { content: linkText, link: { url } },
+                            annotations: { 
+                                bold: false, 
+                                italic: false, 
+                                strikethrough: false, 
+                                underline: false, 
+                                code: false, 
+                                color: "default" 
+                            },
+                            plain_text: linkText,
+                            href: url
+                        });
+                    }
+                }
+            });
+
+            // Create Notion block for the paragraph
+            if (richText.length > 0) {
                 notionBlocks.push({
                     object: "block",
                     type: "paragraph",
@@ -106,6 +92,64 @@ function parseShowNotes(html) {
                     }
                 });
             }
+        }
+
+        // Handle unordered lists
+        if (tag === "ul") {
+            $(elem).find("li").each((_, li) => {
+                const richText = [];
+                $(li).contents().each((_, node) => {
+                    if (node.type === 'text') {
+                        const textContent = node.data.trim();
+                        if (textContent) {
+                            richText.push({
+                                type: "text",
+                                text: { content: textContent, link: null },
+                                annotations: { 
+                                    bold: false, 
+                                    italic: false, 
+                                    strikethrough: false, 
+                                    underline: false, 
+                                    code: false, 
+                                    color: "default" 
+                                },
+                                plain_text: textContent,
+                                href: null
+                            });
+                        }
+                    } else if (node.type === 'tag' && node.name === "a") {
+                        const url = $(node).attr("href");
+                        const linkText = $(node).text().trim();
+                        if (linkText && url) {
+                            richText.push({
+                                type: "text",
+                                text: { content: linkText, link: { url } },
+                                annotations: { 
+                                    bold: false, 
+                                    italic: false, 
+                                    strikethrough: false, 
+                                    underline: false, 
+                                    code: false, 
+                                    color: "default" 
+                                },
+                                plain_text: linkText,
+                                href: url
+                            });
+                        }
+                    }
+                });
+
+                // Create Notion block for the list item
+                if (richText.length > 0) {
+                    notionBlocks.push({
+                        object: "block",
+                        type: "bulleted_list_item",
+                        bulleted_list_item: {
+                            rich_text: richText
+                        }
+                    });
+                }
+            });
         }
     });
 
