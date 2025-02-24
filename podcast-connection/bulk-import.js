@@ -47,7 +47,7 @@ function parseShowNotes(html) {
                     if (textContent) {
                         richText.push({
                             type: "text",
-                            text: { content: textContent, link: null },
+                            text: { content: textContent + " ", link: null }, // Add space
                             annotations: { 
                                 bold: false, 
                                 italic: false, 
@@ -56,7 +56,7 @@ function parseShowNotes(html) {
                                 code: false, 
                                 color: "default" 
                             },
-                            plain_text: textContent,
+                            plain_text: textContent + " ", // Add space
                             href: null
                         });
                     }
@@ -75,8 +75,23 @@ function parseShowNotes(html) {
                                 code: false, 
                                 color: "default" 
                             },
-                            plain_text: linkText,
+                            plain_text: linkText, // No space here to avoid double spacing
                             href: url
+                        });
+                        // Add a space after the link
+                        richText.push({
+                            type: "text",
+                            text: { content: " ", link: null }, // Add space after the link
+                            annotations: { 
+                                bold: false, 
+                                italic: false, 
+                                strikethrough: false, 
+                                underline: false, 
+                                code: false, 
+                                color: "default" 
+                            },
+                            plain_text: " ", // Space for formatting
+                            href: null
                         });
                     }
                 }
@@ -104,7 +119,7 @@ function parseShowNotes(html) {
                         if (textContent) {
                             richText.push({
                                 type: "text",
-                                text: { content: textContent, link: null },
+                                text: { content: textContent + " ", link: null }, // Add space
                                 annotations: { 
                                     bold: false, 
                                     italic: false, 
@@ -113,7 +128,7 @@ function parseShowNotes(html) {
                                     code: false, 
                                     color: "default" 
                                 },
-                                plain_text: textContent,
+                                plain_text: textContent + " ", // Add space
                                 href: null
                             });
                         }
@@ -132,8 +147,23 @@ function parseShowNotes(html) {
                                     code: false, 
                                     color: "default" 
                                 },
-                                plain_text: linkText,
+                                plain_text: linkText, // No space here to avoid double spacing
                                 href: url
+                            });
+                            // Add a space after the link
+                            richText.push({
+                                type: "text",
+                                text: { content: " ", link: null }, // Add space after the link
+                                annotations: { 
+                                    bold: false, 
+                                    italic: false, 
+                                    strikethrough: false, 
+                                    underline: false, 
+                                    code: false, 
+                                    color: "default" 
+                                },
+                                plain_text: " ", // Space for formatting
+                                href: null
                             });
                         }
                     }
