@@ -91,8 +91,8 @@ function parseShowNotes(html, link) {
         if (richText.length > 0) {
             notionBlocks.push({
                 object: "block",
-                type: tag === "li" ? "bulleted_list_item" : "paragraph",
-                [tag === "li" ? "bulleted_list_item" : "paragraph"]: {
+                type: "paragraph", // Treat all elements as paragraphs
+                paragraph: {
                     rich_text: richText
                 }
             });
