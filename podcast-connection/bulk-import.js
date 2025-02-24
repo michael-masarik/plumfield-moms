@@ -194,7 +194,7 @@ async function createNotionPage(episode) {
     const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
     const showNotes = episode.description ? episode.description[0] : "No show notes available.";
     const firstColonIndex = title.indexOf(":"); // Find the first ':'
-    const category = firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title;
+    const category = (firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title).replace(/[,.]/g, "");
     const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
 
     // Check if episode already exists in the database
