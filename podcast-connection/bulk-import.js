@@ -87,15 +87,25 @@ function parseShowNotes(html, link) {
             }
         });
 
-        // Log the rich text being added
+        // Create Notion block for paragraph or list item
         if (richText.length > 0) {
-            notionBlocks.push({
-                object: "block",
-                type: tag === "li" ? "bulleted_list_item" : "paragraph",
-                [tag === "li" ? "bulleted_list_item" : "paragraph"]: {
-                    rich_text: richText
-                }
-            });
+            if (tag === "li") {
+                notionBlocks.push({
+                    object: "block",
+                    type: "bulleted_list_item",
+                    bulleted_list_item: {
+                        rich_text: richText
+                    }
+                });
+            } else {
+                notionBlocks.push({
+                    object: "block",
+                    type: "paragraph",
+                    paragraph: {
+                        rich_text: richText
+                    }
+                });
+            }
         }
     });
 
