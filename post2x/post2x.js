@@ -12,6 +12,7 @@ if (!DATABASE_ID) {
 
 async function getNotionPosts() {
     const url = `https://api.notion.com/v1/databases/${DATABASE_ID}/query`;
+
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -22,7 +23,7 @@ async function getNotionPosts() {
         body: JSON.stringify({
             filter: {
                 property: "Status",
-                select: {
+                status: {
                     equals: "Publish"
                 }
             }
@@ -30,10 +31,17 @@ async function getNotionPosts() {
     });
 
     const data = await response.json();
+    console.log("Full Notion API Response:", JSON.stringify(data, null, 2)); // Debugging
+
+    if (!data.results) {
+        throw new Error("Notion API did not return 'results'. Check API response structure.");
+    }
+
     return data.results.map(page => ({
         id: page.id,
-        content: page.properties.Name.title[0]?.text.content || "No title"
+        content: page.properties.Name?.title[0]?.text?.content || "No title"
     }));
 }
 
-getNotionPosts().then(console.log);
+getNotionPosts().then(console.log).catch(console.error);
+
