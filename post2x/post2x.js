@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 import "dotenv/config";
 
 const NOTION_API_KEY = process.env.NOTION_API_KEY;
