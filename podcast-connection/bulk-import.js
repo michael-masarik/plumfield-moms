@@ -197,7 +197,7 @@ async function createNotionPage(episode) {
     const firstColonIndex = title.indexOf(":"); // Find the first ':'
     const category = (firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title).replace(/[,.]/g, "");
     const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
-    const episodeId = link.split("/").pop();
+    const episodeId = episode.guid[0]; // Extract Podbean's unique ID
 
 
     // Check if episode already exists in the database
@@ -232,9 +232,18 @@ async function createNotionPage(episode) {
                 },
                 {
                     object: "block",
-                    type: "embed",
-                    embed: {
-                        url: `https://www.podbean.com/player-v2/?from=embed&i=${episodeId}&square=1&share=1&download=1&fonts=Times%20New%20Roman&skin=f6f6f6&font-color=auto&rtl=0&logo_link=episode_page&btn-skin=c73a3a&size=300`
+                    type: "code",
+                    code: {
+                        caption: [],
+                        rich_text: [
+                            {
+                                type: "text",
+                                text: {
+                                    content: `super-link: <iframe title="Podbean Player" allowtransparency="true" height="300" width="100%" style="border: none; min-width: min(100%, 430px); height:300px;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?from=embed&i=${episodeId}&square=1&share=1&download=1&fonts=Times%20New%20Roman&skin=f6f6f6&font-color=auto&rtl=0&logo_link=episode_page&btn-skin=c73a3a&size=300" loading="lazy" allowfullscreen=""></iframe>`
+                                }
+                            }
+                        ],
+                        language: "html"
                     }
                 },
                 ...notionBlocks // Insert parsed show notes as Notion blocks
