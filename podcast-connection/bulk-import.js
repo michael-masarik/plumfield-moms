@@ -199,9 +199,6 @@ async function createNotionPage(episode) {
     const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
     const episodeId = link.split("/").pop();
 
-const createPodbeanPlayer = (episodeId) => { // ✅ Define function after episodeId
-    return `super-embed: <iframe title="Podbean Player" allowTransparency="true" width="100%" height="122" style="border: none; min-width: 300px;" src="https://www.podbean.com/player-v2/?i=${episodeId}&share=1&download=1&skin=1&btn-skin=7"></iframe>`;
-};
 
     // Check if episode already exists in the database
     if (await isEpisodeInDatabase(link)) {
@@ -242,7 +239,7 @@ const createPodbeanPlayer = (episodeId) => { // ✅ Define function after episod
                             {
                                 type: "text",
                                 text: {
-                                    content: createPodbeanPlayer(episodeId), // Use the function to create the player
+                                    content: `<iframe title="Podbean Player" allowtransparency="true" height="300" width="100%" style="border: none; min-width: min(100%, 430px); height:300px;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?from=embed&i=${episodeId}&square=1&share=1&download=1&fonts=Times%20New%20Roman&skin=f6f6f6&font-color=auto&rtl=0&logo_link=episode_page&btn-skin=c73a3a&size=300" loading="lazy" allowfullscreen=""></iframe>`, // Use the function to create the player
                                 }
                             }
                         ],
