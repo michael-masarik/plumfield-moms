@@ -237,7 +237,8 @@ const createPodbeanPlayer = (episodeId) => { // ✅ Define function after episod
                     object: "block",
                     type: "code",
                     code:{
-                        text: [
+                        caption: [],
+                        rich_text: [
                             {
                                 type: "text",
                                 text: {
