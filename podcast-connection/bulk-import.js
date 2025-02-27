@@ -23,6 +23,7 @@ async function fetchPodcastEpisodes() {
     }
 }
 
+
 // Function to check if an episode already exists in the database
 async function isEpisodeInDatabase(url) {
     const whereClause = { url: url };
@@ -196,6 +197,11 @@ async function createNotionPage(episode) {
     const firstColonIndex = title.indexOf(":"); // Find the first ':'
     const category = (firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title).replace(/[,.]/g, "");
     const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
+    const episodeId = link.split("/").pop();
+
+const createPodbeanPlayer = (episodeId) => { // ✅ Define function after episodeId
+    return `<iframe title="Podbean Player" allowTransparency="true" width="100%" height="122" style="border: none; min-width: 300px;" src="https://www.podbean.com/player-v2/?i=${episodeId}&share=1&download=1&skin=1&btn-skin=7"></iframe>`;
+};
 
     // Check if episode already exists in the database
     if (await isEpisodeInDatabase(link)) {
@@ -229,8 +235,18 @@ async function createNotionPage(episode) {
                 },
                 {
                     object: "block",
-                    type: "embed",
-                    embed: { url: audioUrl }
+                    type: "code",
+                    code:{
+                        text: [
+                            {
+                                type: "text",
+                                text: {
+                                    content: createPodbeanPlayer(episodeId), // Use the function to create the player
+                                }
+                            }
+                        ],
+                        language: "html"
+                    }
                 },
                 ...notionBlocks // Insert parsed show notes as Notion blocks
             ]
