@@ -192,14 +192,11 @@ async function createNotionPage(episode) {
     const title = episode.title[0];
     const pubDate = new Date(episode.pubDate[0]).toISOString();
     const link = episode.link[0];
-    const audioUrl = episode.enclosure ? episode.enclosure[0].$.url : "";
     const showNotes = episode.description ? episode.description[0] : "No show notes available.";
     const firstColonIndex = title.indexOf(":"); // Find the first ':'
     const category = (firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title).replace(/[,.]/g, "");
     const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
-    const fullGuid = typeof episode.guid[0] === "string" ? episode.guid[0] : episode.guid[0]._; 
-    const episodeId = fullGuid.includes("/") ? fullGuid.split("/").pop() : fullGuid; // Extract only the UUID
-    console.log("Extracted Episode ID:", episodeId);
+  
 
 
     // Check if episode already exists in the database
@@ -233,21 +230,32 @@ async function createNotionPage(episode) {
                     }
                 },
                 {
-                    object: "block",
-                    type: "code",
-                    code: {
-                        caption: [],
-                        rich_text: [
-                            {
-                                type: "text",
-                                text: {
-                                    content: `super-embed: <iframe title="Podbean Player" allowtransparency="true" height="300" width="100%" style="border: none; min-width: min(100%, 430px); height:300px;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?from=embed&i=${episodeId}&square=1&share=1&download=1&fonts=Times%20New%20Roman&skin=f6f6f6&font-color=auto&rtl=0&logo_link=episode_page&btn-skin=c73a3a&size=300" loading="lazy" allowfullscreen=""></iframe>`
-                                }
+                    "object": "block",
+                    "type": "paragraph",
+                    "paragraph": {
+                      "rich_text": [
+                        {
+                          "type": "text",
+                          "text": {
+                            "content": "🎧 Listen on Podbean",
+                            "link": {
+                              "url": link
                             }
-                        ],
-                        language: "html"
+                          },
+                          "annotations": {
+                            "bold": false,
+                            "italic": false,
+                            "strikethrough": false,
+                            "underline": false,
+                            "code": false,
+                            "color": "default"
+                          },
+                          "plain_text": "🎧 Listen on Podbean",
+                          "href": link
+                        }
+                      ]
                     }
-                },
+                  },
                 ...notionBlocks // Insert parsed show notes as Notion blocks
             ]
         });
