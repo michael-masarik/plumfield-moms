@@ -197,7 +197,8 @@ async function createNotionPage(episode) {
     const firstColonIndex = title.indexOf(":"); // Find the first ':'
     const category = (firstColonIndex !== -1 ? title.substring(0, firstColonIndex).trim() : title).replace(/[,.]/g, "");
     const imageUrl = episode["itunes:image"] ? episode["itunes:image"][0].$.href : "https://pbcdn1.podbean.com/imglogo/image-logo/14312154/PlumfieldMomsLogo_skhzpw_300x300.jpg";
-    const episodeId = episode.guid[0]; // Extract Podbean's unique ID
+    const episodeId = typeof episode.guid[0] === "string" ? episode.guid[0] : episode.guid[0]._; 
+    console.log("Extracted Episode ID:", episodeId);
 
 
     // Check if episode already exists in the database
