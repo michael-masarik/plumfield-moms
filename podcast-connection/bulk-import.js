@@ -200,7 +200,7 @@ async function createNotionPage(episode) {
     const episodeId = link.split("/").pop();
 
 const createPodbeanPlayer = (episodeId) => { // ✅ Define function after episodeId
-    return `<iframe title="Podbean Player" allowTransparency="true" width="100%" height="122" style="border: none; min-width: 300px;" src="https://www.podbean.com/player-v2/?i=${episodeId}&share=1&download=1&skin=1&btn-skin=7"></iframe>`;
+    return `super-embed: <iframe title="Podbean Player" allowTransparency="true" width="100%" height="122" style="border: none; min-width: 300px;" src="https://www.podbean.com/player-v2/?i=${episodeId}&share=1&download=1&skin=1&btn-skin=7"></iframe>`;
 };
 
     // Check if episode already exists in the database
