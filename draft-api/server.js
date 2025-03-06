@@ -23,28 +23,24 @@ const DB_IDS = {
 // Search for authors in Notion
 app.get("/authors", async (req, res) => {
     const { search } = req.query;
-    if (!req.query.search) {
-        return res.json(allAuthors); // Send full list
-    }
 
     try {
         const response = await notion.databases.query({
             database_id: process.env.NOTION_AUTHORS_DB,
         });
 
-        // Normalize search term to lowercase
-        const searchLower = search.toLowerCase();
+        let authors = response.results.map((page) => ({
+            id: page.id,
+            name: page.properties.Name.title[0]?.text.content || "Unknown",
+        }));
 
-        // Filter results manually (case-insensitive)
-        const authors = response.results
-            .map(page => ({
-                id: page.id,
-                name: page.properties.Name.title[0]?.text.content || "Unknown"
-            }))
-            .filter(author => author.name.toLowerCase().includes(searchLower)) // Case-insensitive match
-            .filter((value, index, self) => 
-                index === self.findIndex((t) => t.id === value.id)
-            ); // Removes duplicates
+        // If a search query exists, filter authors
+        if (search) {
+            const lowerSearch = search.toLowerCase();
+            authors = authors.filter(author => 
+                author.name.toLowerCase().includes(lowerSearch)
+            );
+        }
 
         res.json(authors);
     } catch (error) {
