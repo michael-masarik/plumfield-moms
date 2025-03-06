@@ -52,28 +52,40 @@
 
     <script src="form-handler.js"></script>
     <script>
-        // Fetch authors from the API
-async function fetchAuthors(query) {
-    if (query.length < 2) return;
-    authorList.innerHTML = ""; // Clear previous results
+        let allAuthors = []; // Store all authors
 
-    const response = await fetch(`https://plumfield-moms.onrender.com/authors?search=${query}`);
-    const authors = await response.json();
+// Fetch authors once when the page loads
+async function loadAuthors() {
+    try {
+        const response = await fetch("https://plumfield-moms.onrender.com/authors?search=*");
+        allAuthors = await response.json();
+        console.log("Loaded authors:", allAuthors);
+        populateAuthorDropdown();
+    } catch (error) {
+        console.error("Error loading authors:", error);
+    }
+}
 
-    authors.forEach(author => {
-        const div = document.createElement("div");
-        div.textContent = author.name;
-        div.onclick = function () {
-            authorSearch.value = author.name;
-            selectedAuthorId.value = author.id; // Store Notion ID
-            authorList.innerHTML = ""; // Clear dropdown
-        };
-        authorList.appendChild(div);
+// Populate the dropdown with authors
+function populateAuthorDropdown() {
+    const authorDropdown = document.getElementById("authorSelect");
+    authorDropdown.innerHTML = '<option value="">Select an author...</option>'; // Default option
+
+    allAuthors.forEach(author => {
+        const option = document.createElement("option");
+        option.value = author.id; // Store Notion ID
+        option.textContent = author.name;
+        authorDropdown.appendChild(option);
     });
 }
 
-    // Attach event listener for live search
-    authorSearch.addEventListener("input", () => fetchAuthors(authorSearch.value));
+// Update hidden input when user selects an author
+document.addEventListener("DOMContentLoaded", () => {
+    loadAuthors();
+    document.getElementById("authorSelect").addEventListener("change", function () {
+        document.getElementById("selectedAuthorId").value = this.value;
+    });
+});
     </script>
 
 </body>

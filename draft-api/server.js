@@ -23,7 +23,9 @@ const DB_IDS = {
 // Search for authors in Notion
 app.get("/authors", async (req, res) => {
     const { search } = req.query;
-    if (!search) return res.status(400).json({ error: "Missing search query" });
+    if (!req.query.search) {
+        return res.json(allAuthors); // Send full list
+    }
 
     try {
         const response = await notion.databases.query({
