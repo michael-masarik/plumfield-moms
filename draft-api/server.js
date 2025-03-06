@@ -28,19 +28,21 @@ app.get("/authors", async (req, res) => {
     try {
         const response = await notion.databases.query({
             database_id: process.env.NOTION_AUTHORS_DB,
-            filter: {
-                property: "Name",
-                title: {
-                    contains: search,
-                },
-            },
         });
 
-        // Format response
-        const authors = response.results.map((page) => ({
-            id: page.id,
-            name: page.properties.Name.title[0]?.text.content || "Unknown",
-        }));
+        // Normalize search term to lowercase
+        const searchLower = search.toLowerCase();
+
+        // Filter results manually (case-insensitive)
+        const authors = response.results
+            .map(page => ({
+                id: page.id,
+                name: page.properties.Name.title[0]?.text.content || "Unknown"
+            }))
+            .filter(author => author.name.toLowerCase().includes(searchLower)) // Case-insensitive match
+            .filter((value, index, self) => 
+                index === self.findIndex((t) => t.id === value.id)
+            ); // Removes duplicates
 
         res.json(authors);
     } catch (error) {
