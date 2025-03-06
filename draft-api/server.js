@@ -1,14 +1,14 @@
 require("dotenv").config();
-import express, { json } from "express";
-import cors from "cors";
-import { Client } from "@notionhq/client";
+const express = require("express");
+const cors = require("cors");
+const { Client } = require("@notionhq/client");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Enable CORS for frontend requests
 app.use(cors());
-app.use(json());
+app.use(express.json());
 
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -19,6 +19,8 @@ const DB_IDS = {
     pictureBookReview: process.env.NOTION_PICTURE_BOOK_DB,
     reflection: process.env.NOTION_REFLECTION_DB,
 };
+
+// Search for authors in Notion
 app.get("/authors", async (req, res) => {
     const { search } = req.query;
     if (!search) return res.status(400).json({ error: "Missing search query" });
@@ -70,34 +72,6 @@ app.post("/submit/:type", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to submit review" });
-    }
-});
-// Search for authors in Notion
-app.get("/authors", async (req, res) => {
-    const { search } = req.query;
-    if (!search) return res.status(400).json({ error: "Missing search query" });
-
-    try {
-        const response = await notion.databases.query({
-            database_id: process.env.NOTION_AUTHORS_DB,
-            filter: {
-                property: "Name",
-                title: {
-                    contains: search,
-                },
-            },
-        });
-
-        // Format response
-        const authors = response.results.map((page) => ({
-            id: page.id,
-            name: page.properties.Name.title[0]?.text.content || "Unknown",
-        }));
-
-        res.json(authors);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to fetch authors" });
     }
 });
 
