@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (query.length < 2) return;
         authorList.innerHTML = ""; // Clear previous results
 
-        const response = await fetch(`https://your-render-app.onrender.com/authors?search=${query}`);
+        const response = await fetch(`https://plumfield-moms.onrender.com/authors?search=${query}`);
         const authors = await response.json();
 
         authors.forEach(author => {
@@ -52,13 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
         let endpoint;
         switch (formData.reviewType) {
             case "bookReview":
-                endpoint = "https://your-render-app.onrender.com/submit/book-review";
+                endpoint = "https://plumfield-moms.onrender.com/submit/book-review";
                 break;
             case "pictureBookReview":
-                endpoint = "https://your-render-app.onrender.com/submit/picture-book";
+                endpoint = "https://plumfield-moms.onrender.com/submit/picture-book";
                 break;
             case "reflection":
-                endpoint = "https://your-render-app.onrender.com/submit/reflection";
+                endpoint = "https://plumfield-moms.onrender.com/submit/reflection";
                 break;
             default:
                 messageDiv.innerHTML = "<p>❌ Error: Invalid review type.</p>";
