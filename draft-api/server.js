@@ -52,7 +52,7 @@ app.get("/authors", async (req, res) => {
 // Handle Review Submission
 app.post("/submit/:type", async (req, res) => {
     const { type } = req.params;
-    const { title, richTextContent, authorId } = req.body;
+    const { title, formattedBlocks, authorId } = req.body;
 
     if (!DB_IDS[type]) {
         return res.status(400).json({ error: "Invalid review type" });
@@ -64,8 +64,10 @@ app.post("/submit/:type", async (req, res) => {
             properties: {
                 Name: { title: [{ text: { content: title } }] },
                 Author: { relation: [{ id: authorId }] },
-                Content: { rich_text: [{ text: { content: richTextContent } }] },
             },
+            children: [
+                formattedBlocks
+            ]
         });
 
         res.json({ success: true, message: "Review submitted successfully" });

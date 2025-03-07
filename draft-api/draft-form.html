@@ -30,10 +30,11 @@
             <input type="text" name="title" id="title" placeholder="Article title..." required>
 
             <!-- Author Search -->
-            <div class="autocomplete">
-                <input type="text" id="authorSearch" placeholder="Search for an author..." autocomplete="off">
-                <div id="authorList" class="autocomplete-items"></div>
-            </div>
+            <label for="authorSelect">Select an Author:</label>
+            <select id="authorSelect" name="authorId" required>
+                <option value="">Loading authors...</option>
+            </select>
+            <input type="hidden" id="selectedAuthorId" name="authorId">
 
             <!-- Hidden field for author ID -->
             <input type="hidden" id="selectedAuthorId" name="authorId">

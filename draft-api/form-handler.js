@@ -1,54 +1,69 @@
+import parseHTML from "./notion-block-format.js";
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Quill
     const quill = new Quill("#editor", {
         theme: "snow",
         modules: {
-            toolbar: [["bold", "italic", "underline"], ["link"]],
+            toolbar: [["link"]],
         },
     });
 
     const form = document.getElementById("review-form");
-    const hiddenInput = document.getElementById("hiddenInput");
-    const authorSearch = document.getElementById("authorSearch");
-    const authorList = document.getElementById("authorList");
     const selectedAuthorId = document.getElementById("selectedAuthorId");
     const messageDiv = document.getElementById("message");
+    const authorDropdown = document.getElementById("authorSelect");
 
-    // Fetch authors from Notion
-    async function fetchAuthors(query) {
-        if (query.length < 2) return;
-        authorList.innerHTML = ""; // Clear previous results
+    let allAuthors = [];
 
-        const response = await fetch(`https://plumfield-moms.onrender.com/authors?search=${query}`);
-        const authors = await response.json();
+    // Load authors from the API and populate dropdown
+    async function loadAuthors() {
+        try {
+            const response = await fetch("https://plumfield-moms.onrender.com/authors");
+            allAuthors = await response.json();
+            populateAuthorDropdown();
+        } catch (error) {
+            console.error("Error loading authors:", error);
+            messageDiv.innerHTML = "<p>❌ Error loading authors. Please try again.</p>";
+        }
+    }
 
-        authors.forEach(author => {
-            const div = document.createElement("div");
-            div.textContent = author.name;
-            div.onclick = function () {
-                authorSearch.value = author.name;
-                selectedAuthorId.value = author.id; // Store Notion ID
-                authorList.innerHTML = ""; // Clear dropdown
-            };
-            authorList.appendChild(div);
+    function populateAuthorDropdown() {
+        if (!authorDropdown) {
+            console.error("Dropdown not found!");
+            return;
+        }
+
+        authorDropdown.innerHTML = '<option value="">Select an author...</option>'; // Default option
+
+        allAuthors.forEach(author => {
+            const option = document.createElement("option");
+            option.value = author.id; // Store Notion ID
+            option.textContent = author.name;
+            authorDropdown.appendChild(option);
         });
     }
 
-    authorSearch.addEventListener("input", () => fetchAuthors(authorSearch.value));
+    if (authorDropdown) {
+        authorDropdown.addEventListener("change", function () {
+            selectedAuthorId.value = this.value;
+        });
+    }
+
+    loadAuthors();
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        hiddenInput.value = quill.root.innerHTML;
+        const richTextContent = quill.root.innerHTML; // Get Quill HTML
+        const formattedBlocks = parseHTML(richTextContent); // Convert to Notion format
 
         const formData = {
             title: document.getElementById("title").value,
-            richTextContent: hiddenInput.value,
+            formattedBlocks: formattedBlocks, // Send formatted blocks
             authorId: selectedAuthorId.value,
-            reviewType: document.getElementById("reviewType").value, // Gets selected database
+            reviewType: document.getElementById("reviewType").value,
         };
 
-        // Determine the API endpoint based on the review type
         let endpoint;
         switch (formData.reviewType) {
             case "bookReview":
@@ -65,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
         }
 
-        // Send data to the correct database
         const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -79,4 +93,5 @@ document.addEventListener("DOMContentLoaded", function () {
             messageDiv.innerHTML = "<p>❌ Error submitting review. Please try again.</p>";
         }
     });
+
 });
