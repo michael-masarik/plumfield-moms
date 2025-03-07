@@ -1,5 +1,11 @@
-import * as cheerio from "cheerio";
+import("cheerio");
 
+/**
+ * Parses HTML content and converts it into Notion blocks.
+ * 
+ * @param {string} html - The HTML content to parse.
+ * @returns {Array} An array of Notion blocks.
+ */
 export function parseHTML(html) {
     const $ = cheerio.load(html);
     let notionBlocks = [];

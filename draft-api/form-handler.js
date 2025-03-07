@@ -1,4 +1,154 @@
-import parseHTML from "./notion-block-format.js";
+/**
+ * Parses HTML content and converts it into Notion blocks.
+ * 
+ * @param {string} html - The HTML content to parse.
+ * @returns {Array} An array of Notion blocks.
+ */
+function parseHTML(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    let notionBlocks = [];
+
+    // Function to process rich text with annotations
+    function processNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const textContent = node.textContent.trim();
+            if (!textContent) return null;
+
+            return {
+                type: "text",
+                text: { content: textContent + " ", link: null }, // Add space
+                annotations: { 
+                    bold: false, 
+                    italic: false, 
+                    strikethrough: false, 
+                    underline: false, 
+                    code: false, 
+                    color: "default" 
+                },
+                plain_text: textContent + " ", // Add space
+                href: null
+            };
+        }
+
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            const tag = node.tagName.toLowerCase();
+            let richText = [];
+            
+            if (tag === "a") {
+                const url = node.getAttribute("href");
+                node.childNodes.forEach((child) => {
+                    const processed = processNode(child);
+                    if (processed) {
+                        processed.text.link = { url };
+                        processed.href = url;
+                        richText.push(processed);
+                    }
+                });
+
+                // Add space after the link
+                richText.push({
+                    type: "text",
+                    text: { content: " ", link: null },
+                    annotations: { 
+                        bold: false, 
+                        italic: false, 
+                        strikethrough: false, 
+                        underline: false, 
+                        code: false, 
+                        color: "default" 
+                    },
+                    plain_text: " ",
+                    href: null
+                });
+
+                return richText;
+            }
+
+            // Handle formatting elements
+            let annotations = {
+                bold: tag === "b" || tag === "strong",
+                italic: tag === "i" || tag === "em",
+                strikethrough: tag === "s" || tag === "del",
+                underline: tag === "u",
+                code: tag === "code",
+                color: "default"
+            };
+
+            node.childNodes.forEach((child) => {
+                const processed = processNode(child);
+                if (processed) {
+                    if (Array.isArray(processed)) {
+                        processed.forEach((p) => Object.assign(p.annotations, annotations));
+                        richText.push(...processed);
+                    } else {
+                        Object.assign(processed.annotations, annotations);
+                        richText.push(processed);
+                    }
+                }
+            });
+
+            return richText;
+        }
+
+        return null;
+    }
+
+    // Process paragraphs and unordered lists
+    doc.querySelectorAll("p, ul").forEach((elem) => {
+        const tag = elem.tagName.toLowerCase();
+
+        if (tag === "p") {
+            let richText = [];
+            elem.childNodes.forEach((node) => {
+                const processed = processNode(node);
+                if (processed) {
+                    if (Array.isArray(processed)) {
+                        richText.push(...processed);
+                    } else {
+                        richText.push(processed);
+                    }
+                }
+            });
+
+            if (richText.length > 0) {
+                notionBlocks.push({
+                    object: "block",
+                    type: "paragraph",
+                    paragraph: { rich_text: richText }
+                });
+            }
+        }
+
+        if (tag === "ul") {
+            elem.querySelectorAll("li").forEach((li) => {
+                let richText = [];
+                li.childNodes.forEach((node) => {
+                    const processed = processNode(node);
+                    if (processed) {
+                        if (Array.isArray(processed)) {
+                            richText.push(...processed);
+                        } else {
+                            richText.push(processed);
+                        }
+                    }
+                });
+
+                if (richText.length > 0) {
+                    notionBlocks.push({
+                        object: "block",
+                        type: "bulleted_list_item",
+                        bulleted_list_item: { rich_text: richText }
+                    });
+                }
+            });
+        }
+    });
+
+    return notionBlocks;
+}
+//Main body code
+
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Quill
     const quill = new Quill("#editor", {
