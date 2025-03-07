@@ -54,7 +54,7 @@ app.post("/submit/:type", async (req, res) => {
     const { type } = req.params;
     const { title, formattedBlocks, authorId } = req.body;
     console.log("Received reviewType:", req.body.reviewType);
-    console.log(process.env.NOTION_BOOK_REVIEW_DB)
+    console.log(process.env.NOTION_BOOK_REVIEW_DB);
 
     if (!DB_IDS[type]) {
         return res.status(400).json({ error: "Invalid review type" });
