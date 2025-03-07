@@ -253,11 +253,21 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "Unknown error");
+                let errorMessage = "Unknown error occurred.";
+                
+                try {
+                    // Try to parse JSON error response
+                    const errorData = await response.json();
+                    errorMessage = errorData.error || errorMessage;
+                } catch (error) {
+                    // If response is not JSON (like an authentication error), get plain text
+                    errorMessage = await response.text();
+                }
+            
+                throw new Error(errorMessage);
             }
     
-            form.style.display = "none";
+            form.reset();  // Clear form fields
             messageDiv.innerHTML = "<p>✅ Review submitted successfully!</p>";
     
         } catch (error) {
