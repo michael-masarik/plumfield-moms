@@ -19,32 +19,36 @@ const DB_IDS = {
     pictureBookReview: process.env.NOTION_PICTURE_BOOK_DB,
     reflection: process.env.NOTION_REFLECTION_DB,
 };
-
+app.get("/", (req, res) => {
+    res.send(`
+        <h1>Welcome!</h1>
+        <p>This page is goes to nowhere. Please visit 
+            <a href='https://plumfieldmoms.com/admin'>plumfieldmoms.com/admin.</a>
+        </p>
+    `);
+});
 // Search for authors in Notion
 app.get("/authors", async (req, res) => {
-    const { search } = req.query;
+    console.log("Received request for /authors"); // Debug log
 
     try {
+        console.log("Querying Notion database:", process.env.NOTION_AUTHORS_DB);
+
         const response = await notion.databases.query({
             database_id: process.env.NOTION_AUTHORS_DB,
         });
 
-        let authors = response.results.map((page) => ({
+        console.log("Received response from Notion:", response.results.length, "authors found");
+
+        const authors = response.results.map((page) => ({
             id: page.id,
             name: page.properties.Name.title[0]?.text.content || "Unknown",
         }));
 
-        // If a search query exists, filter authors
-        if (search) {
-            const lowerSearch = search.toLowerCase();
-            authors = authors.filter(author => 
-                author.name.toLowerCase().includes(lowerSearch)
-            );
-        }
-
+        console.log("Final author list:", authors.length, "authors returned");
         res.json(authors);
     } catch (error) {
-        console.error(error);
+        console.error("Error fetching authors:", error);
         res.status(500).json({ error: "Failed to fetch authors" });
     }
 });
