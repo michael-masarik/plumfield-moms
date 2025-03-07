@@ -12,10 +12,21 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Gentium+Plus:wght@400;700&display=swap');
         * { font-family: "Gentium Plus", serif; }
+        #spinner{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border:1px solid var(--notion-red-base);
+        }
     </style>
 </head>
 <body>
-    <div id="spinner" style="display: none;">⏳ Submitting...</div>
+    <div id="spinner" style="display: none;"><p>⏳ Submitting...</p></div>
     <div class="form-container">
         <form id="review-form">
             <!-- Review Type Selection -->
