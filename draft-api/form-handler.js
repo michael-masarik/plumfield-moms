@@ -217,10 +217,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let endpoint;
         switch (formData.reviewType) {
             case "bookReview":
-                endpoint = "https://plumfield-moms.onrender.com/submit/book-review";
+                endpoint = "https://plumfield-moms.onrender.com/submit/bookReview";
                 break;
             case "pictureBookReview":
-                endpoint = "https://plumfield-moms.onrender.com/submit/picture-book";
+                endpoint = "https://plumfield-moms.onrender.com/submit/pictureBookReview";
                 break;
             case "reflection":
                 endpoint = "https://plumfield-moms.onrender.com/submit/reflection";

@@ -67,9 +67,7 @@ app.post("/submit/:type", async (req, res) => {
                 Name: { title: [{ text: { content: title } }] },
                 Author: { relation: [{ id: authorId }] },
             },
-            children: [
-                formattedBlocks
-            ]
+            children: formattedBlocks // ✅ Fix: Send as array directly
         });
 
         res.json({ success: true, message: "Review submitted successfully" });
