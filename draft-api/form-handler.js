@@ -229,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 messageDiv.innerHTML = "<p>❌ Error: Invalid review type.</p>";
                 return;
         }
+        console.log("Review Type:", formData.reviewType);
 
         const response = await fetch(endpoint, {
             method: "POST",
