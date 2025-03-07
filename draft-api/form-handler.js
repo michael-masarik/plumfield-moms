@@ -203,19 +203,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
-
-        const richTextContent = quill.root.innerHTML; // Get Quill HTML
-        const formattedBlocks = parseHTML(richTextContent); // Convert to Notion format
-
-        const formData = {
-            title: document.getElementById("title").value,
-            formattedBlocks: formattedBlocks, // Send formatted blocks
-            authorId: selectedAuthorId.value,
-            reviewType: document.getElementById("reviewType").value,
-        };
-
+    
+        const username = "user"; // Keep this static
+        const password = document.getElementById("password").value; // Get user-entered password
+        const title = document.getElementById("title").value;
+        const reviewType = document.getElementById("reviewType").value;
+        const authorId = selectedAuthorId.value;
+    
+        if (!password) {
+            alert("❌ Please enter the password.");
+            return;
+        }
+        if (!title || !reviewType || !authorId) {
+            alert("❌ Please fill in all required fields.");
+            return;
+        }
+    
+        // Convert Quill editor content to Notion format
+        const richTextContent = quill.root.innerHTML; 
+        const formattedBlocks = parseHTML(richTextContent); 
+    
+        const formData = { title, formattedBlocks, authorId, reviewType };
+    
         let endpoint;
-        switch (formData.reviewType) {
+        switch (reviewType) {
             case "bookReview":
                 endpoint = "https://plumfield-moms.onrender.com/submit/bookReview";
                 break;
@@ -229,19 +240,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 messageDiv.innerHTML = "<p>❌ Error: Invalid review type.</p>";
                 return;
         }
-        console.log("Review Type:", formData.reviewType);
-
-        const response = await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
+        console.log("Submitting review type:", reviewType);
+    
+        try {
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Authorization": "Basic " + btoa(username + ":" + password),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Unknown error");
+            }
+    
             form.style.display = "none";
             messageDiv.innerHTML = "<p>✅ Review submitted successfully!</p>";
-        } else {
-            messageDiv.innerHTML = "<p>❌ Error submitting review. Please try again.</p>";
+    
+        } catch (error) {
+            console.error("Error submitting review:", error);
+            messageDiv.innerHTML = `<p>❌ Error: ${error.message}. Please try again.</p>`;
         }
     });
 

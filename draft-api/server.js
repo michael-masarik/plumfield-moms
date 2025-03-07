@@ -52,6 +52,20 @@ app.get("/authors", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch authors" });
     }
 });
+//🔐 Basic Auth
+app.use("/submit/:type", (req, res, next) => {
+    const auth = { username: "user", password: process.env.FORM_PASSWORD }; // Use env variable
+
+    const b64auth = (req.headers.authorization || "").split(" ")[1] || "";
+    const [username, password] = Buffer.from(b64auth, "base64").toString().split(":");
+
+    if (username && password && username === auth.username && password === auth.password) {
+        return next(); // Proceed if credentials are correct
+    }
+
+    res.set("WWW-Authenticate", 'Basic realm="Secure Area"'); // Prompt login popup in browser
+    res.status(401).send("Authentication required.");
+});
 
 // Handle Review Submission
 app.post("/submit/:type", async (req, res) => {
