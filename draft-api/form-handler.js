@@ -218,6 +218,9 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("❌ Please fill in all required fields.");
             return;
         }
+        // Show spinner and disable submit button
+        spinner.style.display = "block";
+        submitButton.disabled = true;
     
         // Convert Quill editor content to Notion format
         const richTextContent = quill.root.innerHTML; 
@@ -266,13 +269,16 @@ document.addEventListener("DOMContentLoaded", function () {
             
                 throw new Error(errorMessage);
             }
-    
+            spinner.style.display = "none"; // Hide spinner
+            submitButton.disabled = false; // Enable submit
             form.reset();  // Clear form fields
             messageDiv.innerHTML = "<p>✅ Review submitted successfully!</p>";
     
         } catch (error) {
             console.error("Error submitting review:", error);
             messageDiv.innerHTML = `<p>❌ Error: ${error.message}. Please try again.</p>`;
+            spinner.style.display = "none"; // Hide spinner
+            submitButton.disabled = false; // Enable submit
         }
     });
 
