@@ -158,25 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
             toolbar: [["link","bold", "italic"]],
         },
     });
-    try{
-        window.addEventListener("message", (event) => {
-            console.log("Received message from:", event.origin);
-            console.log("Message data:", event.data);
-        
-            if (event.origin !== "https://plumfieldmoms.com") {
-                console.warn("Blocked message from unknown origin:", event.origin);
-                return;
-            }
-        
-            const { password } = event.data;
-            if (password) {
-                console.log("Setting password field:", password);
-                document.getElementById("password").value = password;
-            }
-        });
-    }catch(e){
-        console.error("Error retrieving password", e);
-    }
+    
    
     
     
@@ -213,17 +195,11 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
     console.log("✅ Form submitted!");
         const submitButton = document.getElementById("submit");
-        const username = "user"; // Static username
-        const password = document.getElementById("password").value.trim(); // Ensure no extra spaces
         console.log("Entered Password:", password); // Debugging
         const title = document.getElementById("title").value;
         const reviewType = document.getElementById("reviewType").value;
         const authorId = selectedAuthorId.value;
     
-        if (!password) {
-            alert("❌ Please enter the password.");
-            return;
-        }
         if (!title || !reviewType || !authorId) {
             alert("❌ Please fill in all required fields.");
             return;
@@ -259,7 +235,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(endpoint, {
                 method: "POST",
                 headers: {
-                    "Authorization": "Basic " + btoa(username + ":" + password),
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(formData),

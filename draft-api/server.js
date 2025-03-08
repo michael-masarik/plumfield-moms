@@ -2,14 +2,22 @@
 const express = require("express");
 const cors = require("cors");
 const { Client } = require("@notionhq/client");
+const path = require("path");
+const session = require("express-session");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS for frontend requests
-app.use(cors());
+app.use(cors({ origin: "https://admin.plumfieldmoms.com", credentials: true }));
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
@@ -19,13 +27,36 @@ const DB_IDS = {
     pictureBookReview: process.env.NOTION_PICTURE_BOOK_DB,
     reflection: process.env.NOTION_REFLECTION_DB,
 };
+const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
 app.get("/", (req, res) => {
     res.send(`
         <h1>Welcome!</h1>
         <p>This page is goes to nowhere. Please visit 
-            <a href='https://plumfieldmoms.com/admin'>plumfieldmoms.com/admin.</a>
+            <a href='https://admin.plumfieldmoms.com/login'>admin.plumfieldmoms.com/login</a>
         </p>
     `);
+});
+app.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "login.html"));
+});
+// Handle password submission
+app.post("/login", (req, res) => {
+    const { password } = req.body; // 🔥 Get password from form
+
+    if (password === SECRET_PASSWORD) {
+        req.session.authenticated = true; // ✅ Mark user as logged in
+        res.redirect("/submit-draft"); // Redirect to the form page
+    } else {
+        res.send("Invalid password. <a href='/login'>Try again</a>");
+    }
+});
+
+// Protect the form page
+app.get("/submit-draft", (req, res) => {
+    if (!req.session.authenticated) {
+        return res.redirect("/login");
+    }
+    res.sendFile(path.join(__dirname, "public", "draft-form.html"));
 });
 // Search for authors in Notion
 app.get("/authors", async (req, res) => {
@@ -51,20 +82,6 @@ app.get("/authors", async (req, res) => {
         console.error("Error fetching authors:", error);
         res.status(500).json({ error: "Failed to fetch authors" });
     }
-});
-//🔐 Basic Auth
-app.use("/submit/:type", (req, res, next) => {
-    const auth = { username: "user", password: process.env.FORM_PASSWORD }; // Use env variable
-
-    const b64auth = (req.headers.authorization || "").split(" ")[1] || "";
-    const [username, password] = Buffer.from(b64auth, "base64").toString().split(":");
-
-    if (username && password && username === auth.username && password === auth.password) {
-        return next(); // Proceed if credentials are correct
-    }
-
-    res.set("WWW-Authenticate", 'Basic realm="Secure Area"'); // Prompt login popup in browser
-    res.status(401).send("Authentication required.");
 });
 
 // Handle Review Submission
@@ -94,6 +111,10 @@ app.post("/submit/:type", async (req, res) => {
         res.status(500).json({ error: "Failed to submit review" });
     }
 });
-
+app.get("/logout", (req, res) => {
+    req.session.destroy(() => {
+        res.redirect("/login");
+    });
+});
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

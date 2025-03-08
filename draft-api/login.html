@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@1.3.6/dist/quill.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gentium+Plus:wght@400;700&display=swap');
+        * { font-family: "Gentium Plus", serif !important; }
+        label,#login-button{
+            font-size: 20px;
+        }
+        input{
+            font-size:15px;
+        }
+        form{
+            max-width: 80vw;
+            margin: 0 auto;
+        }
+        label,input,#login-button{
+            border-radius: 5px;
+        }
+        #login-button{
+            color: #ffe3a3;
+            background-color: #7D0E0E;
+            border: none;
+            &:hover{
+                scale:1.05;
+            }
+        
+        }
+        body{
+            background-color: rgb(255, 253, 253);
+        }
+        form{
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container form{
+            width: 300px;
+        }
+    </style>
+    <body>
+    <div class="form-container">
+        <form action="/login"method="POST">
+            <h2>Login</h2>
+            <label for="password">Password:</label> 
+            <input type="password" id="password" name="password" required autofocus><br><br>
+            <button type="submit" id="login-button">Login</button>
+        </form>
+    </div>
+    </body>
+</html>
