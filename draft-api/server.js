@@ -50,6 +50,10 @@ app.post("/login", (req, res) => {
         res.send("Invalid password. <a href='/login'>Try again</a>");
     }
 });
+app.get("form-handler.js", (req, res) => {
+    res.sendFile(path.join(__dirname, "form-handler.js"));
+}
+);
 
 // Protect the form page
 app.get("/submit-draft", (req, res) => {
