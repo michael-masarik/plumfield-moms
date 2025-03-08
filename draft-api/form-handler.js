@@ -160,10 +160,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     try{
         window.addEventListener("message", (event) => {
-            if (event.origin !== "https://plumfieldmoms.com") return;
-            
-            if (event.data.password) {
-                document.getElementById("password").value = event.data.password;
+            console.log("Received message from:", event.origin);
+            console.log("Message data:", event.data);
+        
+            if (event.origin !== "https://plumfieldmoms.com") {
+                console.warn("Blocked message from unknown origin:", event.origin);
+                return;
+            }
+        
+            const { password } = event.data;
+            if (password) {
+                console.log("Setting password field:", password);
+                document.getElementById("password").value = password;
             }
         });
     }catch(e){
