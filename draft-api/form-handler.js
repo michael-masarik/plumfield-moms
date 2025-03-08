@@ -1,7 +1,9 @@
-
-
-
-
+//cookie handler
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+}
 /**
  * Parses HTML content and converts it into Notion blocks.
  * 
@@ -161,6 +163,15 @@ document.addEventListener("DOMContentLoaded", function () {
             toolbar: [["link","bold", "italic"]],
         },
     });
+    try {
+        const passwordField = document.getElementById("password");
+        const storedPassword = getCookie("sitePassword");
+        if (passwordField && storedPassword) {
+            passwordField.value = storedPassword;
+        }
+    } catch (error) {
+        console.error("Error setting password field:", error);
+    }
     
     
 
