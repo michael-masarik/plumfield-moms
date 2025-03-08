@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
     `);
 });
 app.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "login.html"));
+    res.sendFile(path.join(__dirname, "login.html"));
 });
 // Handle password submission
 app.post("/login", (req, res) => {
@@ -56,7 +56,7 @@ app.get("/submit-draft", (req, res) => {
     if (!req.session.authenticated) {
         return res.redirect("/login");
     }
-    res.sendFile(path.join(__dirname, "public", "draft-form.html"));
+    res.sendFile(path.join(__dirname, "draft-form.html"));
 });
 // Search for authors in Notion
 app.get("/authors", async (req, res) => {
