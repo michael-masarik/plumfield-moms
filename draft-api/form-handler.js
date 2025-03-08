@@ -1,3 +1,7 @@
+
+
+
+
 /**
  * Parses HTML content and converts it into Notion blocks.
  * 
@@ -154,58 +158,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const quill = new Quill("#editor", {
         theme: "snow",
         modules: {
-            toolbar: [["link"]],
+            toolbar: [["link","bold", "italic"]],
         },
     });
+    
+    
 
     const form = document.getElementById("review-form");
     const selectedAuthorId = document.getElementById("selectedAuthorId");
     const messageDiv = document.getElementById("message");
-    const authorDropdown = document.getElementById("authorSelect");
-
-    let allAuthors = [];
+    const messageBackdrop = document.getElementById("message-backdrop");
+    function showMessage(message){
+        messageDiv.style.display = "block";
+        messageDiv.innerHTML = message;
+        messageBackdrop.style.display = "block";
+        setTimeout(function() {
+            messageDiv.style.display = "none";
+            messageBackdrop.style.display = "none";
+        }, 3500);
+    }
+    //debug
+    document.getElementById("debug").addEventListener("click", function() {
+        
+        showMessage( "<p>Debug mode is ON</p>");
+    });
+    //hide message
+    document.getElementById("message").addEventListener("click", function() {
+        messageDiv.style.display = "none";
+    });
+    
+    
 
     // Load authors from the API and populate dropdown
-    async function loadAuthors() {
-        try {
-            const response = await fetch("https://plumfield-moms.onrender.com/authors");
-            allAuthors = await response.json();
-            populateAuthorDropdown();
-        } catch (error) {
-            console.error("Error loading authors:", error);
-            messageDiv.innerHTML = "<p>❌ Error loading authors. Please try again.</p>";
-        }
-    }
-
-    function populateAuthorDropdown() {
-        if (!authorDropdown) {
-            console.error("Dropdown not found!");
-            return;
-        }
-
-        authorDropdown.innerHTML = '<option value="">Select an author...</option>'; // Default option
-
-        allAuthors.forEach(author => {
-            const option = document.createElement("option");
-            option.value = author.id; // Store Notion ID
-            option.textContent = author.name;
-            authorDropdown.appendChild(option);
-        });
-    }
-
-    if (authorDropdown) {
-        authorDropdown.addEventListener("change", function () {
-            selectedAuthorId.value = this.value;
-        });
-    }
-
-    loadAuthors();
+    
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
-    
-        const username = "user"; // Keep this static
-        const password = document.getElementById("password").value; // Get user-entered password
+    console.log("✅ Form submitted!");
+        const submitButton = document.getElementById("submit");
+        const username = "user"; // Static username
+        const password = document.getElementById("password").value.trim(); // Ensure no extra spaces
+        console.log("Entered Password:", password); // Debugging
         const title = document.getElementById("title").value;
         const reviewType = document.getElementById("reviewType").value;
         const authorId = selectedAuthorId.value;
@@ -240,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 endpoint = "https://plumfield-moms.onrender.com/submit/reflection";
                 break;
             default:
-                messageDiv.innerHTML = "<p>❌ Error: Invalid review type.</p>";
+               showMessage("<p>❌ Error: Invalid review type.</p>");
                 return;
         }
         console.log("Submitting review type:", reviewType);
@@ -253,8 +246,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(formData),
+                
             });
-    
+            
             if (!response.ok) {
                 let errorMessage = "Unknown error occurred.";
                 
@@ -271,15 +265,20 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             spinner.style.display = "none"; // Hide spinner
             submitButton.disabled = false; // Enable submit
-            form.reset();  // Clear form fields
-            messageDiv.innerHTML = "<p>✅ Review submitted successfully!</p>";
+            //form.reset();  // Clear form fields
+            messageDiv.style.display = "block";
+            showMessage("<p>✅ Review submitted successfully!</p>");
+            console.log("Review submitted successfully!");
     
         } catch (error) {
             console.error("Error submitting review:", error);
-            messageDiv.innerHTML = `<p>❌ Error: ${error.message}. Please try again.</p>`;
+            messageDiv.style.display = "block";
+            showMessage(`<p>❌ Error: ${error.message}. Please try again.</p>`);
             spinner.style.display = "none"; // Hide spinner
             submitButton.disabled = false; // Enable submit
+            console.error("Error submitting review:", error);
         }
     });
+    
 
 });
