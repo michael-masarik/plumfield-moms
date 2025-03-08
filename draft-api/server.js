@@ -29,12 +29,7 @@ const DB_IDS = {
 };
 const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
 app.get("/", (req, res) => {
-    res.send(`
-        <h1>Welcome!</h1>
-        <p>This page is goes to nowhere. Please visit 
-            <a href='https://admin.plumfieldmoms.com/login'>admin.plumfieldmoms.com/login</a>
-        </p>
-    `);
+    res.redirect("/login");
 });
 app.get("/login", (req, res) => {
     res.sendFile(path.join(__dirname, "login.html"));
@@ -50,7 +45,7 @@ app.post("/login", (req, res) => {
         res.send("Invalid password. <a href='/login'>Try again</a>");
     }
 });
-app.get("form-handler.js", (req, res) => {
+app.get("/form-handler.js", (req, res) => {
     res.sendFile(path.join(__dirname, "form-handler.js"));
 }
 );
