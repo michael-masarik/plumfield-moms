@@ -1,13 +1,4 @@
-window.addEventListener("message", (event) => {
-    if (event.origin !== "https://plumfieldmoms.com") return; // ✅ Correct domain check
-    if (!event.data.password) return; // ✅ Ensure password exists
-    const passwordField = document.getElementById("password");
-    if (passwordField) {
-        passwordField.value = event.data.password;
-    } else {
-        console.error("Password field not found!");
-    }
-});
+
 /**
  * Parses HTML content and converts it into Notion blocks.
  * 
@@ -167,6 +158,17 @@ document.addEventListener("DOMContentLoaded", function () {
             toolbar: [["link","bold", "italic"]],
         },
     });
+    try{
+        window.addEventListener("message", (event) => {
+            if (event.origin !== "https://plumfieldmoms.com") return;
+            
+            if (event.data.password) {
+                document.getElementById("password").value = event.data.password;
+            }
+        });
+    }catch(e){
+        console.error("Error retrieving password", e);
+    }
    
     
     
