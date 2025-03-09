@@ -28,6 +28,13 @@ const DB_IDS = {
     reflection: process.env.NOTION_REFLECTION_DB,
 };
 const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
+// Middleware to check authentication
+app.use((req, res, next) => {
+    if (!req.session.authenticated && req.path !== "/login") {
+        return res.redirect("/login");
+    }
+    next();
+});
 app.get("/", (req, res) => {
     res.redirect("/login");
 });
@@ -52,9 +59,7 @@ app.get("/form-handler.js", (req, res) => {
 
 // Protect the form page
 app.get("/submit-draft", (req, res) => {
-    if (!req.session.authenticated) {
-        return res.redirect("/login");
-    }
+    
     res.sendFile(path.join(__dirname, "draft-form.html"));
 });
 // Search for authors in Notion
