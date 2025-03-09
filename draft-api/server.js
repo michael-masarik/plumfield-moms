@@ -15,7 +15,7 @@ app.use(
     session({
         name: "session",
         secret: process.env.SESSION_SECRET || "your-secret-key",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 7 days
     })
 );
 // Initialize Notion Client
@@ -30,7 +30,7 @@ const DB_IDS = {
 const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
 // Middleware to check authentication
 app.use((req, res, next) => {
-    if (!req.session.authenticated && req.path !== "/login" && req.path !== "/" && req.path !== "/favicon.ico") {
+    if (!req.session.authenticated && req.path !== "/login" && req.path !== "/favicon.ico") {
         req.session.returnTo = req.originalUrl; // Store original URL (but not favicon)
         return res.redirect("/login");
     }
@@ -54,10 +54,18 @@ app.post("/login", (req, res) => {
         res.send("Invalid password. <a href='/login'>Try again</a>");
     }
 });
+//home page
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+//form js
 app.get("/form-handler.js", (req, res) => {
     res.sendFile(path.join(__dirname, "form-handler.js"));
-}
-);
+});
+//favicon
+app.get("/favicon.ico", (req, res) => {
+    res.sendFile(path.join(__dirname, "assets", "favicon.ico"));
+});
 
 // Protect the form page
 app.get("/submit-draft", (req, res) => {
