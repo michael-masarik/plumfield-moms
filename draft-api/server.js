@@ -30,8 +30,8 @@ const DB_IDS = {
 const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
 // Middleware to check authentication
 app.use((req, res, next) => {
-    if (!req.session.authenticated && req.path !== "/login" && req.path !== "/") {
-        req.session.redirectTo = req.originalUrl; // Store the requested URL
+    if (!req.session.authenticated && req.path !== "/login" && req.path !== "/" && req.path !== "/favicon.ico") {
+        req.session.returnTo = req.originalUrl; // Store original URL (but not favicon)
         return res.redirect("/login");
     }
     next();
