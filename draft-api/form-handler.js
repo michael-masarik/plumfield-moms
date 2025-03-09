@@ -216,13 +216,13 @@ document.addEventListener("DOMContentLoaded", function () {
         let endpoint;
         switch (reviewType) {
             case "bookReview":
-                endpoint = "https://plumfield-moms.onrender.com/submit/bookReview";
+                endpoint = "/submit/bookReview";
                 break;
             case "pictureBookReview":
-                endpoint = "https://plumfield-moms.onrender.com/submit/pictureBookReview";
+                endpoint = "/submit/pictureBookReview";
                 break;
             case "reflection":
-                endpoint = "https://plumfield-moms.onrender.com/submit/reflection";
+                endpoint = "/submit/reflection";
                 break;
             default:
                showMessage("<p>❌ Error: Invalid review type.</p>");
