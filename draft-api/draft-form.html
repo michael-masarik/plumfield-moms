@@ -156,10 +156,9 @@
         //author code
         let allAuthors = []; // Store authors globally
 
-async function loadAuthors() {
-    const response = await fetch("https://plumfield-moms.onrender.com/authors");
+        async function loadAuthors() {
+    const response = await fetch("/authors"); // Use relative path
     allAuthors = await response.json();
-
     populateAuthorDropdown();
 }
 
