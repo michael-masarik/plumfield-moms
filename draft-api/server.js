@@ -13,9 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
     session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
+        name: "session",
+        secret: process.env.SESSION_SECRET || "your-secret-key",
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
     })
 );
 // Initialize Notion Client

@@ -195,7 +195,6 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
     console.log("✅ Form submitted!");
         const submitButton = document.getElementById("submit");
-        console.log("Entered Password:", password); // Debugging
         const title = document.getElementById("title").value;
         const reviewType = document.getElementById("reviewType").value;
         const authorId = selectedAuthorId.value;
