@@ -63,7 +63,7 @@ app.get("/form-handler.js", (req, res) => {
     res.sendFile(path.join(__dirname, "form-handler.js"));
 });
 //favicon
-app.get("/favicon.ico", (req, res) => {
+app.get("assets/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, "assets", "favicon.ico"));
 });
 
