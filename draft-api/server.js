@@ -20,6 +20,7 @@ app.use(
 );
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const fallbackURLPath = "/";
 
 // Database IDs from .env file
 const DB_IDS = {
@@ -47,7 +48,7 @@ app.post("/login", (req, res) => {
     if (password === SECRET_PASSWORD) {
         req.session.authenticated = true;
 
-        const redirectTo = req.session.redirectTo || "/submit-draft"; // Use stored URL or fallback
+        const redirectTo = req.session.redirectTo || fallbackURLPath; // Use stored URL or fallback
         delete req.session.redirectTo; // Clear the stored URL
         res.redirect(redirectTo);
     } else {
@@ -63,7 +64,7 @@ app.get("/form-handler.js", (req, res) => {
     res.sendFile(path.join(__dirname, "form-handler.js"));
 });
 //favicon
-app.get("assets/favicon.ico", (req, res) => {
+app.get("/assets/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, "assets", "favicon.ico"));
 });
 
