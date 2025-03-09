@@ -30,24 +30,26 @@ const DB_IDS = {
 const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
 // Middleware to check authentication
 app.use((req, res, next) => {
-    if (!req.session.authenticated && req.path !== "/login") {
+    if (!req.session.authenticated && req.path !== "/login" && req.path !== "/") {
+        req.session.redirectTo = req.originalUrl; // Store the requested URL
         return res.redirect("/login");
     }
     next();
 });
-app.get("/", (req, res) => {
-    res.redirect("/login");
-});
+
 app.get("/login", (req, res) => {
     res.sendFile(path.join(__dirname, "login.html"));
 });
 // Handle password submission
 app.post("/login", (req, res) => {
-    const { password } = req.body; // 🔥 Get password from form
+    const { password } = req.body;
 
     if (password === SECRET_PASSWORD) {
-        req.session.authenticated = true; // ✅ Mark user as logged in
-        res.redirect("/submit-draft"); // Redirect to the form page
+        req.session.authenticated = true;
+
+        const redirectTo = req.session.redirectTo || "/submit-draft"; // Use stored URL or fallback
+        delete req.session.redirectTo; // Clear the stored URL
+        res.redirect(redirectTo);
     } else {
         res.send("Invalid password. <a href='/login'>Try again</a>");
     }
