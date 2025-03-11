@@ -7,7 +7,7 @@ const session = require("express-session");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const pwaApp = require("./app/app"); // Import the PWA app
+const pwaApp = require("./app/app.js"); // Import the PWA app
 
 app.use("/pm-admin-app", pwaApp); // Mount the PWA app under /admin
 
