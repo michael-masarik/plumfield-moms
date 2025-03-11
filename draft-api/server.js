@@ -60,6 +60,13 @@ app.post("/login", (req, res) => {
         res.send("Invalid password. <a href='/login'>Try again</a>");
     }
 });
+// ✅ Serve static files correctly
+app.use("/public", express.static(path.join(__dirname, "app/public")));
+
+// ✅ Test route to check if app.js is served (temporary for debugging)
+app.get("/test", (req, res) => {
+    res.sendFile(path.join(__dirname, "app/public/app.js"));
+});
 //home page
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
@@ -72,8 +79,7 @@ app.get("/form-handler.js", (req, res) => {
 app.get("/assets/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, "assets", "favicon.ico"));
 });
-// Static files
-app.use("/public", express.static(path.join(__dirname, "app/public")));
+
 
 // Protect the form page
 app.get("/submit-draft", (req, res) => {
