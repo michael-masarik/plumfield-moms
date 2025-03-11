@@ -20,7 +20,7 @@ app.use(
         cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
     })
 );
-const adminApp = require("./public/app"); // Load the PWA app
+const adminApp = require(".app/public/app"); // Load the PWA app
 
 app.use("/admin-app", adminApp); // Mount it under /admin
 // Initialize Notion Client
