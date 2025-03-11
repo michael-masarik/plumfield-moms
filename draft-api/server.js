@@ -7,9 +7,14 @@ const session = require("express-session");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const pwaApp = require("./app/app.js"); // Import the PWA app
 
-app.use("/pm-admin-app", pwaApp); // Mount the PWA app under /admin
+
+ 
+
+
+const adminApp = require("./app/app"); // Load the PWA app
+
+server.use("/admin-app", adminApp); // Mount it under /admin
 
 app.use(cors({ origin: "https://admin.plumfieldmoms.com", credentials: true }));
 app.use(express.json());

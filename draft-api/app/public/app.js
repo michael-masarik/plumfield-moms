@@ -14,12 +14,12 @@ app.use(
     })
 );
 
-// Serve static files (CSS, JS, HTML) from "public" directory
+// Serve static files inside the /admin scope
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Redirect /admin to the PWA page
 app.get("/", (req, res) => {
-    res.redirect("/admin/public/pwa.html");
+    res.redirect("/public/pwa.html");
 });
 
 // Load authentication and PWA routes
