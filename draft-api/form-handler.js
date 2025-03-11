@@ -210,18 +210,18 @@ document.addEventListener("DOMContentLoaded", function () {
         // Convert Quill editor content to Notion format
         const richTextContent = quill.root.innerHTML; 
         const formattedBlocks = parseHTML(richTextContent); 
-        const coverImage = "https://drive.google.com/uc?export=view&id=1cTazbHzIIAvmSu3wH9beVavJrf5aSkbz";
-        const pbReviewIcon= "1M7PawIFoO2bR5g3KoR9v6fX88rJY7yEl";
-        const bookReviewIcon = "1Dy-i3AR7CP0yu3K6cVbfMhxXiGlpV_MC";
-        const reflectionIcon = "1dvT4G75URxVY5V1LZFTDeokDWJ0alLRR";
-        const fileURL= "https://drive.google.com/uc?export=view&id=";
+        const coverImage = "https://piweosceczjqskadtwaz.supabase.co/storage/v1/object/public/notion-images/Cover%20Images/Snap%20The%20Wip.jpg";
+        const pbReviewIcon= "https://piweosceczjqskadtwaz.supabase.co/storage/v1/object/public/notion-images/Icons/PB-Review-Icon.svg";
+        const bookReviewIcon = "https://piweosceczjqskadtwaz.supabase.co/storage/v1/object/public/notion-images/Icons/Book-Review-Icon.svg";
+        const reflectionIcon = "https://piweosceczjqskadtwaz.supabase.co/storage/v1/object/public/notion-images/Icons/Reflections-icon.svg";
+        
         function determineIcon (reviewType){
             if(reviewType == "pictureBookReview"){
-                return `${fileURL}${pbReviewIcon}`
+                return pbReviewIcon;
             }if(reviewType == "bookReview"){
-                return `${fileURL}${bookReviewIcon}`
+                return bookReviewIcon;
             }if(reviewType == "reflection"){
-                return `${fileURL}${reflectionIcon}`
+                return reflectionIcon;
             }
             
         }
