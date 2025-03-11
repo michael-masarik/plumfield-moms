@@ -77,7 +77,8 @@ app.get("/form-handler.js", (req, res) => {
 app.get("/assets/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, "assets", "favicon.ico"));
 });
-app.use("/public", express.static(path.join(__dirname, "public")));
+// Static files
+app.use("/public", express.static(path.join(__dirname, "app/public")));
 
 // Protect the form page
 app.get("/submit-draft", (req, res) => {
