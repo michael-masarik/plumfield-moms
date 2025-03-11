@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM Admin App/title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="manifest" href="/app/public/manifest.json">
+    <link rel="stylesheet" href="/app/public/styles.css">
+    <script defer src="/app/public/app.js"></script>
+</head>
+<body>
+    <h1>Install PM Admin</h1>
+    <button id="install-pwa" style="display: none;">Install PWA</button>
+
+    <script>
+        let deferredPrompt;
+
+        window.addEventListener("beforeinstallprompt", (event) => {
+            event.preventDefault();
+            deferredPrompt = event;
+
+            fetch("/api/session-status")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.isAuthenticated) {
+                        document.getElementById("install-pwa").style.display = "block";
+                    }
+                });
+        });
+
+        document.getElementById("install-pwa").addEventListener("click", () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(choice => {
+                    if (choice.outcome === "accepted") {
+                        console.log("PWA installed");
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
