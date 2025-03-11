@@ -23,7 +23,9 @@ app.use(
     session({
         name: "session",
         secret: process.env.SESSION_SECRET || "your-secret-key",
-        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 7 days
+        resave: false,
+        saveUninitialized: false, // Add this to prevent the warning
+        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
     })
 );
 // Initialize Notion Client
@@ -75,6 +77,7 @@ app.get("/form-handler.js", (req, res) => {
 app.get("/assets/favicon.ico", (req, res) => {
     res.sendFile(path.join(__dirname, "assets", "favicon.ico"));
 });
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Protect the form page
 app.get("/submit-draft", (req, res) => {
