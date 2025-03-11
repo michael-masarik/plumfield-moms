@@ -20,9 +20,9 @@ app.use(
         cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
     })
 );
-const adminApp = require("./public/app"); // Load the PWA app
 
-app.use("/admin-app", adminApp); // Mount it under /admin
+
+
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const fallbackURLPath = "/";
@@ -61,7 +61,7 @@ app.post("/login", (req, res) => {
     }
 });
 // ✅ Serve static files correctly
-app.use("/public", express.static(path.join(__dirname, "app/public")));
+app.use("/admin-app", express.static(path.join(__dirname, "app/public")));
 
 // ✅ Test route to check if app.js is served (temporary for debugging)
 app.get("/test", (req, res) => {
