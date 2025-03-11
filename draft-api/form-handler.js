@@ -234,18 +234,8 @@ document.addEventListener("DOMContentLoaded", function () {
             formattedBlocks, 
             authorId, 
             reviewType,
-            cover: {
-                type: "external",
-                external: {
-                    url: coverImage
-                }
-            },
-            icon: iconURL ? {
-                type: "external",
-                external: {
-                    url: iconURL
-                }
-            } : undefined  // Avoid sending `undefined` values in the API request
+            coverImage,
+            iconURL    
         }; 
         
     

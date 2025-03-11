@@ -102,7 +102,7 @@ app.get("/authors", async (req, res) => {
 // Handle Review Submission
 app.post("/submit/:type", async (req, res) => {
     const { type } = req.params;
-    const { title, formattedBlocks, authorId } = req.body;
+    const { title, formattedBlocks, authorId,iconURL, coverImage } = req.body;
     console.log("Received reviewType:", req.body.reviewType);
     console.log(process.env.NOTION_BOOK_REVIEW_DB);
 
@@ -117,7 +117,19 @@ app.post("/submit/:type", async (req, res) => {
                 Name: { title: [{ text: { content: title } }] },
                 Author: { relation: [{ id: authorId }] },
             },
-            children: formattedBlocks // ✅ Fix: Send as array directly
+            children: formattedBlocks, // ✅ Fix: Send as array directly
+            cover: {
+                type: "external",
+                external: {
+                    url: coverImage
+                }
+            }, 
+            icon: iconURL ? {
+                type: "external",
+                external: {
+                    url: iconURL
+                }
+            } : undefined
         });
 
         res.json({ success: true, message: "Review submitted successfully" });
