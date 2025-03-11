@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     
 
-    // Load authors from the API and populate dropdown
+  
     
 
     form.addEventListener("submit", async (event) => {
@@ -210,8 +210,44 @@ document.addEventListener("DOMContentLoaded", function () {
         // Convert Quill editor content to Notion format
         const richTextContent = quill.root.innerHTML; 
         const formattedBlocks = parseHTML(richTextContent); 
+        const coverImage = "https://drive.google.com/uc?export=view&id=1cTazbHzIIAvmSu3wH9beVavJrf5aSkbz";
+        const pbReviewIcon= "1M7PawIFoO2bR5g3KoR9v6fX88rJY7yEl";
+        const bookReviewIcon = "1Dy-i3AR7CP0yu3K6cVbfMhxXiGlpV_MC";
+        const reflectionIcon = "1dvT4G75URxVY5V1LZFTDeokDWJ0alLRR";
+        const fileURL= "https://drive.google.com/uc?export=view&id=";
+        function determineIcon (reviewType){
+            if(reviewType == "pictureBookReview"){
+                return `${fileURL}${pbReviewIcon}`
+            }if(reviewType == "bookReview"){
+                return `${fileURL}${bookReviewIcon}`
+            }if(reviewType == "reflection"){
+                return `${fileURL}${reflectionIcon}`
+            }
+            
+        }
+        
     
-        const formData = { title, formattedBlocks, authorId, reviewType };
+        const iconURL = determineIcon(reviewType);
+
+        const formData = { 
+            title, 
+            formattedBlocks, 
+            authorId, 
+            reviewType,
+            cover: {
+                type: "external",
+                external: {
+                    url: coverImage
+                }
+            },
+            icon: iconURL ? {
+                type: "external",
+                external: {
+                    url: iconURL
+                }
+            } : undefined  // Avoid sending `undefined` values in the API request
+        }; 
+        
     
         let endpoint;
         switch (reviewType) {
