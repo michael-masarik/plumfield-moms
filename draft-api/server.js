@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 const adminApp = require("./app/app"); // Load the PWA app
 
-server.use("/admin-app", adminApp); // Mount it under /admin
+app.use("/admin-app", adminApp); // Mount it under /admin
 
 app.use(cors({ origin: "https://admin.plumfieldmoms.com", credentials: true }));
 app.use(express.json());
