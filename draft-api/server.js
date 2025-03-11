@@ -8,14 +8,6 @@ const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
- 
-
-
-const adminApp = require("./app/app"); // Load the PWA app
-
-app.use("/admin-app", adminApp); // Mount it under /admin
-
 app.use(cors({ origin: "https://admin.plumfieldmoms.com", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,6 +20,9 @@ app.use(
         cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
     })
 );
+const adminApp = require("./app/app"); // Load the PWA app
+
+app.use("/admin-app", adminApp); // Mount it under /admin
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const fallbackURLPath = "/";
