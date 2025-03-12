@@ -15,15 +15,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session Configuration
-app.use(
-    session({
-        name: "session",
-        secret: process.env.SESSION_SECRET || "your-secret-key",
-        resave: false,
-        saveUninitialized: false, // Prevents setting sessions for unauthenticated users
-        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production" }, // Secure cookie
-    })
-);
+app.use(session({
+    name: "session",
+    secret: process.env.SESSION_SECRET || "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 7 * 24 * 60 * 60 * 1000, secure: false } // Set secure:false for local testing
+}));
 
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -35,15 +33,15 @@ const DB_IDS = {
     reflection: process.env.NOTION_REFLECTION_DB,
 };
 const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
-const fallbackURLPath = "/";
 
 // Middleware: Protect routes (excludes login & session check)
 app.use((req, res, next) => {
-    if (
-        !req.session.authenticated &&
-        !["/login", "/api/session-status", "/assets/favicon.ico"].includes(req.path)
-    ) {
-        req.session.returnTo = req.originalUrl; // Store original URL (except favicon)
+    if (!req.session.authenticated && 
+        !["/login", "/api/session-status", "/assets/favicon.ico"].includes(req.path)) {
+        
+        if (!req.session.returnTo) { // Only store if not already set
+            req.session.returnTo = req.originalUrl;
+        }
         return res.redirect("/login");
     }
     next();
