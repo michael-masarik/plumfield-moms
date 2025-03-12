@@ -80,6 +80,9 @@ app.get("/logout", (req, res) => {
 app.get("/api/session-status", (req, res) => {
     res.json({ isAuthenticated: !!req.session.authenticated });
 });
+app.get("/app-home", (req, res) => {
+    res.sendFile(path.join(__dirname,"app-home.html"));
+});
 
 // Serve Admin App (PWA)
 app.get("/admin-app", (req, res) => {
