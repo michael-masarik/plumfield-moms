@@ -63,7 +63,7 @@ app.post("/login", (req, res) => {
         req.session.user = { id: 123, username: "admin" }; // Store user data
 
         // Redirect to original page (if exists) or fallback
-        const redirectTo = req.session.returnTo || fallbackURLPath;
+        const redirectTo = req.session.returnTo || "/";
         delete req.session.returnTo;
         return res.redirect(redirectTo);
     }
