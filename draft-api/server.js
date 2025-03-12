@@ -62,7 +62,7 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/admin-app", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "pwa.html"));
+    res.sendFile(path.join(__dirname, "app", "public", "pwa.html"));
 });
 app.get("/pwa", (req, res) => {
     if (!req.session.user) {
