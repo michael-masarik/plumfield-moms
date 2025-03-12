@@ -60,12 +60,24 @@ app.post("/login", (req, res) => {
         res.send("Invalid password. <a href='/login'>Try again</a>");
     }
 });
-// ✅ Serve static files correctly
-app.use("/admin-app", express.static(path.join(__dirname, "app/public")));
 
-// ✅ Test route to check if app.js is served (temporary for debugging)
-app.get("/test", (req, res) => {
-    res.sendFile(path.join(__dirname, "app/public/app.js"));
+app.get("/admin-app", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "pwa.html"));
+});
+app.get("/pwa", (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+    res.redirect("/admin-app");
+});
+
+//app auth
+app.get("/api/session-status", (req, res) => {
+    if (req.session.user) {
+        res.json({ isAuthenticated: true });
+    } else {
+        res.json({ isAuthenticated: false });
+    }
 });
 //home page
 app.get("/", (req, res) => {
