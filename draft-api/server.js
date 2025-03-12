@@ -99,6 +99,7 @@ app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
 app.get("/form-handler.js", (req, res) => res.sendFile(path.join(__dirname, "form-handler.js")));
 app.get("/assets/favicon.ico", (req, res) => res.sendFile(path.join(__dirname, "assets", "favicon.ico")));
 app.get("/app/manifest.json", (req, res) => res.sendFile(path.join(__dirname, "app", "public", "manifest.json")));
+app.use("/icons", express.static(path.join(__dirname, "app", "public", "icons")));
 
 // Protect Draft Submission Page
 app.get("/submit-draft", (req, res) => res.sendFile(path.join(__dirname, "draft-form.html")));
