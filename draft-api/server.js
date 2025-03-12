@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 const { Client } = require("@notionhq/client");
@@ -8,120 +7,117 @@ const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Configure CORS for security
 app.use(cors({ origin: "https://admin.plumfieldmoms.com", credentials: true }));
+
+// Middleware for parsing requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Session Configuration
 app.use(
     session({
         name: "session",
         secret: process.env.SESSION_SECRET || "your-secret-key",
         resave: false,
-        saveUninitialized: false, // Add this to prevent the warning
-        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 7 days
+        saveUninitialized: false, // Prevents setting sessions for unauthenticated users
+        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, secure: process.env.NODE_ENV === "production" }, // Secure cookie
     })
 );
 
-
-
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-const fallbackURLPath = "/";
 
-// Database IDs from .env file
+// Notion Database IDs
 const DB_IDS = {
     bookReview: process.env.NOTION_BOOK_REVIEW_DB,
     pictureBookReview: process.env.NOTION_PICTURE_BOOK_DB,
     reflection: process.env.NOTION_REFLECTION_DB,
 };
 const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
-// Middleware to check authentication
+const fallbackURLPath = "/";
+
+// Middleware: Protect routes (excludes login & session check)
 app.use((req, res, next) => {
     if (
         !req.session.authenticated &&
-        req.path !== "/login" &&
-        req.path !== "/assets/favicon.ico" &&
-        req.path !== "/api/session-status" // ✅ Fixed: Properly exclude session check endpoint
+        !["/login", "/api/session-status", "/assets/favicon.ico"].includes(req.path)
     ) {
-        req.session.returnTo = req.originalUrl; // Store original URL (but not favicon)
+        req.session.returnTo = req.originalUrl; // Store original URL (except favicon)
         return res.redirect("/login");
     }
     next();
 });
 
+// Login Page
 app.get("/login", (req, res) => {
     res.sendFile(path.join(__dirname, "login.html"));
 });
-// Handle password submission
+
+// Handle Login
 app.post("/login", (req, res) => {
     const { password } = req.body;
 
     if (password === SECRET_PASSWORD) {
         req.session.authenticated = true;
+        req.session.user = { id: 123, username: "admin" }; // Store user data
 
-        const redirectTo = req.session.redirectTo || fallbackURLPath; // Use stored URL or fallback
-        delete req.session.redirectTo; // Clear the stored URL
-        res.redirect(redirectTo);
-    } else {
-        res.send("Invalid password. <a href='/login'>Try again</a>");
+        // Redirect to original page (if exists) or fallback
+        const redirectTo = req.session.returnTo || fallbackURLPath;
+        delete req.session.returnTo;
+        return res.redirect(redirectTo);
     }
+
+    res.status(401).send("Invalid password. <a href='/login'>Try again</a>");
 });
 
+// Logout
+app.get("/logout", (req, res) => {
+    req.session.destroy(() => {
+        res.redirect("/login");
+    });
+});
+
+// Session Status API
+app.get("/api/session-status", (req, res) => {
+    res.json({ isAuthenticated: !!req.session.authenticated });
+});
+
+// Serve Admin App (PWA)
 app.get("/admin-app", (req, res) => {
     res.sendFile(path.join(__dirname, "app", "public", "pwa.html"));
 });
+
+// PWA Redirect (Authenticated Users Only)
 app.get("/pwa", (req, res) => {
-    if (!req.session.user) {
+    if (!req.session.authenticated) {
         return res.redirect("/login");
     }
     res.redirect("/admin-app");
 });
 
-//app auth
-app.get("/api/session-status", (req, res) => {
-    if (req.session.user) {
-        res.json({ isAuthenticated: true });
-    } else {
-        res.json({ isAuthenticated: false });
-    }
-});
-//home page
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
-//form js
-app.get("/form-handler.js", (req, res) => {
-    res.sendFile(path.join(__dirname, "form-handler.js"));
-});
-//favicon
-app.get("/assets/favicon.ico", (req, res) => {
-    res.sendFile(path.join(__dirname, "assets", "favicon.ico"));
-});
+// Serve Static Files
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
+app.get("/form-handler.js", (req, res) => res.sendFile(path.join(__dirname, "form-handler.js")));
+app.get("/assets/favicon.ico", (req, res) => res.sendFile(path.join(__dirname, "assets", "favicon.ico")));
+app.get("/app/manifest.json", (req, res) => res.sendFile(path.join(__dirname, "app", "public", "manifest.json")));
 
+// Protect Draft Submission Page
+app.get("/submit-draft", (req, res) => res.sendFile(path.join(__dirname, "draft-form.html")));
 
-// Protect the form page
-app.get("/submit-draft", (req, res) => {
-    
-    res.sendFile(path.join(__dirname, "draft-form.html"));
-});
-// Search for authors in Notion
+// Fetch Authors from Notion
 app.get("/authors", async (req, res) => {
-    console.log("Received request for /authors"); // Debug log
-
+    console.log("Fetching authors from Notion...");
     try {
-        console.log("Querying Notion database:", process.env.NOTION_AUTHORS_DB);
-
         const response = await notion.databases.query({
             database_id: process.env.NOTION_AUTHORS_DB,
         });
-
-        console.log("Received response from Notion:", response.results.length, "authors found");
 
         const authors = response.results.map((page) => ({
             id: page.id,
             name: page.properties.Name.title[0]?.text.content || "Unknown",
         }));
 
-        console.log("Final author list:", authors.length, "authors returned");
         res.json(authors);
     } catch (error) {
         console.error("Error fetching authors:", error);
@@ -129,12 +125,10 @@ app.get("/authors", async (req, res) => {
     }
 });
 
-// Handle Review Submission
+// Handle Review Submission to Notion
 app.post("/submit/:type", async (req, res) => {
     const { type } = req.params;
-    const { title, formattedBlocks, authorId,iconURL, coverImage } = req.body;
-    console.log("Received reviewType:", req.body.reviewType);
-    console.log(process.env.NOTION_BOOK_REVIEW_DB);
+    const { title, formattedBlocks, authorId, iconURL, coverImage } = req.body;
 
     if (!DB_IDS[type]) {
         return res.status(400).json({ error: "Invalid review type" });
@@ -147,31 +141,17 @@ app.post("/submit/:type", async (req, res) => {
                 Name: { title: [{ text: { content: title } }] },
                 Author: { relation: [{ id: authorId }] },
             },
-            children: formattedBlocks, // ✅ Fix: Send as array directly
-            cover: {
-                type: "external",
-                external: {
-                    url: coverImage
-                }
-            }, 
-            icon: iconURL ? {
-                type: "external",
-                external: {
-                    url: iconURL
-                }
-            } : undefined
+            children: formattedBlocks,
+            cover: coverImage ? { type: "external", external: { url: coverImage } } : undefined,
+            icon: iconURL ? { type: "external", external: { url: iconURL } } : undefined,
         });
 
         res.json({ success: true, message: "Review submitted successfully" });
     } catch (error) {
-        console.error(error);
+        console.error("Error submitting review:", error);
         res.status(500).json({ error: "Failed to submit review" });
     }
 });
-app.get("/logout", (req, res) => {
-    req.session.destroy(() => {
-        res.redirect("/login");
-    });
-});
+
 // Start Server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
