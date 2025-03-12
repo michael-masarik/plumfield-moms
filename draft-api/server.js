@@ -37,7 +37,7 @@ const SECRET_PASSWORD = process.env.SECRET_PASSWORD;
 // Middleware: Protect routes (excludes login & session check)
 app.use((req, res, next) => {
     if (!req.session.authenticated && 
-        !["/login", "/api/session-status", "/assets/favicon.ico"].includes(req.path)) {
+        !["/login", "/api/session-status", "/assets/favicon.ico", "/app/manifest.json"].includes(req.path)) {
         
         if (!req.session.returnTo) { // Only store if not already set
             req.session.returnTo = req.originalUrl;
