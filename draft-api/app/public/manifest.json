@@ -2,7 +2,7 @@
     "name": "PM Admin",
     "short_name": "Admin",
     "description": "Admin panel for Plumfield users.",
-    "start_url": "/app-home",
+    "start_url": "/",
     "scope": "/",
     "lang": "en-US",
     "display": "standalone",

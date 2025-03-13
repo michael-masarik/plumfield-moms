@@ -80,9 +80,6 @@ app.get("/logout", (req, res) => {
 app.get("/api/session-status", (req, res) => {
     res.json({ isAuthenticated: !!req.session.authenticated });
 });
-app.get("/app-home", (req, res) => {
-    res.sendFile(path.join(__dirname,"app-home.html"));
-});
 
 // Serve Admin App (PWA)
 app.get("/admin-app", (req, res) => {
@@ -154,6 +151,13 @@ app.post("/submit/:type", async (req, res) => {
         console.error("Error submitting review:", error);
         res.status(500).json({ error: "Failed to submit review" });
     }
+});
+app.use((req, res) => {
+    res.status(404).sendFile(__dirname, "404.html");
+});
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send("Something went wrong! <a href='/'>Go Home</a>");
 });
 
 // Start Server

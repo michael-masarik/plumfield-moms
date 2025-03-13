@@ -47,26 +47,18 @@
                 background-color: rgb(255, 253, 253);
                
             }
-            #draft-button{
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 1000;
-            }
+            
 
         </style>
     </head>
     <body>
-        <nav>    
-                <a href="https://plumfieldmoms.com" target="_blank">Website</a>
-        </nav>
-        <br/><br/><br/><br/>
-        <div id="container">
-            <h1>Home</h1>
-            <button id="draft-button" data-url="/submit-draft">Submit a Draft</button>
-            <iframe src="https://plumfieldandpaideia.notion.site/ebd/1b5eae1669f280588a97dd68c022ad21" width="100%" height="1000" frameborder="0" allowfullscreen ></iframe>
-        </div>
+        <h1>404 - page not found</h1>
+        <h3>Sorry, the page you are looking for does not exist or is broken.</h3>
+        <p> please give Michael this error code 404 and the page you where trying to vist</p>
+        
+        <button id="home" data-url="/" onclick="linkButton('home')">Home</button>
         <script>
+            ;
             // This function adds a click event listener to a button with the given id
             // When the button is clicked, it redirects the user to the URL specified in the button's data-url attribute
             function linkButton(id){
@@ -75,7 +67,7 @@
                     window.location.href = url;
                 });
             }
-            linkButton("draft-button");
+            
         </script>
 
     </body>
