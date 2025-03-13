@@ -6,11 +6,46 @@
     <title>PM Admin App</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="manifest" href="/app/manifest.json">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gentium+Plus:wght@400;700&display=swap');
+        @media (display-mode: standalone) {
+            #home {
+                display: block !important;
+            }
+        }
+        * {
+            font-family: "Gentium Plus", serif !important;
+        }
+        button{
+                background-color: #7D0E0E;
+                color: #ffe3a3;
+                border: none;
+            }
+        a{
+            color: #7D0E0E;
+            text-decoration: none;
+        }
+        a:hover{
+                color: black;
+            }
+
+        button{
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                :hover{
+                    scale: 1.05;
+                }
+        }
+    </style>
     
 </head>
 <body>
     <h1>Install PM Admin</h1>
-    <button id="install-pwa" style="display: none;">Install PWA</button>
+    <a id="home"href="/app-home" style="display: none;">Home</a>
+    <button id="install-pwa" style="display: none;">Install PM Admin App</button>
+    <h4 id="open-app-text" style="display: none;">PM Admin is installed! Please open it from your desktop/homescreen</h4>
 
     <script>
         let deferredPrompt;
@@ -37,6 +72,22 @@
                     }
                     deferredPrompt = null;
                 });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const openAppText = document.getElementById("open-app-text");
+            const downloadButton = document.getElementById("install-pwa");
+        
+            // Check if app is installed (PWA)
+            function isAppInstalled() {
+                return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+            }
+        
+            if (isAppInstalled()) {
+                openApptextn.style.display = "block";  // Show "Open App" button
+                
             }
         });
     </script>
