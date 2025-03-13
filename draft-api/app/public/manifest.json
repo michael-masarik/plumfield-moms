@@ -1,8 +1,8 @@
 {
-    "name": "Plumfield Admin",
+    "name": "PM Admin",
     "short_name": "Admin",
     "description": "Admin panel for Plumfield users.",
-    "start_url": "/",
+    "start_url": "/app-home",
     "scope": "/",
     "lang": "en-US",
     "display": "standalone",

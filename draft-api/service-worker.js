@@ -3,3 +3,6 @@ if ('serviceWorker' in navigator) {
         .then(reg => console.log("Service Worker Registered", reg))
         .catch(err => console.error("Service Worker Registration Failed", err));
 }
+if (window.location.pathname !== "/app-home") {
+    window.location.href = "/app-home"; 
+}

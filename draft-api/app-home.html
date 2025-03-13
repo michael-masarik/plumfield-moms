@@ -20,6 +20,40 @@
                 color: white;
                 text-decoration: none;
             }
+            button{
+                background-color: #7D0E0E;
+                color: #ffe3a3;
+                border: none;
+            }
+            a:hover{
+                color: black;
+            }
+
+            button{
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                :hover{
+                    scale: 1.05;
+                }
+            }
+            button:hover{
+                    scale: 1.05;
+            }
+            #container{
+                margin-top: 20px; /* Adjust this value to create space for the fixed nav */
+                padding: 20px;
+                background-color: rgb(255, 253, 253);
+               
+            }
+            #draft-button{
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+
         </style>
     </head>
     <body>
@@ -29,7 +63,19 @@
         <br/><br/><br/><br/>
         <div id="container">
             <h1>Home</h1>
-            <button><a style="text-decoration: none;"href="/submit-draft">Submit a Draft</a></button>
+            <button id="draft-button" data-url="/submit-draft">Submit a Draft</button>
+            <iframe src="https://plumfieldandpaideia.notion.site/ebd/1b5eae1669f280588a97dd68c022ad21" width="100%" height="1000" frameborder="0" allowfullscreen ></iframe>
         </div>
+        <script>
+            // This function adds a click event listener to a button with the given id
+            // When the button is clicked, it redirects the user to the URL specified in the button's data-url attribute
+            function linkButton(id){
+                var url = document.getElementById(id).getAttribute("data-url");
+                document.getElementById(id).addEventListener("click", function(){
+                    window.location.href = url;
+                });
+            }
+            linkButton("draft-button");
+        </script>
 
     </body>
