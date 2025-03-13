@@ -43,9 +43,9 @@
 </head>
 <body>
     <h1>Install PM Admin</h1>
-    <a id="home"href="/app-home" style="display: none;">Home</a>
+    <h3><a id="home"href="/app-home" style="display: none;">Home</a></h3>
     <button id="install-pwa" style="display: none;">Install PM Admin App</button>
-    <h4 id="open-app-text" style="display: none;">PM Admin is installed! Please open it from your desktop/homescreen</h4>
+    
 
     <script>
         let deferredPrompt;
@@ -76,20 +76,26 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const openAppText = document.getElementById("open-app-text");
-            const downloadButton = document.getElementById("install-pwa");
-        
-            // Check if app is installed (PWA)
-            function isAppInstalled() {
-                return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => {
+            console.log("Service Worker Registered", reg);
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage('check_installation');
+            } else {
+                navigator.serviceWorker.ready.then((registration) => {
+                    registration.active?.postMessage('check_installation');
+                });
             }
-        
-            if (isAppInstalled()) {
-                openApptextn.style.display = "block";  // Show "Open App" button
-                
-            }
-        });
+        })
+        .catch(err => console.error("Service Worker Registration Failed", err));
+
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data.installed) {
+            alert('PM Admin is installed! Please open it from your desktop/homescreen');
+        }
+    });
+}
     </script>
 </body>
 </html>

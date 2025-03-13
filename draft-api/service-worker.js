@@ -3,6 +3,8 @@ if ('serviceWorker' in navigator) {
         .then(reg => console.log("Service Worker Registered", reg))
         .catch(err => console.error("Service Worker Registration Failed", err));
 }
-if (window.location.pathname !== "/app-home") {
-    window.location.href = "/app-home"; 
-}
+self.addEventListener('message', (event) => {
+    if (event.data === 'check_installation') {
+        event.source.postMessage({ installed: true });
+    }
+});
