@@ -8,6 +8,9 @@
     <meta name="robots" content="noindex">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Gentium+Plus:wght@400;700&display=swap');
+        * {
+            font-family: "Gentium Plus", serif !important;
+        }
         button{
                 background-color: #7D0E0E;
                 color: #ffe3a3;
@@ -48,14 +51,23 @@
     <!-- This is the chart embed-->
     <iframe src="https://plumfieldandpaideia.notion.site/ebd/1b5eae1669f280588a97dd68c022ad21" width="100%" height="1000" frameborder="0" allowfullscreen ></iframe>
     <button id="submit-draft" data-url="/submit-draft" onclick="linkButton('submit-draft')">Submit a Draft</button>
-    <button id="pm-site" data-url="https://plumfieldmoms.com" onclick="linkButton('pm-site')">Public Website</button>
+    <button id="pm-site"  data-target="_blank"data-url="https://plumfieldmoms.com" onclick="linkButton('pm-site')">Public Website</button>
     <script>
         // This function adds a click event listener to a button with the given id
         // When the button is clicked, it redirects the user to the URL specified in the button's data-url attribute
         function linkButton(id){
             var url = document.getElementById(id).getAttribute("data-url");
+            var target = document.getElementById(id).getAttribute("data-target");
             document.getElementById(id).addEventListener("click", function(){
-                window.location.href = url;
+                var a = document.createElement("a");
+                a.href = url;
+                if (target) {
+                    a.target = target;
+                }
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
             });
 
         }
