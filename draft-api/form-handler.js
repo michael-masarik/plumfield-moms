@@ -198,6 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const title = document.getElementById("title").value;
         const reviewType = document.getElementById("reviewType").value;
         const authorId = selectedAuthorId.value;
+        const metaDescription = document.getElementById("meta-description").value;
+        const amazonLinkValue = document.getElementById("amazon-link").value;
     
         if (!title || !reviewType || !authorId) {
             alert("❌ Please fill in all required fields.");
@@ -225,18 +227,27 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
         }
-        
+        function determineAmazonLink(){
+            if(amazonLinkValue){
+                return amazonLink;
+            }else{
+                return null;
+            }
+        }
+        const amazonLink = determineAmazonLink();
     
         const iconURL = determineIcon(reviewType);
-
         const formData = { 
             title, 
             formattedBlocks, 
             authorId, 
             reviewType,
             coverImage,
-            iconURL    
-        }; 
+            iconURL,
+            metaDescription,
+            amazonLink: amazonLink ? amazonLink : null
+        };
+    
         
     
         let endpoint;
@@ -255,7 +266,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
         }
         console.log("Submitting review type:", reviewType);
-    
         try {
             const response = await fetch(endpoint, {
                 method: "POST",

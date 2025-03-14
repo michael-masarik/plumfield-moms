@@ -98,6 +98,13 @@
         #debug{
             display: none;
         }
+        textarea:invalid:hover {
+            border: 1px solid red;
+        }
+
+        textarea:valid {
+            border: 2px solid lime;
+        }
         
         
     </style>
@@ -142,12 +149,21 @@
             <div id="editor" style="height: 350px;"></div>
             <input type="hidden" id="hiddenInput" name="richTextContent">
             <br/>
-            
-            
-            
-                
-            
-
+            <!--Meta Description-->
+            <div id="meta-description-div">
+                <label for="meta-description">Meta Description:</label>
+                <br/>
+                <textarea name="meta-description" id="meta-description" placeholder="Description..." required maxlength="150" minlength="70" spellcheck="true"></textarea>
+                </br/>
+                <cite>Must be between 70 and 150 characters</cite>
+            </div>
+            <!--Amazon Link-->
+            <div id="amazon-link-div">
+                <label for="amazon-link">Amazon Link:</label>
+                <br/>
+                <input type="url" name="amazon-link" id="amazon-link" placeholder="Amazon link..." required>
+            </div>
+            <br/>
                 <!-- Submit Button -->
                 <button id="submit" type="submit">Submit Draft</button>
             
@@ -160,7 +176,10 @@
     
   
     <script src="form-handler.js"></script>
+    
     <script>
+        
+    
         
         
         
@@ -185,6 +204,20 @@ function populateAuthorDropdown() {
         authorDropdown.appendChild(option);
     });
 }
+const reviewTypeSelect = document.getElementById("reviewType");
+        const amazonLinkDiv = document.getElementById("amazon-link-div");
+
+        reviewTypeSelect.addEventListener("change", function () {
+            if (this.value === "bookReview" || this.value === "pictureBookReview") {
+                amazonLinkDiv.style.display = "block";
+            } else {
+                amazonLinkDiv.style.display = "none";
+            }
+        });
+
+        // Trigger change event on page load to set initial state
+        reviewTypeSelect.dispatchEvent(new Event("change"));
+
 
 // Update hidden input when user selects an author
 document.addEventListener("DOMContentLoaded", () => {

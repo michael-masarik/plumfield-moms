@@ -131,7 +131,7 @@ app.get("/authors", async (req, res) => {
 // Handle Review Submission to Notion
 app.post("/submit/:type", async (req, res) => {
     const { type } = req.params;
-    const { title, formattedBlocks, authorId, iconURL, coverImage } = req.body;
+    const { title, formattedBlocks, authorId, iconURL, coverImage, metaDescription, AmazonLink } = req.body;
 
     if (!DB_IDS[type]) {
         return res.status(400).json({ error: "Invalid review type" });
@@ -143,6 +143,26 @@ app.post("/submit/:type", async (req, res) => {
             properties: {
                 Name: { title: [{ text: { content: title } }] },
                 Author: { relation: [{ id: authorId }] },
+                "meta:description": {
+                    type: "text",
+                    text: {
+                        content: metaDescription,
+                        link: null
+                    },
+                    annotations: {
+                        bold: false,
+                        italic: false,
+                        strikethrough: false,
+                        underline: false,
+                        code: false,
+                        color: "default"
+                    },
+                    plain_text: metaDescription,
+                    href: null
+                },
+                ...(
+                    AmazonLink ? { "Amazon Link": { type: "url", url: AmazonLink } } : {}
+                )
             },
             children: formattedBlocks,
             cover: coverImage ? { type: "external", external: { url: coverImage } } : undefined,
