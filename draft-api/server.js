@@ -101,6 +101,9 @@ app.get("/assets/favicon.ico", (req, res) => res.sendFile(path.join(__dirname, "
 app.get("/app/manifest.json", (req, res) => res.sendFile(path.join(__dirname, "app", "public", "manifest.json")));
 app.use("/icons", express.static(path.join(__dirname, "app", "public", "icons")));
 app.get("/service-worker.js", (req, res) => res.sendFile(path.join(__dirname, "service-worker.js")));
+app.get("/icons/apple-touch-icon.png", (req, res) => {
+    res.sendFile(path.join(__dirname, "app", "public", "icons", "icon-192x192.png"));
+});
 
 // Protect Draft Submission Page
 app.get("/submit-draft", (req, res) => res.sendFile(path.join(__dirname, "draft-form.html")));
