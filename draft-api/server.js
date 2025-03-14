@@ -148,7 +148,7 @@ app.post("/submit/:type", async (req, res) => {
             rich_text: [{ text: { content: metaDescription || "" } }]
         },
                 ...(
-                    amazonLink ? { "Amazon Link": { type: "url", url: AmazonLink } } : {}
+                    amazonLink ? { "Amazon Link": { type: "url", url: amazonLink } } : {}
                 )
             },
             children: formattedBlocks,
