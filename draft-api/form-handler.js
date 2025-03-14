@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const reviewType = document.getElementById("reviewType").value;
         const authorId = selectedAuthorId.value;
         const metaDescription = document.getElementById("meta-description").value;
-        const amazonLinkValue = document.getElementById("amazon-link").value;
+        const amazonLink = document.getElementById("amazon-link").value;
     
         if (!title || !reviewType || !authorId) {
             alert("❌ Please fill in all required fields.");
@@ -227,14 +227,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
         }
-        function determineAmazonLink(){
-            if(amazonLinkValue){
-                return amazonLink;
-            }else{
-                return null;
-            }
-        }
-        const amazonLink = determineAmazonLink();
+        
+        
     
         const iconURL = determineIcon(reviewType);
         const formData = { 
@@ -245,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
             coverImage,
             iconURL,
             metaDescription,
-            amazonLink: amazonLink ? amazonLink : null
+            amazonLink
         };
     
         
