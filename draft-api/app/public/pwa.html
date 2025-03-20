@@ -46,6 +46,13 @@
     <h1>Install PM Admin</h1>
     <h3><a id="home"href="/app-home" style="display: none;">Home</a></h3>
     <button id="install-pwa" style="display: none;">Install PM Admin App</button>
+    <h3>Mobile Device Installation</h3>
+    <p>On iPhone and iPad:</p>
+    <ul>
+        <li>Tap the share icon</li>
+        <li>Tap the "Add to Home Screen" button</li>
+        <li>Follow the on-screen intructions</li>
+    </ul>
     
 
     <script>
@@ -91,11 +98,6 @@
         })
         .catch(err => console.error("Service Worker Registration Failed", err));
 
-    navigator.serviceWorker.addEventListener('message', (event) => {
-        if (event.data.installed) {
-            alert('PM Admin is installed! Please open it from your desktop/homescreen');
-        }
-    });
 }
     </script>
 </body>
