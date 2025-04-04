@@ -7,10 +7,12 @@ function checkURLForParam(param, value) {
   return urlParams.get(param) === value;
 }
 
-// Trigger the popover if the 'source' parameter equals 'oldsite'
-if(checkURLForParam("source","oldsite")){
-  alert("Plumfield and Paideia has now become Plumfield Moms. Welcome to our new site!")
-}
+// Wait until the entire page has loaded
+window.onload = function () {
+  if (checkURLForParam("source", "oldsite")) {
+    alert("Plumfield and Paideia has now become Plumfield Moms. Welcome to our new site!");
+  }
+};
 //Google Analytics//
 // Check for the 'source' parameter in the URL
 const urlParams = new URLSearchParams(window.location.search);
