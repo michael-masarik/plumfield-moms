@@ -4,14 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Plumfield Moms Search</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <!-- InstantSearch + Algolia JS Client -->
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
 
   <style>
+    .gentium-plus-regular {
+    font-family: "Gentium Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .gentium-plus-bold {
+    font-family: "Gentium Plus", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .gentium-plus-regular-italic {
+    font-family: "Gentium Plus", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .gentium-plus-bold-italic {
+    font-family: "Gentium Plus", serif;
+    font-weight: 700;
+    font-style: italic;
+  }
     body {
-      font-family: sans-serif;
+      font-family: gentium-plus-regular;
       padding: 2rem;
       background-color: #fdfdfd;
     }
@@ -27,20 +54,24 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 600px;
   margin: 0 auto;
 }
 
 /* Style the input */
 .ais-SearchBox-input {
   flex: 1;
+  min-width: 75vw;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px 0 0 6px;
   outline: none;
 }
-
+.ais-SearchBox-submit svg {
+  fill: #FFE3A3!important; /* or any hex/color value */
+  width: 1.25rem;
+  height: 1.25rem;
+}
 /* Style the button */
 .ais-SearchBox-submit {
   padding: 0.75rem 1rem;
