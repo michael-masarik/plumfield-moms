@@ -3,36 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search Plumfield Moms</title>
-  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.0.0-alpha.27/dist/instantsearch.production.min.js"></script>
+  <title>Plumfield Moms Search</title>
+
+  <!-- InstantSearch + Algolia JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
+
   <style>
     body {
-      font-family: system-ui, sans-serif;
+      font-family: sans-serif;
       padding: 2rem;
-      background: #fff;
-    }
-    .ais-SearchBox {
-      margin-bottom: 1rem;
+      background-color: #fdfdfd;
     }
     .ais-Hits-item {
+      margin-bottom: 1rem;
       padding: 1rem;
-      border: 1px solid #ddd;
-      margin: 1rem 0;
-      background: #f9f9f9;
+      background: #f1f1f1;
+      border-radius: 5px;
+    }
+    a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+
   <div id="search-box"></div>
   <div id="hits"></div>
 
   <script>
+    const searchClient = algoliasearch(
+      'N1O5WHDILM',         // e.g. 'ABCD1234'
+      '206c0c65da1d26d5947f0a8dfcd0e293'  // Only the search-only key, not the admin one!
+    );
+
     const search = instantsearch({
-      indexName: 'plumfieldmoms',  // This is your Algolia index name
-      searchClient: algoliasearch(
-        'N1O5WHDILM',  // Replace with your Algolia app ID
-        '206c0c65da1d26d5947f0a8dfcd0e293'   // Replace with your Algolia search-only API key
-      )
+      indexName: 'plumfieldmoms_com_n1o5whdilm_pages',  // Must match Algolia exactly
+      searchClient,
     });
 
     search.addWidgets([
@@ -44,17 +53,20 @@
       instantsearch.widgets.hits({
         container: '#hits',
         templates: {
-          item: `
-            <div>
-              <a href="{{url}}" target="_blank">{{title}}</a>
-              <p>{{description}}</p>
-            </div>
-          `,
-        },
+          item(hit) {
+            return `
+              <div class="hit">
+                <a href="${hit.url}" target="_blank">${hit.title}</a>
+                <p>${hit.description || ''}</p>
+              </div>
+            `;
+          }
+        }
       }),
     ]);
 
     search.start();
   </script>
+
 </body>
 </html>
