@@ -1,7 +1,7 @@
 {
     "name": "Plumfield Moms",
     "short_name": "Plumfield",
-    "start_url": "/",
+    "start_url": "https://plumfieldmoms.com",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#7D0E0E",
