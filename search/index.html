@@ -15,6 +15,33 @@
       padding: 2rem;
       background-color: #fdfdfd;
     }
+        /* Container styling */
+    #search-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    /* Algolia's built-in input */
+    .ais-SearchBox-form {
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    /* Optional: style the input for a clean, minimal look */
+    .ais-SearchBox-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      transition: border 0.2s ease;
+    }
+    
+    .ais-SearchBox-input:focus {
+      border-color: #888;
+    }
     .ais-Hits-item {
       margin-bottom: 1rem;
       padding: 1rem;
@@ -27,14 +54,10 @@
       font-weight: bold;
     }
     .search-result {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-    background: #fff;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
 
   .search-result .thumb {
     width: 80px;
@@ -43,6 +66,11 @@
     border-radius: 6px;
     margin-right: 1rem;
     flex-shrink: 0;
+  }
+  .ais-Hits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
   .search-result .details {
