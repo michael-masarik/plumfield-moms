@@ -22,22 +22,34 @@
       margin-bottom: 2rem;
     }
     
-    /* Algolia's built-in input */
-    .ais-SearchBox-form {
-      width: 100%;
-      max-width: 600px;
-    }
-    
-    /* Optional: style the input for a clean, minimal look */
-    .ais-SearchBox-input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      outline: none;
-      transition: border 0.2s ease;
-    }
+    /* Force the search box form to stay in a row */
+.ais-SearchBox-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Style the input */
+.ais-SearchBox-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px 0 0 6px;
+  outline: none;
+}
+
+/* Style the button */
+.ais-SearchBox-submit {
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+}
     
     .ais-SearchBox-input:focus {
       border-color: #888;
