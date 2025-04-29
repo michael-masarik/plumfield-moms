@@ -3,39 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#ffffff" />
-  <title>Search Plumfield & Paideia</title>
-
-  <!-- Optional: Style to match your main site -->
+  <title>Search Plumfield Moms</title>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.0.0-alpha.27/dist/instantsearch.production.min.js"></script>
   <style>
     body {
       font-family: system-ui, sans-serif;
-      margin: 0;
-      padding: 1rem;
+      padding: 2rem;
       background: #fff;
-      color: #333;
     }
-    header {
-      font-size: 1.5rem;
+    .ais-SearchBox {
       margin-bottom: 1rem;
     }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1rem;
-      text-decoration: none;
-      color: #0077cc;
-      font-size: 0.9rem;
+    .ais-Hits-item {
+      padding: 1rem;
+      border: 1px solid #ddd;
+      margin: 1rem 0;
+      background: #f9f9f9;
     }
   </style>
 </head>
 <body>
-  <a class="back-link" href="https://plumfieldmoms.com">← Back to Site</a>
-  <header>🔍 Search Plumfield & Paideia</header>
+  <div id="search-box"></div>
+  <div id="hits"></div>
 
-  <!-- Google CSE Search Box -->
-  <div class="gcse-search"></div>
+  <script>
+    const search = instantsearch({
+      indexName: 'plumfieldmoms',  // This is your Algolia index name
+      searchClient: algoliasearch(
+        'N1O5WHDILM',  // Replace with your Algolia app ID
+        '206c0c65da1d26d5947f0a8dfcd0e293'   // Replace with your Algolia search-only API key
+      )
+    });
 
-  <!-- Google CSE Script -->
-  <script async src="https://cse.google.com/cse.js?cx=82c9ee818a4ef4776"></script>
+    search.addWidgets([
+      instantsearch.widgets.searchBox({
+        container: '#search-box',
+        placeholder: 'Search Plumfield & Paideia...',
+      }),
+
+      instantsearch.widgets.hits({
+        container: '#hits',
+        templates: {
+          item: `
+            <div>
+              <a href="{{url}}" target="_blank">{{title}}</a>
+              <p>{{description}}</p>
+            </div>
+          `,
+        },
+      }),
+    ]);
+
+    search.start();
+  </script>
 </body>
 </html>
