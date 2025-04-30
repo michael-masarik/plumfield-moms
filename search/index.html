@@ -42,6 +42,9 @@
       padding: 2rem;
       background-color: #fdfdfd;
     }
+    *{
+      font-family: gentium-plus-regular;
+    }
         /* Container styling */
     #search-box {
       display: flex;
@@ -99,7 +102,7 @@
     .search-result {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 1.25rem;
+      
     }
 
   .search-result .thumb {
@@ -139,14 +142,27 @@
 
   @media screen and (max-width: 600px) {
     .search-result {
-      flex-direction: column;
-      align-items: stretch;
+      flex-direction: row;
+      align-items: flex-start;
     }
 
     .search-result .thumb {
-      width: 100%;
-      height: auto;
+      width: 80px;
+      height: 80px;
       margin: 0 0 1rem 0;
+    }
+    
+    .search-result .desc{
+      margin-left: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .search-result .details {
+      max-width: 100%;
+      overflow: hidden;
+      flex: 1;
+      margin-left: 0.5rem;
     }
   }
   </style>
