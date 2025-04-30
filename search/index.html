@@ -139,6 +139,19 @@
     font-size: 0.9rem;
     color: #555;
   }
+  #backButton {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: #7D0E0E;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
 
   @media screen and (max-width: 600px) {
     .search-result {
@@ -168,7 +181,8 @@
   </style>
 </head>
 <body>
-
+  <button id="backButton">&lt; Back</button>
+  <br/>
   <div id="search-box"></div>
   <div id="hits"></div>
 
@@ -208,6 +222,20 @@
       }),
     ]);
     search.start();
+  </script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const previousURL = params.get('url');  // Already decoded
+    document.getElementById('backButton').addEventListener('click', function () {
+      const params = new URLSearchParams(window.location.search);
+      const previousURL = params.get('url');
+
+      if (previousURL) {
+        window.location.href = previousURL;
+      } else {
+        window.history.back(); // Fallback
+      }
+    });
   </script>
 
 </body>
