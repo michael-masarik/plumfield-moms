@@ -41,4 +41,18 @@
     "x-related-resources": {
       "search": "https://code.plumfieldmoms.com/search/"
     }
-  }
+  ,
+  "handle_links": {
+    "routes": [
+      {
+        "origin": "https://plumfieldmoms.com",
+        "path": "/*"
+      }
+    ]
+  },
+  "scope_extensions": [
+    {
+      "origin": "https://code.plumfieldmoms.com"
+    }
+  ]
+}
