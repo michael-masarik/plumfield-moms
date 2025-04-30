@@ -42,14 +42,7 @@
       "search": "https://code.plumfieldmoms.com/search/"
     }
   ,
-  "handle_links": {
-    "routes": [
-      {
-        "origin": "https://plumfieldmoms.com",
-        "path": "/*"
-      }
-    ]
-  },
+  "handle_links": "preferred",
   "scope_extensions": [
     {
       "origin": "https://code.plumfieldmoms.com"
