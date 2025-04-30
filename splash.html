@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plumfield Moms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .gentium-plus-regular {
+    font-family: "Gentium Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .gentium-plus-bold {
+    font-family: "Gentium Plus", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .gentium-plus-regular-italic {
+    font-family: "Gentium Plus", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .gentium-plus-bold-italic {
+    font-family: "Gentium Plus", serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+    body {
+      margin: 0;
+      font-family: gentium-plus-regular;
+      background-color: #ffffff;
+      color: #7D0E0E;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .spinner {
+      margin: 20px auto;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ccc;
+      border-top-color: #7D0E0E;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Loading Plumfield Moms…</h1>
+    <div class="spinner"></div>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    function redirectIfOnline() {
+      if (navigator.onLine) {
+        window.location.replace('https://plumfieldmoms.com'); // Change this to your actual homepage
+      } else {
+        document.getElementById('status').textContent = "You're offline. Please check your connection.";
+      }
+    }
+
+    // Initial check
+    redirectIfOnline();
+
+    // Listen for connection restoration
+    window.addEventListener('online', redirectIfOnline);
+  </script>
+</body>
+</html>
