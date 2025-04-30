@@ -1,6 +1,11 @@
 {
     "name": "Plumfield Moms",
     "short_name": "Plumfield",
+    "description": "Plumfield Moms is a resource for Christian families, book reviewers, and lending librarians who love good, true, and beautiful books.",
+    "categories": ["education", "books", "parenting", "culture","libraries"],
+    "orientation": "portrait",
+    "lang": "en",
+    "dir": "ltr",
     "start_url": "https://plumfieldmoms.com",
     "display": "standalone",
     "background_color": "#ffffff",
@@ -16,5 +21,8 @@
         "sizes": "512x512",
         "type": "image/png"
       }
-    ]
+    ],
+    "x-related-resources": {
+      "search": "https://code.plumfieldmoms.com/search/"
+    }
   }
