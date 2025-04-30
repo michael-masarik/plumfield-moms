@@ -10,6 +10,22 @@
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#7D0E0E",
+    "id": "plumfieldmoms",
+    "launch_handler": {
+      "client_mode": "navigate-existing"
+    },
+    "screenshots": [
+      {
+        "src": "https://code.plumfieldmoms.com/images/mainpage.png",
+        "sizes": "540x720",
+        "type": "image/png"
+      },
+      {
+        "src": "https://code.plumfieldmoms.com/images/search.png",
+        "sizes": "540x720",
+        "type": "image/png"
+      }
+    ],
     "icons": [
       {
         "src": "https://code.plumfieldmoms.com/images/icon-192x192.png",
