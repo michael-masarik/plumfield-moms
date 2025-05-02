@@ -110,7 +110,7 @@ const shareData = {
   title: document.getElementsByClassName("notion-header__title")[0]?.textContent || "Check this out!",
 };
 
-const share = document.getElementById("copy-share");
+const share = document.getElementById("copy");
 
 if (share && navigator.share) {
   share.addEventListener("click", async () => {
@@ -157,3 +157,30 @@ document.addEventListener('keydown', function(e) {
     copy();
   }
 });
+
+// Remove Tally popup for form 3x9X6v in PWA mode
+function removeTallyPopupInPWA() {
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    const isTargetedPopup = (cfg) => (
+      cfg &&
+      cfg.formId === "3x9X6v" &&
+      cfg.popup &&
+      cfg.popup.autoClose === 1000 &&
+      cfg.popup.doNotShowAfterSubmit === true &&
+      cfg.popup.showOnce === true
+    );
+
+    const removeIfMatched = () => {
+      if (isTargetedPopup(window.TallyConfig)) {
+        delete window.TallyConfig;
+        console.log("Tally popup for form 3x9X6v was removed in PWA mode.");
+      }
+    };
+
+    removeIfMatched();
+    setTimeout(removeIfMatched, 100);
+    setTimeout(removeIfMatched, 500);
+  }
+}
+
+removeTallyPopupInPWA();
