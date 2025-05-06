@@ -112,16 +112,15 @@ share.addEventListener("click", async () => {
 });
 }
 // Advanced search redirection on search element click
-// document.addEventListener('click', function(e) {
-// const searchEl = e.target.closest('.super-navbar__search');
-// const isSearchButton = e.target.closest('#search');
+ document.addEventListener('click', function(e) {
+ const isSearchButton = e.target.closest('#search');
 
-// if (searchEl || isSearchButton) {
-//   const currentURL = encodeURIComponent(window.location.href);
-//   e.preventDefault();
-//   window.location.href = `https://code.plumfieldmoms.com/search/?url=${currentURL}`;
-// }
-// });
+if (isSearchButton) {
+   const currentURL = encodeURIComponent(window.location.href);
+   e.preventDefault();
+  window.location.href = `https://code.plumfieldmoms.com/search/?url=${currentURL}`;
+ }
+});
 // Show the shortcut notice only once in PWA mode
 if (window.matchMedia('(display-mode: standalone)').matches) {
 if (!localStorage.getItem('shortcutNoticeShown')) {
