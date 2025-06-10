@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +8,8 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
 
   <!-- InstantSearch + Algolia JS Client -->
   <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
@@ -15,174 +17,212 @@
 
   <style>
     .gentium-plus-regular {
-    font-family: "Gentium Plus", serif;
-    font-weight: 400;
-    font-style: normal;
-  }
+      font-family: "Gentium Plus", serif;
+      font-weight: 400;
+      font-style: normal;
+    }
 
-  .gentium-plus-bold {
-    font-family: "Gentium Plus", serif;
-    font-weight: 700;
-    font-style: normal;
-  }
+    .gentium-plus-bold {
+      font-family: "Gentium Plus", serif;
+      font-weight: 700;
+      font-style: normal;
+    }
 
-  .gentium-plus-regular-italic {
-    font-family: "Gentium Plus", serif;
-    font-weight: 400;
-    font-style: italic;
-  }
+    .gentium-plus-regular-italic {
+      font-family: "Gentium Plus", serif;
+      font-weight: 400;
+      font-style: italic;
+    }
 
-  .gentium-plus-bold-italic {
-    font-family: "Gentium Plus", serif;
-    font-weight: 700;
-    font-style: italic;
-  }
+    .gentium-plus-bold-italic {
+      font-family: "Gentium Plus", serif;
+      font-weight: 700;
+      font-style: italic;
+    }
+
     body {
       font-family: gentium-plus-regular;
       padding: 2rem;
       background-color: #fdfdfd;
     }
-    *{
+
+    * {
       font-family: gentium-plus-regular;
     }
-        /* Container styling */
+
+    /* Container styling */
     #search-box {
       display: flex;
       justify-content: center;
       margin-bottom: 2rem;
     }
-    
-    /* Force the search box form to stay in a row */
-.ais-SearchBox-form {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin: 0 auto;
-}
 
-/* Style the input */
-.ais-SearchBox-input {
-  flex: 1;
-  min-width: 75vw;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px 0 0 6px;
-  outline: none;
-}
-.ais-SearchBox-submit svg {
-  fill: #FFE3A3!important; /* or any hex/color value */
-  width: 1.25rem;
-  height: 1.25rem;
-}
-/* Style the button */
-.ais-SearchBox-submit {
-  padding: 0.75rem 1rem;
-  background-color: #7D0E0E;
-  border: 1px solid #ccc;
-  border-left: none;
-  border-radius: 0 6px 6px 0;
-  cursor: pointer;
-}
-    
+    /* Force the search box form to stay in a row */
+    .ais-SearchBox-form {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Style the input */
+    .ais-SearchBox-input {
+      flex: 1;
+      min-width: 75vw;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px 0 0 6px;
+      outline: none;
+    }
+
+    .ais-SearchBox-submit svg {
+      fill: #FFE3A3 !important;
+      /* or any hex/color value */
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+    svg{
+      fill: #FFE3A3 !important;
+    }
+
+    /* Style the button */
+    .ais-SearchBox-submit {
+      padding: 0.75rem 1rem;
+      background-color: #7D0E0E;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+
     .ais-SearchBox-input:focus {
       border-color: #888;
     }
+
     .ais-Hits-item {
       margin-bottom: 1rem;
       padding: 1rem;
       background: #f1f1f1;
       border-radius: 5px;
     }
+
     a {
       text-decoration: none;
       color: #333;
       font-weight: bold;
     }
+
     .search-result {
       display: flex;
       align-items: flex-start;
-      
-    }
 
-  .search-result .thumb {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-right: 1rem;
-    flex-shrink: 0;
-  }
-  .ais-Hits-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .search-result .details {
-    flex: 1;
-  }
-
-  .search-result .title {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #2c3e50;
-    text-decoration: none;
-  }
-
-  .search-result .title:hover {
-    text-decoration: underline;
-  }
-
-  .search-result .desc {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #555;
-  }
-  #backButton {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  padding: 0.5rem 1rem;
-  background: #7D0E0E;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  cursor: pointer;
-}
-
-  @media screen and (max-width: 600px) {
-    .search-result {
-      flex-direction: row;
-      align-items: flex-start;
     }
 
     .search-result .thumb {
       width: 80px;
       height: 80px;
-      margin: 0 0 1rem 0;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-right: 1rem;
+      flex-shrink: 0;
     }
-    
-    .search-result .desc{
-      margin-left: 0.5rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+
+    .ais-Hits-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
+
     .search-result .details {
-      max-width: 100%;
-      overflow: hidden;
       flex: 1;
-      margin-left: 0.5rem;
     }
-  }
+
+    .search-result .title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #2c3e50;
+      text-decoration: none;
+    }
+
+    .search-result .title:hover {
+      text-decoration: underline;
+    }
+
+    .search-result .desc {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    #backButton {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #7D0E0E;
+      border-radius: 50%;
+      border: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      font-weight: bold;
+
+      &:hover {
+        scale: 1.05;
+        background: #9B1A1A;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .search-result {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+
+      .search-result .thumb {
+        width: 80px;
+        height: 80px;
+        margin: 0 0 1rem 0;
+      }
+
+      .search-result .desc {
+        margin-left: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .search-result .details {
+        max-width: 100%;
+        overflow: hidden;
+        flex: 1;
+        margin-left: 0.5rem;
+      }
+    }
+
+    #arrow {
+      width: 1rem;
+      height: 1.5rem;
+      display: flex
+    }
   </style>
 </head>
+
 <body>
-  <button id="backButton">&lt; Back</button>
-  <br/>
+  <button aria-label="Back Button" id="backButton"><svg id="arrow" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 256 256" fill="#000000" id="Arrow-Left-Bold--Streamline-Phosphor">
+      <desc>
+        Arrow Left Bold Streamline Icon: https://streamlinehq.com
+      </desc>
+      <path
+        d="M253.44 127.9875c0 8.313 -6.739 15.052 -15.0521 15.052H53.9998l64.6237 64.6111c8.2075 8.2076 4.4523 22.2222 -6.7594 25.2263 -5.2034 1.3943 -10.7553 -0.0933 -14.5644 -3.9025L6.9871 138.6619c-5.9028 -5.8824 -5.9028 -15.4414 0 -21.3238l90.3126 -90.3125c8.2075 -8.2076 22.2221 -4.4524 25.2263 6.7593 1.3942 5.2034 -0.0934 10.7553 -3.9025 14.5645l-64.6237 64.586h184.3881c8.3128 0.0003 15.0521 6.7393 15.0521 15.0521Z"
+        stroke-width="1"></path>
+    </svg></button>
+  <br />
   <div id="search-box"></div>
   <div id="hits"></div>
   <script>
@@ -202,7 +242,7 @@
         container: '#search-box',
         placeholder: 'Search Plumfield Moms...',
       }),
-    
+
       instantsearch.widgets.hits({
         container: '#hits',
         templates: {
@@ -238,4 +278,5 @@
   </script>
 
 </body>
+
 </html>
