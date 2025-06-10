@@ -185,17 +185,14 @@
   <br/>
   <div id="search-box"></div>
   <div id="hits"></div>
-  <a href="https://www.algolia.com/" target="_blank">
-    <img src="../images/Algolia.png" alt="Powered by Algolia" style="position: fixed; top: 0; right: 0; width: 30px; height: auto; padding: 1rem;">
-  </a>
   <script>
     const searchClient = algoliasearch(
-      'N1O5WHDILM',         // e.g. 'ABCD1234'
-      '206c0c65da1d26d5947f0a8dfcd0e293'  // Only the search-only key, not the admin one!
+      'D9G6PBCZJG',         // e.g. 'ABCD1234'
+      '2f1958cb4ea62ea651d6427764e2acb4'  // Only the search-only key, not the admin one!
     );
 
     const search = instantsearch({
-      indexName: 'plumfieldmoms_com_n1o5whdilm_pages',  // Must match Algolia exactly
+      indexName: 'pm_main_index',  // Must match Algolia exactly
       searchClient,
     });
 
