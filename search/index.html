@@ -236,11 +236,12 @@
       searchClient,
     });
 
-    <!-- This goes inside the <script> area of your page -->
     search.addWidgets([
       instantsearch.widgets.searchBox({
         container: '#search-box',
         placeholder: 'Search Plumfield Moms...',
+        searchAsYouType: false,
+        showReset: false
       }),
 
       instantsearch.widgets.hits({
