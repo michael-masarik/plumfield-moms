@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug whoami with PAT
+        run: |
+          curl -H "Authorization: token $GH_PAT" https://api.github.com/user
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
       - name: Checkout repo
         uses: actions/checkout@v3
 
