@@ -59,4 +59,4 @@ jobs:
           git config user.email "masarikfamilymichael@gmail.com"
           git add ping-log.csv
           git commit -m "Update cache log" || echo "No changes to commit"
-          git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git HEAD:main
+          git push https://x-access-token:${GH_PAT}@github.com/$GITHUB_REPOSITORY.git HEAD:main
