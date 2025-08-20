@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug whoami with PAT
+        run: |
+          curl -H "Authorization: token $GH_PAT" https://api.github.com/user
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -59,4 +64,4 @@ jobs:
           git config user.email "masarikfamilymichael@gmail.com"
           git add ping-log.csv
           git commit -m "Update cache log" || echo "No changes to commit"
-          git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git HEAD:main
+          git push https://x-access-token:${GH_PAT}@github.com/michael-masarik/plumfield-moms.git HEAD:main
