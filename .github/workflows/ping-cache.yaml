@@ -1,4 +1,4 @@
-name: Cache Refresh 
+name: Cache Refresh
 
 on:
   schedule:
@@ -15,8 +15,15 @@ jobs:
           curl -H "Authorization: token $GH_PAT" https://api.github.com/user
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
+
       - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Set git remote with PAT
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/michael-masarik/plumfield-moms.git
 
       - name: Ping Plumfield Moms Pages
         run: |
@@ -52,7 +59,7 @@ jobs:
             echo "Status: $status_code, Time: ${elapsed}ms"
           done
 
-      - name: Commit log file
+      - name: Commit and push log file
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
@@ -64,4 +71,4 @@ jobs:
           git config user.email "masarikfamilymichael@gmail.com"
           git add ping-log.csv
           git commit -m "Update cache log" || echo "No changes to commit"
-          git push https://x-access-token:${GH_PAT}@github.com/michael-masarik/plumfield-moms.git HEAD:main
+          git push origin HEAD:main
