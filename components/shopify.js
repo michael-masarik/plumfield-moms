@@ -23,6 +23,9 @@ window.buyBtnHandler = function ShopifyBuyBtn(divID, prodID) {
     if (!node) {
       throw new Error("ShopifyBuyBtn: No element found with id=" + divID);
     }
+    if (node.dataset.shopifyInitialized) return;
+
+    node.dataset.shopifyInitialized = "true";
 
     var client = ShopifyBuy.buildClient({
       domain: "zvc3vb-8p.myshopify.com",
